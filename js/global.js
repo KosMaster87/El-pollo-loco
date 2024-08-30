@@ -60,14 +60,6 @@ function resumeAllIntervals() {
     intervalIds.push({ id, fn: interval.fn, time: interval.time });
   });
   pausedIntervals = [];
-  
-  if (world && world.level && world.level.enemies) {
-    world.level.enemies.forEach((enemy) => {
-      if (enemy.resume) {
-        enemy.resume();
-      }
-    });
-  }
   // console.log("Resume Intervalle:", intervalIds);
 }
 
