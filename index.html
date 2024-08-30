@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html translate="no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="./img/6_salsa_bottle/1_salsa_bottle_on_ground.png"
+    />
+    <link rel="stylesheet" href="./fonts.css" />
+    <link rel="stylesheet" href="./style.css" />
+
+    <script src="./js/global.js"></script>
+    <script src="./models/audio-class.js"></script>
+    <script src="./models/object-drawable.class.js"></script>
+    <script src="./models/object-movable.class.js"></script>
+    <script src="./models/object-throwable.class.js"></script>
+    <script src="./models/object-pickable.class.js"></script>
+    <script src="./models/keyboard.class.js"></script>
+    <script src="./models/map-background.class.js"></script>
+    <script src="./models/character.class.js"></script>
+    <script src="./models/enemy-chicken.class.js"></script>
+    <script src="./models/enemy-chick.class.js"></script>
+    <script src="./models/enemy-chicken_counterStrike_.class.js"></script>
+    <script src="./models/enemy-endboss.class.js"></script>
+    <script src="./models/map-cloud.class.js"></script>
+    <script src="./models/map-bottle.class.js"></script>
+    <script src="./models/map-coin.class.js"></script>
+    <script src="./models/status-bar-character.class.js"></script>
+    <script src="./models/status-bar-boss.class.js"></script>
+    <script src="./models/status-bar-coin.class.js"></script>
+    <script src="./models/status-bar-bottle.class.js"></script>
+    <script src="./models/world.class.js"></script>
+    <script src="./models/level.class.js"></script>
+    <script src="./levels/level1.js"></script>
+    <script src="./models/static.class.js"></script>
+    <script src="./js/game.js"></script>
+    <script src="./js/script.js"></script>
+
+    <title>El POLLO LOCO</title>
+  </head>
+
+  <body onload="prepareTheGamingExperience()">
+    <header>
+      <h1 class="customH1" id="customH1">El POLLO LOCO</h1>
+    </header>
+
+    <main class="mainLayerAsRelative" id="mainLayerAsRelative">
+      <canvas
+        id="canvas"
+        class="canvas"
+        style="display: block"
+        width="720px"
+        height="480px"
+      ></canvas>
+
+      <div class="hotMenu" id="hotMenu">
+        <img
+          class="playPauseButton"
+          id="playPauseButton"
+          src="./img/10_menu/play_pause.svg"
+          alt="Play and Pause Button."
+        />
+        <button class="openMenuBtn" id="openMenuBtn">Menu</button>
+        <img
+          class="muteButton"
+          id="muteButton"
+          src="./img/10_menu/volume_up.svg"
+          alt="Mute Button."
+        />
+      </div>
+
+      <div class="menuPop" id="menuPop" style="display: none">
+        <h3 class="menuHeader" id="menuHeader">PAUSE</h3>
+
+        <div class="menuBtnContainer">
+          <button onclick="initGame()">NEW GAME</button>
+          <button onclick="">STORY</button>
+          <button onclick="">SETTINGS</button>
+          <button onclick="toggleFullscreen(event)">Fullscreen</button>
+          <button onclick="">MORE</button>
+          <button
+            class="returnToHomeBtn"
+            id="returnToHomeBtn"
+            onclick="returnToHome()"
+          >
+            RETURN TO HOME
+          </button>
+          <button class="closeMenuBtn" id="closeMenuBtn">CLOSE THE MENU</button>
+        </div>
+
+        <div class="menuFooter" id="menuFooter">
+          <p>Datenschutz</p>
+          <p>About developer</p>
+          <p>Impress</p>
+        </div>
+      </div>
+
+      <div class="mobileControlHub" id="mobileControlHub">
+        <div class="panelWrapper" id="panelWrapper">
+          <button class="mobileBtn" id="leftButton">←</button>
+          <button class="mobileBtn" id="rightButton">→</button>
+        </div>
+
+        <div class="panelWrapper" id="panelWrapper">
+          <button class="mobileBtn" id="jumpButton">↑</button>
+          <button class="mobileBtn" id="throwButton">★</button>
+        </div>
+      </div>
+
+      <div class="rotateLayer" id="rotateLayer">
+        <img
+          src="./img/10_menu/screen_rotation.svg"
+          alt="Rotate layer image."
+        />
+        <p>Turn your Phone</p>
+      </div>
+
+      <!-- Bildblende gameOver -->
+      <img
+        class="apertureGameOver"
+        id="apertureGameOver"
+        src="./img/9_intro_outro_screens/game_over/gameOver.jpg"
+        alt="Game Over screen."
+      />
+    </main>
+
+    <footer>
+      <p>Datenschutz</p>
+      <p>About developer</p>
+      <p>Impress</p>
+    </footer>
+
+    <div class="loadingSpinnerLayer" id="loadingSpinnerLayer">
+      <img
+        class="loadingSpinnerImg"
+        id="loadingSpinnerImg"
+        src="./img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png"
+        alt="You are Welkom - Experience is being prepared."
+      />
+      <p class="loadingSpinnerPara" id="loadingSpinnerPara">
+        Dein Spielerlebnis wird vorbereitet.
+      </p>
+    </div>
+  </body>
+</html>
