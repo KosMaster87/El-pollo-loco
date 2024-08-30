@@ -97,8 +97,9 @@ class ThrowableObject extends MovableObject {
       this.playAnimation(this.IMAGES_SPLASH);
     }, 100);
 
-    this.removeTimeoutId = setStoppableTimeout(() => {
-      clearInterval(this.splashIntervalId);
+    this.removeTimeoutId = setTimeout(() => {
+    // this.removeTimeoutId = setStoppableTimeout(() => {
+      // clearInterval(this.splashIntervalId);
       this.removeBottle();
     }, 700);
   }

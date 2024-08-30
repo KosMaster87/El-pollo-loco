@@ -176,6 +176,7 @@ class Endboss extends MovableObject {
       if (this.isCloseTo(this.world.character, 250)) {
         if (!this.isBossAlert) {
           this.isBossAlert = true;
+          // TODO: BOSS in Alarmbereitschaft Musik.
         }
       } else {
         this.isBossAlert = false;

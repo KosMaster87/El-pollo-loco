@@ -10,23 +10,26 @@ document.addEventListener("DOMContentLoaded", function () {
   const mobileControlHubRef = document.getElementById("mobileControlHub");
 
   function openMenu() {
+    if (isGameRunning) {
+      pauseAllIntervals();
+      pauseAllTimeouts();
+      audioManager.stopSound("inGameMusic");
+    }
+
     menuPopRef.style.display = "flex";
     mobileControlHubRef.style.display = "none";
-    pauseAllIntervals();
-
-    audioManager.stopSound("inGameMusic");
     audioManager.playSound("inHomeMusic");
   }
 
   function closeMenu() {
     menuPopRef.style.display = "none";
-    resumeAllIntervals();
-    checkWidth();
-
     if (isGameRunning) {
+      resumeAllIntervals();
+      resumeAllTimeouts();
       audioManager.stopSound("inHomeMusic");
       audioManager.playSound("inGameMusic");
     }
+    checkWidth();
   }
 
   openMenuBtn.addEventListener("click", openMenu);
@@ -111,6 +114,7 @@ document.addEventListener("fullscreenchange", () => {
     resetCanvas();
   }
   resumeAllIntervals();
+  resumeAllTimeouts();
 });
 
 /**

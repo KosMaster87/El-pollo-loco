@@ -278,7 +278,7 @@ class Character extends MovableObject {
   animateWalking() {
     this.playAnimation(this.IMAGES_WALKING);
     this.resetTimers();
-    this.world.audioManager.playSound("walking");
+    // this.world.audioManager.playSound("walking");
   }
 
   animateIdle() {

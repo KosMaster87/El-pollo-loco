@@ -3,6 +3,7 @@
 let intervalIds = [];
 let timeoutIds = [];
 let pausedIntervals = [];
+let pausedTimeoutIds = [];
 
 /**
  * Startet ein neues Intervall und speichert die Intervall-ID.
@@ -10,6 +11,7 @@ let pausedIntervals = [];
 function setStoppableInterval(fn, time) {
   let id = setInterval(fn, time);
   intervalIds.push({ id, fn, time });
+  // console.log("Aktuelle Intervalle:", intervalIds);
   return id;
 }
 
@@ -19,60 +21,84 @@ function setStoppableInterval(fn, time) {
 function setStoppableTimeout(fn, time) {
   let id = setTimeout(() => {
     fn();
-    timeoutIds = timeoutIds.filter((timeoutId) => timeoutId !== id);
   }, time);
-  timeoutIds.push(id);
+  timeoutIds.push({ id, fn, time });
+  console.log("Aktuelle Timeouts:", timeoutIds);
   return id;
 }
 
 /**
- * It means Pause the game.
+ * Pausiert alle laufenden Intervalle.
  */
 function pauseAllIntervals() {
   intervalIds.forEach((interval) => {
     clearInterval(interval.id);
     pausedIntervals.push(interval);
   });
-  // console.log("Pausiere Intervalle:", intervalIds);
   intervalIds = [];
-
-  timeoutIds.forEach((id) => {
-    clearTimeout(id);
-    pausedIntervals.push({ id });
-  });
-  // console.log("Pausiere Timeouts:", timeoutIds);
-  timeoutIds = [];
+  // console.log("Pausiere Intervalle:", pausedIntervals);
 }
 
 /**
- * It means resume the game.
+ * Pausiert alle laufenden Timeouts.
+ */
+function pauseAllTimeouts() {
+  timeoutIds.forEach((timeout) => {
+    clearTimeout(timeout.id);
+    pausedTimeoutIds.push(timeout);
+  });
+  timeoutIds = [];
+  console.log("Pausiere Timeouts:", pausedTimeoutIds);
+}
+
+/**
+ * Setzt alle pausierten Intervalle fort.
  */
 function resumeAllIntervals() {
-  pausedIntervals.forEach((item) => {
-    if (item.fn && item.time) {
-      let intervalId = setInterval(item.fn, item.time);
-      intervalIds.push({ id: intervalId, time: item.time, fn: item.fn });
-    } else if (item.fn) {
-      setTimeout(item.fn, 0);
-    }
+  pausedIntervals.forEach((interval) => {
+    let id = setInterval(interval.fn, interval.time);
+    intervalIds.push({ id, fn: interval.fn, time: interval.time });
   });
   pausedIntervals = [];
+  
+  if (world && world.level && world.level.enemies) {
+    world.level.enemies.forEach((enemy) => {
+      if (enemy.resume) {
+        enemy.resume();
+      }
+    });
+  }
+  // console.log("Resume Intervalle:", intervalIds);
 }
 
 /**
- * Löscht alle laufenden Intervalle.
+ * Setzt alle pausierten Timeouts fort.
+ */
+function resumeAllTimeouts() {
+  pausedTimeoutIds.forEach((timeout) => {
+    let id = setTimeout(timeout.fn, timeout.time);
+    timeoutIds.push({ id, fn: timeout.fn, time: timeout.time });
+  });
+  pausedTimeoutIds = [];
+  console.log("Resume Timeouts:", timeoutIds);
+}
+
+/**
+ * Löscht alle laufenden Intervalle und Timeouts.
  */
 function clearAllIntervals() {
   intervalIds.forEach(({ id }) => clearInterval(id));
   timeoutIds.forEach(({ id }) => clearTimeout(id));
   pausedIntervals.forEach(({ id }) => clearInterval(id));
+  pausedTimeoutIds.forEach(({ id }) => clearTimeout(id));
   intervalIds = [];
   timeoutIds = [];
   pausedIntervals = [];
+  pausedTimeoutIds = [];
 }
 
 /**
- *
+ * Setzt globale Variablen zurück.
  */
 function resetGlobals() {
   isGameRunning = false;

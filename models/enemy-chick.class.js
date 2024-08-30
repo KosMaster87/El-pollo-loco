@@ -25,8 +25,7 @@ class Chick extends MovableObject {
   }
 
   /**
-   * Speed optionts and Running direction.
-   * Also some animations.
+   * Startet die Bewegungs- und Animationsintervalle.
    */
   animate() {
     this.walkingInterval = setStoppableInterval(

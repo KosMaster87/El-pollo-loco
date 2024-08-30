@@ -131,8 +131,10 @@ class AudioManager {
 
     if (this.gamePaused) {
       pauseAllIntervals();
+      pauseAllTimeouts()
     } else {
       resumeAllIntervals();
+      resumeAllTimeouts()
     }
   }
 
