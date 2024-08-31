@@ -97,7 +97,6 @@ class AudioManager {
   muteAll() {
     for (let soundArray in this.sounds) {
       if (Array.isArray(this.sounds[soundArray])) {
-        // console.log(this.sounds[soundArray]);
         this.sounds[soundArray].forEach((sound) => (sound.volume = 0));
       }
     }
@@ -131,10 +130,10 @@ class AudioManager {
 
     if (this.gamePaused) {
       pauseAllIntervals();
-      pauseAllTimeouts()
+      pauseAllTimeouts();
     } else {
       resumeAllIntervals();
-      resumeAllTimeouts()
+      resumeAllTimeouts();
     }
   }
 
@@ -163,7 +162,7 @@ class AudioManager {
       this.sounds[soundKey] &&
       (!this.soundCooldowns[soundKey] ||
         now - this.soundCooldowns[soundKey] >= cooldown) &&
-      !this.isSoundPlaying(soundKey) // Überprüfe, ob der Sound bereits abgespielt wird
+      !this.isSoundPlaying(soundKey)
     ) {
       if (Array.isArray(this.sounds[soundKey])) {
         this.stopAllSounds(this.sounds[soundKey]);
@@ -181,9 +180,7 @@ class AudioManager {
       this.stopAllSounds(soundArray);
       sound.currentTime = 0;
       sound.play();
-      this.activeSounds.set(soundKey, sound); // Sound als aktiv markieren
-
-      // Entferne den Sound, wenn er beendet ist
+      this.activeSounds.set(soundKey, sound);
       sound.addEventListener("ended", () => {
         this.activeSounds.delete(soundKey);
       });
@@ -209,39 +206,4 @@ class AudioManager {
       this.activeSounds.delete(soundName);
     }
   }
-
-  // playSound(soundKey) {
-  //   const now = Date.now();
-  //   const cooldown = 800;
-
-  //   if (
-  //     this.sounds[soundKey] &&
-  //     (!this.soundCooldowns[soundKey] ||
-  //       now - this.soundCooldowns[soundKey] >= cooldown)
-  //   ) {
-  //     if (Array.isArray(this.sounds[soundKey])) {
-  //       this.stopAllSounds(this.sounds[soundKey]);
-  //       this.playRandomSound(this.sounds[soundKey]);
-  //     }
-  //     this.soundCooldowns[soundKey] = now;
-  //   }
-  // }
-
-  // playRandomSound(soundArray) {
-  //   const randomIndex = Math.floor(Math.random() * soundArray.length);
-  //   const sound = soundArray[randomIndex];
-
-  //   if (sound instanceof Audio) {
-  //     this.stopAllSounds(soundArray);
-  //     sound.currentTime = 0;
-  //     sound.play();
-  //   }
-  // }
-
-  // stopAllSounds(soundArray) {
-  //   soundArray.forEach((sound) => {
-  //     sound.pause();
-  //     sound.currentTime = 0;
-  //   });
-  // }
 }

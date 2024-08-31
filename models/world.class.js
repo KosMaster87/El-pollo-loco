@@ -4,6 +4,7 @@ class World {
   level;
   endBossRef;
   character;
+  isGameRunning;
 
   ctx;
   canvas;
@@ -23,12 +24,13 @@ class World {
   bossAttackStartTime = null;
   counterStrikeChickens = [];
 
-  constructor(canvas, keyboard, audioManager, staticInstance) {
+  constructor(canvas, keyboard, audioManager, staticInstance, isGameRunning) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.audioManager = audioManager;
     this.staticInstance = staticInstance;
+    this.isGameRunning = isGameRunning;
     this.level = level1;
     this.assignWorldToCharacter();
     this.assignWorldToEnemies();
@@ -40,6 +42,7 @@ class World {
   assignWorldToCharacter() {
     this.character = new Character(this.audioManager, this.staticInstance);
     this.character.world = this;
+    this.character.isGameRunning = this.isGameRunning;
   }
 
   assignWorldToEnemies() {
@@ -47,6 +50,7 @@ class World {
       enemy.world = this;
       enemy.audioManager = this.audioManager;
       enemy.staticInstance = this.staticInstance;
+      enemy.isGameRunning = this.isGameRunning;
     });
   }
 
@@ -59,23 +63,21 @@ class World {
    * Sowie auch die Berührung der Flaschen.
    */
   run() {
-    if (isGameRunning) {
-      setStoppableInterval(() => {
-        this.checkCollisions();
-      }, 50);
+    setStoppableInterval(() => {
+      this.checkCollisions();
+    }, 50);
 
-      setStoppableInterval(() => {
-        this.applyDamageToCharacter();
-      }, 50);
+    setStoppableInterval(() => {
+      this.applyDamageToCharacter();
+    }, 50);
 
-      setStoppableInterval(() => {
-        this.throwObject();
-      }, 200);
+    setStoppableInterval(() => {
+      this.throwObject();
+    }, 200);
 
-      setStoppableInterval(() => {
-        this.checkAlerts();
-      }, 200);
-    }
+    setStoppableInterval(() => {
+      this.checkAlerts();
+    }, 200);
   }
 
   /**
@@ -278,18 +280,16 @@ class World {
    * ACHTUNG: Es ist nicht das Selbe "draw()"  wie es in der class DrawableObject definiert ist.
    */
   draw() {
-    if (isGameRunning) {
-      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.ctx.translate(this.camera_x, 0);
-      this.addLevelObjects();
-      this.ctx.translate(-this.camera_x, 0);
-      this.addBars();
-      this.ctx.translate(this.camera_x, 0);
-      this.addToMap(this.character);
-      this.addObjectsToMap(this.throwableObjects);
-      this.ctx.translate(-this.camera_x, 0);
-      this.setSelfDraw();
-    }
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.translate(this.camera_x, 0);
+    this.addLevelObjects();
+    this.ctx.translate(-this.camera_x, 0);
+    this.addBars();
+    this.ctx.translate(this.camera_x, 0);
+    this.addToMap(this.character);
+    this.addObjectsToMap(this.throwableObjects);
+    this.ctx.translate(-this.camera_x, 0);
+    this.setSelfDraw();
   }
 
   /**

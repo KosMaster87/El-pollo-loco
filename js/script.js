@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
       pauseAllIntervals();
       pauseAllTimeouts();
       audioManager.stopSound("inGameMusic");
+      isGameRunning = false;
+      console.log("game wurde nereits gestartet und ist jetzt running false.");
     }
 
     menuPopRef.style.display = "flex";
@@ -23,11 +25,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function closeMenu() {
     menuPopRef.style.display = "none";
-    if (isGameRunning) {
+    if (!isGameRunning && gameStartetOnce) {
       resumeAllIntervals();
       resumeAllTimeouts();
       audioManager.stopSound("inHomeMusic");
       audioManager.playSound("inGameMusic");
+      isGameRunning = true;
+      console.log("game ist nun wieder running.");
+    } else if (!gameStartetOnce) {
+      console.log("game wurde bislang nicht gestartet.");
     }
     checkWidth();
   }

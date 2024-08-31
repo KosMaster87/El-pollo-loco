@@ -4,8 +4,9 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let audioManager = new AudioManager();
-let isGameRunning = false;
 let staticInstance = new Static();
+let isGameRunning = false;
+let gameStartetOnce = false;
 
 /**
  * First step to instruct to prepare to play.
@@ -14,15 +15,26 @@ function initGame() {
   canvas = document.getElementById("canvas");
   startGame();
   initLevel();
-  world = new World(canvas, keyboard, audioManager, staticInstance);
+  world = new World(
+    canvas,
+    keyboard,
+    audioManager,
+    staticInstance,
+    isGameRunning
+  );
 }
 
 /**
  * Second step to initiate the Game script.
  */
 function startGame() {
+  if (isGameRunning) {
+    resetGlobals();
+  }
+
   document.getElementById("menuPop").style.display = "none";
   isGameRunning = true;
+  gameStartetOnce = true;
   checkWidth();
 
   audioManager.stopSound("inHomeMusic");
@@ -30,7 +42,6 @@ function startGame() {
 }
 
 function returnToHome() {
-  isGameRunning = false;
   resetGlobals();
   clearAllIntervals();
   document.getElementById("menuPop").style.display = "none";
@@ -38,7 +49,6 @@ function returnToHome() {
 }
 
 function gameOver() {
-  isGameRunning = false;
   resetGlobals();
   clearAllIntervals();
   apertureGameOver();

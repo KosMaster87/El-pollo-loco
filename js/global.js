@@ -23,7 +23,7 @@ function setStoppableTimeout(fn, time) {
     fn();
   }, time);
   timeoutIds.push({ id, fn, time });
-  console.log("Aktuelle Timeouts:", timeoutIds);
+  // console.log("Aktuelle Timeouts:", timeoutIds);
   return id;
 }
 
@@ -48,7 +48,7 @@ function pauseAllTimeouts() {
     pausedTimeoutIds.push(timeout);
   });
   timeoutIds = [];
-  console.log("Pausiere Timeouts:", pausedTimeoutIds);
+  // console.log("Pausiere Timeouts:", pausedTimeoutIds);
 }
 
 /**
@@ -72,7 +72,7 @@ function resumeAllTimeouts() {
     timeoutIds.push({ id, fn: timeout.fn, time: timeout.time });
   });
   pausedTimeoutIds = [];
-  console.log("Resume Timeouts:", timeoutIds);
+  // console.log("Resume Timeouts:", timeoutIds);
 }
 
 /**
@@ -94,5 +94,6 @@ function clearAllIntervals() {
  */
 function resetGlobals() {
   isGameRunning = false;
+  gameStartetOnce = false;
   world = null;
 }
