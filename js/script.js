@@ -378,10 +378,20 @@ async function preloadAssets() {
   ];
 
   const fontsToLoad = [
-    new FontFace("MyFont1", "url(./fonts/creepster-v13-latin-regular.woff2)"),
-    new FontFace("MyFont2", "url(./fonts/frijole-v14-latin-regular.woff2)"),
-    new FontFace("MyFont3", "url(./fonts/sancreek-v25-latin-regular.woff2)"),
-    new FontFace("MyFont4", "url(./fonts/Boogaloo-Regular.ttf)"),
+    new FontFace(
+      "MyFont1",
+      "url(./../fonts/creepster-v13-latin-regular.woff2)"
+    ),
+    new FontFace("MyFont2", "url(./../fonts/frijole-v14-latin-regular.woff2)"),
+    new FontFace("MyFont3", "url(./../fonts/sancreek-v25-latin-regular.woff2)"),
+    new FontFace("MyFont3", "url(./../fonts/lexend-v19-latin-100.woff2)"),
+    new FontFace("MyFont3", "url(./../fonts/lexend-v19-latin-200.woff2)"),
+    new FontFace("MyFont3", "url(./../fonts/lexend-v19-latin-300.woff2)"),
+    new FontFace("MyFont3", "url(./../fonts/lexend-v19-latin-500.woff2)"),
+    new FontFace("MyFont3", "url(./../fonts/lexend-v19-latin-600.woff2)"),
+    new FontFace("MyFont3", "url(./../fonts/lexend-v19-latin-700.woff2)"),
+    new FontFace("MyFont3", "url(./../fonts/lexend-v19-latin-800.woff2)"),
+    new FontFace("MyFont3", "url(./../fonts/lexend-v19-latin-900.woff2)"),
   ];
 
   Static.preloadImages(imagesToLoad);

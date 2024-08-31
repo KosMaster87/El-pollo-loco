@@ -7,10 +7,10 @@
     <link
       rel="icon"
       type="image/x-icon"
-      href="./img/6_salsa_bottle/1_salsa_bottle_on_ground.png"
+      href="./../img/6_salsa_bottle/1_salsa_bottle_on_ground.png"
     />
-    <link rel="stylesheet" href="./fonts.css" />
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./style/fonts.css" />
+    <link rel="stylesheet" href="./style/style.css" />
 
     <script src="./js/global.js"></script>
     <script src="./models/audio-class.js"></script>
@@ -38,6 +38,7 @@
     <script src="./models/static.class.js"></script>
     <script src="./js/game.js"></script>
     <script src="./js/script.js"></script>
+    <script src="./js/includeHTML.js"></script>
 
     <title>El POLLO LOCO</title>
   </head>
@@ -56,18 +57,20 @@
         height="480px"
       ></canvas>
 
+      <div class="w3_include" id="w3_include" w3-include-html></div>
+
       <div class="hotMenu" id="hotMenu">
         <img
           class="playPauseButton"
           id="playPauseButton"
-          src="./img/10_menu/play_pause.svg"
+          src="./../img/10_menu/play_pause.svg"
           alt="Play and Pause Button."
         />
         <button class="openMenuBtn" id="openMenuBtn">Menu</button>
         <img
           class="muteButton"
           id="muteButton"
-          src="./img/10_menu/volume_up.svg"
+          src="./../img/10_menu/volume_up.svg"
           alt="Mute Button."
         />
       </div>
@@ -92,9 +95,9 @@
         </div>
 
         <div class="menuFooter" id="menuFooter">
-          <p>Datenschutz</p>
-          <p>About developer</p>
-          <p>Impress</p>
+          <p onclick="loadPage('../templates/legality.html')">Legality</p>
+          <p onclick="loadPage('../templates/about.html')">About developer</p>
+          <p onclick="loadPage('../templates/policy.html')">Policy</p>
         </div>
       </div>
 
@@ -112,7 +115,7 @@
 
       <div class="rotateLayer" id="rotateLayer">
         <img
-          src="./img/10_menu/screen_rotation.svg"
+          src="./../img/10_menu/screen_rotation.svg"
           alt="Rotate layer image."
         />
         <p>Turn your Phone</p>
@@ -122,22 +125,22 @@
       <img
         class="apertureGameOver"
         id="apertureGameOver"
-        src="./img/9_intro_outro_screens/game_over/gameOver.jpg"
+        src="./../img/9_intro_outro_screens/game_over/gameOver.jpg"
         alt="Game Over screen."
       />
     </main>
 
     <footer>
-      <p>Datenschutz</p>
-      <p>About developer</p>
-      <p>Impress</p>
+      <p onclick="loadPage('../templates/legality.html')">Legality</p>
+      <p onclick="loadPage('../templates/about.html')">About developer</p>
+      <p onclick="loadPage('../templates/policy.html')">Policy</p>
     </footer>
 
     <div class="loadingSpinnerLayer" id="loadingSpinnerLayer">
       <img
         class="loadingSpinnerImg"
         id="loadingSpinnerImg"
-        src="./img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png"
+        src="./../img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png"
         alt="You are Welkom - Experience is being prepared."
       />
       <p class="loadingSpinnerPara" id="loadingSpinnerPara">

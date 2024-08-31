@@ -1,3 +1,7 @@
+@import url("./legality.css");
+@import url("./about.css");
+@import url("./policy.css");
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -14,7 +18,7 @@ body {
     " . header . "
     " . main . "
     " footer footer footer ";
-  background-image: url(./img/desertBackground.jpg);
+  background-image: url(./../img/desertBackground.jpg);
   background-color: rgb(58, 10, 10);
   background-position: center;
   background-repeat: no-repeat;
@@ -102,7 +106,7 @@ header {
   height: 100%;
   border: 1px solid black;
   aspect-ratio: 16 / 9;
-  background-image: url("./img/9_intro_outro_screens/start/startscreen_1.png");
+  background-image: url("./../img/9_intro_outro_screens/start/startscreen_1.png");
   background-size: cover;
   background-position: center;
   background-color: rgb(92 13 21);
@@ -179,7 +183,7 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  background-image: url(./img/desert.png);
+  background-image: url(./../img/desert.png);
   background-size: cover;
   background-position: center;
   background-color: rgb(92 13 21);
@@ -226,7 +230,7 @@ button {
   aspect-ratio: 16 / 9;
   width: 100%;
   height: 100%;
-  /* background-image: url(./img/9_intro_outro_screens/game_over/gameOver.png); */
+  /* background-image: url(./../img/9_intro_outro_screens/game_over/gameOver.png); */
   /* background-size: cover; */
   /* background-position: center; */
   border: none;
@@ -263,6 +267,18 @@ footer p {
   font-weight: 100;
   font-size: clamp(1rem, 0.8vw + 0.8rem, 1.75rem);
   cursor: pointer;
+}
+
+.w3_include {
+  position: absolute;
+  grid-area: main;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  height: 100%;
+  /* background-size: cover;
+  background-position: center; */
+  border: none;
+  border-radius: 0.5rem;
 }
 
 @media screen and (max-width: 1080px) and (orientation: landscape) {
