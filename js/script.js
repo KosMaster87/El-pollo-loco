@@ -24,6 +24,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function closeMenu() {
+    const w3IncludeRef = document.getElementById("w3_include");
+    w3IncludeRef.style.display = "none";
+
     menuPopRef.style.display = "none";
     if (!isGameRunning && gameStartetOnce) {
       resumeAllIntervals();
@@ -34,6 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("game ist nun wieder running.");
     } else if (!gameStartetOnce) {
       console.log("game wurde bislang nicht gestartet.");
+    } else if (isGameRunning && w3_includeRef) {
+      w3_includeRef.style.display = "none";
     }
     checkWidth();
   }
@@ -335,6 +340,7 @@ async function preloadAssets() {
     "./img/9_intro_outro_screens/start/startscreen_2.png",
     "./img/desert.png",
     "./img/desertBackground.jpg",
+    "./img/konstantin.png",
   ];
 
   const audioToLoad = [

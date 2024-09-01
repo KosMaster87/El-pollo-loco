@@ -2,19 +2,24 @@
  * Just include.
  */
 async function loadPage(filePath) {
-  const element = document.getElementById("w3_include");
-  const menuPopRef = document.getElementById("menuPop");
-  let resp = await fetch(filePath);
+  const w3_includeRef = document.getElementById("w3_include");
+  const resp = await fetch(filePath);
 
   if (resp.ok) {
-    element.innerHTML = await resp.text();
-    
-    if (menuPopRef.style.display === "flex") {
-      menuPopRef.style.display = "none";
-    }
+    w3_includeRef.innerHTML = await resp.text();
+
+    menuPopManager();
 
     document.getElementById("w3_include").style.display = "flex";
   } else {
-    element.innerHTML = "Page not found";
+    w3_includeRef.innerHTML = "Page not found";
+  }
+}
+
+function menuPopManager() {
+  const menuPopRef = document.getElementById("menuPop");
+
+  if (menuPopRef.style.display === "flex") {
+    menuPopRef.style.display = "none";
   }
 }

@@ -13,6 +13,7 @@ let gameStartetOnce = false;
  */
 function initGame() {
   canvas = document.getElementById("canvas");
+
   startGame();
   initLevel();
   world = new World(
@@ -34,6 +35,7 @@ function startGame() {
 
   document.getElementById("w3_include").style.display = "none";
   document.getElementById("menuPop").style.display = "none";
+  document.getElementById("homeLayer").style.display = "none";
   isGameRunning = true;
   gameStartetOnce = true;
   checkWidth();
@@ -43,10 +45,12 @@ function startGame() {
 }
 
 function returnToHome() {
-  resetGlobals();
-  clearAllIntervals();
   document.getElementById("w3_include").style.display = "none";
   document.getElementById("menuPop").style.display = "none";
+  document.getElementById("homeLayer").style.display = "block";
+
+  resetGlobals();
+  clearAllIntervals();
   resetCanvas();
 }
 
@@ -58,7 +62,7 @@ function gameOver() {
   audioManager.stopSound("inGameMusic");
   setTimeout(() => {
     audioManager.playSound("inHomeMusic");
-  }, 700);
+  }, 1500);
 }
 
 /**
@@ -73,6 +77,7 @@ function apertureGameOver() {
     document.getElementById("apertureGameOver").classList.add("hidden");
     document.getElementById("menuPop").style.display = "flex";
   }, 3000);
+  document.getElementById("homeLayer").style.display = "block";
 }
 
 function resetCanvas() {
