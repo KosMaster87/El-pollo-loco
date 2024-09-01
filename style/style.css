@@ -1,6 +1,7 @@
 @import url("./legality.css");
 @import url("./about.css");
 @import url("./policy.css");
+@import url("./story.css");
 
 * {
   box-sizing: border-box;

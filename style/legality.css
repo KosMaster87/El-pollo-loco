@@ -23,11 +23,22 @@
   font-size: clamp(2rem, 2vw + 1rem, 4.75rem);
 }
 
-/* .scrollOverWindow {
-  overflow-y: auto;
-  width: 80%;
-  height: clamp(60%, 8vh, 100%);
-  font-family: Lexend;
-  font-weight: 500;
-  border: 2px solid black;
-} */
+.legalityPic {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: clamp(110px, 13vw, 200px);
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+@media screen and (max-width: 1080px) and (orientation: landscape) {
+  .legalityPic {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: clamp(80px, 4vw, 150px);
+    height: auto;
+    border-radius: 0.4rem;
+  }
+}
