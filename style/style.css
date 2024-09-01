@@ -117,7 +117,8 @@ header {
   grid-area: main;
   position: absolute;
   display: flex;
-  align-self: flex-start;
+  /* align-self: flex-start; */
+  align-items: flex-start;
   align-content: center;
   justify-content: center;
   margin-top: 0.8rem;

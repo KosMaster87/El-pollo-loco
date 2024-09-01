@@ -53,6 +53,7 @@
 }
 
 .scrollOverWindow {
+  background-color: #ffffff3f;
   overflow-y: auto;
   width: 80%;
   height: clamp(60%, 8vh, 100%);

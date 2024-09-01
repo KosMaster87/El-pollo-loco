@@ -32,6 +32,7 @@ function startGame() {
     resetGlobals();
   }
 
+  document.getElementById("w3_include").style.display = "none";
   document.getElementById("menuPop").style.display = "none";
   isGameRunning = true;
   gameStartetOnce = true;
@@ -44,6 +45,7 @@ function startGame() {
 function returnToHome() {
   resetGlobals();
   clearAllIntervals();
+  document.getElementById("w3_include").style.display = "none";
   document.getElementById("menuPop").style.display = "none";
   resetCanvas();
 }
