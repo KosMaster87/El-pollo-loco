@@ -27,7 +27,7 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  width: clamp(110px, 13vw, 200px);
+  width: clamp(60px, 8vw, 120px);
   height: auto;
   border-radius: 0.5rem;
 }

@@ -40,7 +40,8 @@ document.addEventListener("DOMContentLoaded", function () {
     } else if (isGameRunning && w3_includeRef) {
       w3_includeRef.style.display = "none";
     }
-    checkWidth();
+    // checkWidth();
+    adjustDisplayBasedOnWidthAndOrientation(isGameRunning);
   }
 
   openMenuBtn.addEventListener("click", openMenu);
@@ -97,7 +98,8 @@ function enterFullscreen(element) {
   }
 
   document.getElementById("menuPop").style.display = "none";
-  checkWidth();
+  // checkWidth();
+  adjustDisplayBasedOnWidthAndOrientation(isGameRunning);
 }
 
 function exitFullscreen() {
@@ -112,7 +114,8 @@ function exitFullscreen() {
   }
 
   document.getElementById("menuPop").style.display = "none";
-  checkWidth();
+  // checkWidth();
+  adjustDisplayBasedOnWidthAndOrientation(isGameRunning);
 }
 
 /**
@@ -120,7 +123,8 @@ function exitFullscreen() {
  * Triggers the full screen mode itself; so that the F11 key is also focused.
  */
 document.addEventListener("fullscreenchange", () => {
-  checkWidth();
+  // checkWidth();
+  adjustDisplayBasedOnWidthAndOrientation(isGameRunning);
   if (!document.fullscreenElement) {
     resetCanvas();
   }
@@ -131,47 +135,135 @@ document.addEventListener("fullscreenchange", () => {
 /**
  * Anzeige der Rotationsbenachrichtigung basierend auf der Fensterbreite
  */
-function checkWidth() {
+// function checkWidth() {
+//   const rotateLayerRef = document.getElementById("rotateLayer");
+//   const mobileControlHubRef = document.getElementById("mobileControlHub");
+//   const width = window.innerWidth;
+//   const isLandscape = window.matchMedia("(orientation: landscape)").matches;
+
+//   if (isLandscape) {
+//     // Querformat
+//     if (width <= 667) {
+//       rotateLayerRef.style.display = "none";
+//       if (isGameRunning) {
+//         mobileControlHubRef.style.display = "flex";
+//       } else {
+//         mobileControlHubRef.style.display = "none";
+//       }
+//     } else if (width >= 668 && width <= 1080) {
+//       rotateLayerRef.style.display = "none";
+//       if (isGameRunning) {
+//         mobileControlHubRef.style.display = "flex";
+//       } else {
+//         mobileControlHubRef.style.display = "none";
+//       }
+//     } else {
+//       // Für sehr breite Bildschirme im Querformat
+//       rotateLayerRef.style.display = "none";
+//       mobileControlHubRef.style.display = "none";
+//     }
+//   } else {
+//     // Hochformat oder Querformat mit Breite >= 1080px
+//     if (width >= 667) {
+//       rotateLayerRef.style.display = "none";
+//       mobileControlHubRef.style.display = "none";
+//     } else {
+//       rotateLayerRef.style.display = "flex";
+//       mobileControlHubRef.style.display = "none";
+//     }
+//   }
+// }
+
+/**
+ * Checks if the current device is in landscape orientation.
+ * @returns {boolean} - True if the device is in landscape orientation, otherwise False.
+ */
+function isLandscapeOrientation() {
+  return window.matchMedia("(orientation: landscape)").matches;
+}
+
+/**
+ * Returns the current width of the browser window.
+ * @returns {number} - The width of the window in pixels.
+ */
+function getScreenWidth() {
+  return window.innerWidth;
+}
+
+/**
+ * Adjusts the display elements based on the width and orientation of the device.
+ * @param {boolean} isGameRunning - Indicates whether the game is currently running.
+ */
+function adjustDisplayBasedOnWidthAndOrientation(isGameRunning) {
   const rotateLayerRef = document.getElementById("rotateLayer");
   const mobileControlHubRef = document.getElementById("mobileControlHub");
-  const width = window.innerWidth;
-  const isLandscape = window.matchMedia("(orientation: landscape)").matches;
+  const width = getScreenWidth();
+  const isLandscape = isLandscapeOrientation();
 
   if (isLandscape) {
-    // Querformat
-    if (width <= 667) {
-      rotateLayerRef.style.display = "none";
-      if (isGameRunning) {
-        mobileControlHubRef.style.display = "flex";
-      } else {
-        mobileControlHubRef.style.display = "none";
-      }
-    } else if (width >= 668 && width <= 1080) {
-      rotateLayerRef.style.display = "none";
-      if (isGameRunning) {
-        mobileControlHubRef.style.display = "flex";
-      } else {
-        mobileControlHubRef.style.display = "none";
-      }
-    } else {
-      // Für sehr breite Bildschirme im Querformat
-      rotateLayerRef.style.display = "none";
-      mobileControlHubRef.style.display = "none";
-    }
+    handleLandscapeMode(
+      width,
+      isGameRunning,
+      rotateLayerRef,
+      mobileControlHubRef
+    );
   } else {
-    // Hochformat oder Querformat mit Breite >= 1080px
-    if (width >= 667) {
-      rotateLayerRef.style.display = "none";
-      mobileControlHubRef.style.display = "none";
-    } else {
-      rotateLayerRef.style.display = "flex";
-      mobileControlHubRef.style.display = "none";
-    }
+    handlePortraitMode(width, rotateLayerRef, mobileControlHubRef);
   }
 }
 
-window.addEventListener("resize", checkWidth);
-document.addEventListener("DOMContentLoaded", checkWidth);
+/**
+ * Handles display elements in landscape mode.
+ * @param {number} width - The current width of the browser window.
+ * @param {boolean} isGameRunning - Indicates whether the game is currently running.
+ * @param {HTMLElement} rotateLayerRef - Reference to the rotate layer element.
+ * @param {HTMLElement} mobileControlHubRef - Reference to the mobile control hub element.
+ */
+function handleLandscapeMode(
+  width,
+  isGameRunning,
+  rotateLayerRef,
+  mobileControlHubRef
+) {
+  if (width <= 667 || (width >= 668 && width <= 1080)) {
+    rotateLayerRef.style.display = "none";
+    mobileControlHubRef.style.display = isGameRunning ? "flex" : "none";
+  } else {
+    rotateLayerRef.style.display = "none";
+    mobileControlHubRef.style.display = "none";
+  }
+}
+
+/**
+ * Handles display elements in portrait mode.
+ * @param {number} width - The current width of the browser window.
+ * @param {HTMLElement} rotateLayerRef - Reference to the rotate layer element.
+ * @param {HTMLElement} mobileControlHubRef - Reference to the mobile control hub element.
+ */
+function handlePortraitMode(width, rotateLayerRef, mobileControlHubRef) {
+  if (width >= 667) {
+    rotateLayerRef.style.display = "none";
+    mobileControlHubRef.style.display = "none";
+  } else {
+    rotateLayerRef.style.display = "flex";
+    mobileControlHubRef.style.display = "none";
+  }
+}
+
+/**
+ * Adds event listeners that adjust the display when the window is resized
+ * or when the document is loaded.
+ * @global {boolean} isGameRunning - Indicates whether the game is currently running.
+ */
+window.addEventListener("resize", () =>
+  adjustDisplayBasedOnWidthAndOrientation(isGameRunning)
+);
+document.addEventListener("DOMContentLoaded", () =>
+  adjustDisplayBasedOnWidthAndOrientation(isGameRunning)
+);
+
+// window.addEventListener("resize", checkWidth);
+// document.addEventListener("DOMContentLoaded", checkWidth);
 
 /**
  * Preload Data
@@ -183,7 +275,8 @@ async function prepareTheGamingExperience() {
 }
 
 async function loadingSpinnerStart() {
-  checkWidth();
+  // checkWidth();
+  adjustDisplayBasedOnWidthAndOrientation(isGameRunning);
   const loadingSpinnerLayerRef = document.getElementById("loadingSpinnerLayer");
   loadingSpinnerLayerRef.style.display = "flex";
 }
@@ -347,7 +440,6 @@ async function preloadAssets() {
     "./audio/homeMenuSound01.mp3",
     "./audio/homeMenuSound02.mp3",
     "./audio/inGameSound01.mp3",
-    "./audio/chickenDeath01.mp3",
     "./audio/chickenDeath02.mp3",
     "./audio/bossHurting01.mp3",
     "./audio/bossAttacking01.mp3",
@@ -384,10 +476,7 @@ async function preloadAssets() {
   ];
 
   const fontsToLoad = [
-    new FontFace(
-      "MyFont1",
-      "url(./fonts/creepster-v13-latin-regular.woff2)"
-    ),
+    new FontFace("MyFont1", "url(./fonts/creepster-v13-latin-regular.woff2)"),
     new FontFace("MyFont2", "url(./fonts/frijole-v14-latin-regular.woff2)"),
     new FontFace("MyFont3", "url(./fonts/sancreek-v25-latin-regular.woff2)"),
     new FontFace("MyFont3", "url(./fonts/lexend-v19-latin-100.woff2)"),

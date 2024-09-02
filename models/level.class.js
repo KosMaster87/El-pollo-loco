@@ -8,8 +8,8 @@ class Level {
   coins;
 
   // Das ist die Grende für den Pepe zur rechten Seite. Zur linken Seite ist in der character.class in der animate() bzw. EnterKeyboard() Methode.
-  level_begin_x = -500;
-  level_end_x = 2000;
+  level_begin_x = 0;
+  level_end_x = 4000;
   // level_end_x = 5800;
 
   /**

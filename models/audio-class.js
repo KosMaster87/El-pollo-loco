@@ -76,7 +76,7 @@ class AudioManager {
         new Audio("./audio/splash04.mp3"),
       ],
       opponentDeath: [
-        new Audio("./audio/chickenDeath01.mp3"),
+        // new Audio("./audio/chickenDeath01.mp3"),
         new Audio("./audio/chickenDeath02.mp3"),
       ],
       bossAttacking: [

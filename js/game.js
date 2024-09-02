@@ -38,7 +38,8 @@ function startGame() {
   document.getElementById("homeLayer").style.display = "none";
   isGameRunning = true;
   gameStartetOnce = true;
-  checkWidth();
+  // checkWidth();
+  adjustDisplayBasedOnWidthAndOrientation(isGameRunning);
 
   audioManager.stopSound("inHomeMusic");
   audioManager.playSound("inGameMusic");

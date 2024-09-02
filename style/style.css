@@ -125,6 +125,10 @@ header {
   gap: 0.5rem;
 }
 
+.muteButton {
+  cursor: pointer;
+}
+
 .openMenuBtn {
   display: flex;
   align-items: center;
@@ -299,6 +303,12 @@ footer p {
     display: none;
   }
 
+  footer {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px) and (orientation: portrait) {
   footer {
     display: none;
   }

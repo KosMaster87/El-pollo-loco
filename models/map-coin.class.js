@@ -14,7 +14,7 @@ class Coin extends MovableObject {
     this.loadImages(this.IMAGES_COIN);
     const minY = 150;
     const maxY = 300;
-    this.x = -250 + Math.random() * 720 * 4;
+    this.x = 100 + Math.random() * 720 * 4;
     this.y = minY + Math.random() * (maxY - minY);
     this.width = 100;
     this.height = 100;
