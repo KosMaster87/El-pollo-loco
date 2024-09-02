@@ -68,6 +68,13 @@
   }
 }
 
+.testFormatet {
+  text-align: justify;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 @media screen and (max-width: 1080px) and (orientation: landscape) {
   .aboutPic {
     position: absolute;
