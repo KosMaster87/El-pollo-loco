@@ -1,4 +1,3 @@
-@import url("./legality.css");
 @import url("./about.css");
 @import url("./imprint.css");
 @import url("./story.css");
@@ -247,9 +246,6 @@ button {
   height: 100%;
   border: none;
   border-radius: 0.5rem;
-  /* background-blend-mode: overlay;
-  opacity: 0;
-  transition: opacity 3s ease; */
 }
 
 .apertureGameOver.visible {

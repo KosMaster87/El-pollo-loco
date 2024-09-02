@@ -53,13 +53,11 @@
   transition: color 0.3s ease;
 }
 
-/* Hover-Effekt für Links */
 .linkStyle:hover {
   color: #0b51c5;
   text-decoration: underline;
 }
 
-/* Fokussierter oder angeklickter Zustand */
 .linkStyle:focus,
 .linkStyle:active {
   color: #0a3e91;

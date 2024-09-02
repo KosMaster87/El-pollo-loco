@@ -1,6 +1,6 @@
 /* creepster-regular - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Creepster";
   font-style: normal;
   font-weight: 400;
@@ -9,7 +9,7 @@
 
 /* sancreek-regular - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Sancreek";
   font-style: normal;
   font-weight: 400;
@@ -18,7 +18,7 @@
 
 /* lexend-100 - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Lexend";
   font-style: normal;
   font-weight: 100;
@@ -26,7 +26,7 @@
 }
 /* lexend-200 - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Lexend";
   font-style: normal;
   font-weight: 200;
@@ -34,7 +34,7 @@
 }
 /* lexend-300 - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Lexend";
   font-style: normal;
   font-weight: 300;
@@ -42,7 +42,7 @@
 }
 /* lexend-regular - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Lexend";
   font-style: normal;
   font-weight: 400;
@@ -50,7 +50,7 @@
 }
 /* lexend-500 - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Lexend";
   font-style: normal;
   font-weight: 500;
@@ -58,7 +58,7 @@
 }
 /* lexend-600 - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Lexend";
   font-style: normal;
   font-weight: 600;
@@ -66,7 +66,7 @@
 }
 /* lexend-700 - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Lexend";
   font-style: normal;
   font-weight: 700;
@@ -74,7 +74,7 @@
 }
 /* lexend-800 - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Lexend";
   font-style: normal;
   font-weight: 800;
@@ -82,7 +82,7 @@
 }
 /* lexend-900 - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Lexend";
   font-style: normal;
   font-weight: 900;

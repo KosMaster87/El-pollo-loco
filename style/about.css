@@ -3,7 +3,6 @@
   scrollbar-color: rgb(98 30 44 / 80%) #dfa5825e !important;
 }
 
-/* Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
   width: 12px;
 }

@@ -1,7 +1,6 @@
 "use strict";
 
 let level1;
-// let extraChickens = [];
 
 /**
  * Im Grunde ist "level1" nur eine Hilfsdatei.
