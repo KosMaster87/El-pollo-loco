@@ -201,10 +201,6 @@ button {
   align-items: center;
 }
 
-.playPauseButton {
-  display: none;
-}
-
 .menuHeader {
   font-size: clamp(1.5rem, 2vw + 1rem, 4.375rem);
 }

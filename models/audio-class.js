@@ -4,9 +4,11 @@ class AudioManager {
     this.isMuted = true;
     this.soundCooldowns = {};
     this.activeSounds = new Map();
+
     document.addEventListener("DOMContentLoaded", () => {
-      this.togglePlayPauseEvent();
       this.muteAll();
+      this.initMuteButton();
+
       document.getElementById("muteButton").src =
         "./img/10_menu/volume_off.svg";
     });
@@ -76,8 +78,8 @@ class AudioManager {
         new Audio("./audio/splash04.mp3"),
       ],
       opponentDeath: [
-        // new Audio("./audio/chickenDeath01.mp3"),
-        new Audio("./audio/chickenDeath02.mp3"),
+        new Audio("./audio/chickenDeath01.mp3"),
+        // new Audio("./audio/chickenDeath02.mp3"),
       ],
       bossAttacking: [
         new Audio("./audio/bossAttacking01.mp3"),
@@ -92,6 +94,27 @@ class AudioManager {
         // new Audio("./audio/chickenDeath02.mp3"),
       ],
     };
+  }
+
+  initMuteButton() {
+    const muteButton = document.getElementById("muteButton");
+    muteButton.addEventListener("click", this.toggleMute.bind(this));
+  }
+
+  toggleMute() {
+    this.isMuted = !this.isMuted;
+    if (this.isMuted) {
+      this.muteAll();
+      this.updateMuteButtonIcon("volume_off");
+    } else {
+      this.unmuteAll();
+      this.updateMuteButtonIcon("volume_up");
+    }
+  }
+
+  updateMuteButtonIcon(icon) {
+    const muteButton = document.getElementById("muteButton");
+    muteButton.src = `./../img/10_menu/${icon}.svg`;
   }
 
   muteAll() {
@@ -110,48 +133,8 @@ class AudioManager {
     }
   }
 
-  togglePlayPauseEvent() {
-    const playPauseButton = document.getElementById("playPauseButton");
-    const muteButton = document.getElementById("muteButton");
-
-    if (playPauseButton && muteButton) {
-      playPauseButton.addEventListener(
-        "click",
-        this.togglePlayPause.bind(this)
-      );
-      muteButton.addEventListener("click", this.toggleMute.bind(this));
-    } else {
-      console.error("Buttons not found in the DOM");
-    }
-  }
-
-  togglePlayPause() {
-    this.gamePaused = !this.gamePaused;
-
-    if (this.gamePaused) {
-      pauseAllIntervals();
-      pauseAllTimeouts();
-    } else {
-      resumeAllIntervals();
-      resumeAllTimeouts();
-    }
-  }
-
-  toggleMute() {
-    this.isMuted = !this.isMuted;
-
-    if (this.isMuted) {
-      this.muteAll();
-      document.getElementById("muteButton").src =
-        "./img/10_menu/volume_off.svg";
-    } else {
-      this.unmuteAll();
-      document.getElementById("muteButton").src = "./img/10_menu/volume_up.svg";
-    }
-  }
-
   /**
-   * Spielt den Sound nur ab, wenn der Cooldown abgelaufen ist.
+   * Only plays the sound when the cooldown has expired.
    * @param {string} soundKey
    */
   playSound(soundKey) {
@@ -207,3 +190,4 @@ class AudioManager {
     }
   }
 }
+

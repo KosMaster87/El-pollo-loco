@@ -33,14 +33,12 @@ function startGame() {
     resetGlobals();
   }
 
+  isGameRunning = true;
+  gameStartetOnce = true;
   document.getElementById("w3_include").style.display = "none";
   document.getElementById("menuPop").style.display = "none";
   document.getElementById("homeLayer").style.display = "none";
-  isGameRunning = true;
-  gameStartetOnce = true;
-  // checkWidth();
-  adjustDisplayBasedOnWidthAndOrientation(isGameRunning);
-
+  adjustDisplayBasedOnWidthAndOrientation();
   audioManager.stopSound("inHomeMusic");
   audioManager.playSound("inGameMusic");
 }
@@ -64,10 +62,11 @@ function gameOver() {
   setTimeout(() => {
     audioManager.playSound("inHomeMusic");
   }, 1500);
+  adjustDisplayBasedOnWidthAndOrientation();
 }
 
 /**
- * Bildblende gameOver
+ * Aperture gameOver
  */
 function apertureGameOver() {
   document.getElementById("apertureGameOver").classList.remove("hidden");

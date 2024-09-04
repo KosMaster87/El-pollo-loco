@@ -1,48 +1,15 @@
 "use strict";
 
 /**
- * Menü ein- und ausblenden
+ * Show or hide menu.
  */
+let openMenuBtn, closeMenuBtn, menuPopRef, mobileControlHubRef;
+
 document.addEventListener("DOMContentLoaded", function () {
-  const openMenuBtn = document.getElementById("openMenuBtn");
-  const closeMenuBtn = document.getElementById("closeMenuBtn");
-  const menuPopRef = document.getElementById("menuPop");
-  const mobileControlHubRef = document.getElementById("mobileControlHub");
-
-  function openMenu() {
-    if (isGameRunning) {
-      pauseAllIntervals();
-      pauseAllTimeouts();
-      audioManager.stopSound("inGameMusic");
-      isGameRunning = false;
-      console.log("game wurde nereits gestartet und ist jetzt running false.");
-    }
-
-    menuPopRef.style.display = "flex";
-    mobileControlHubRef.style.display = "none";
-    audioManager.playSound("inHomeMusic");
-  }
-
-  function closeMenu() {
-    const w3IncludeRef = document.getElementById("w3_include");
-    w3IncludeRef.style.display = "none";
-
-    menuPopRef.style.display = "none";
-    if (!isGameRunning && gameStartetOnce) {
-      resumeAllIntervals();
-      resumeAllTimeouts();
-      audioManager.stopSound("inHomeMusic");
-      audioManager.playSound("inGameMusic");
-      isGameRunning = true;
-      console.log("game ist nun wieder running.");
-    } else if (!gameStartetOnce) {
-      console.log("game wurde bislang nicht gestartet.");
-    } else if (isGameRunning && w3_includeRef) {
-      w3_includeRef.style.display = "none";
-    }
-    // checkWidth();
-    adjustDisplayBasedOnWidthAndOrientation(isGameRunning);
-  }
+  openMenuBtn = document.getElementById("openMenuBtn");
+  closeMenuBtn = document.getElementById("closeMenuBtn");
+  menuPopRef = document.getElementById("menuPop");
+  mobileControlHubRef = document.getElementById("mobileControlHub");
 
   openMenuBtn.addEventListener("click", openMenu);
   closeMenuBtn.addEventListener("click", closeMenu);
@@ -50,8 +17,38 @@ document.addEventListener("DOMContentLoaded", function () {
   alsoClickOutside(menuPopRef, openMenuBtn, closeMenu);
 });
 
+function openMenu() {
+  if (isGameRunning) {
+    pauseAllIntervals();
+    pauseAllTimeouts();
+    audioManager.stopSound("inGameMusic");
+    isGameRunning = false;
+  }
+
+  menuPopRef.style.display = "flex";
+  mobileControlHubRef.style.display = "none";
+  audioManager.playSound("inHomeMusic");
+}
+
+function closeMenu() {
+  const w3IncludeRef = document.getElementById("w3_include");
+  w3IncludeRef.style.display = "none";
+
+  menuPopRef.style.display = "none";
+  if (!isGameRunning && gameStartetOnce) {
+    resumeAllIntervals();
+    resumeAllTimeouts();
+    audioManager.stopSound("inHomeMusic");
+    audioManager.playSound("inGameMusic");
+    isGameRunning = true;
+  } else if (isGameRunning && w3_includeRef) {
+    w3_includeRef.style.display = "none";
+  }
+  adjustDisplayBasedOnWidthAndOrientation();
+}
+
 /**
- * Menü schließen, wenn außerhalb geklickt wird
+ * Close menu when clicked outside.
  */
 function alsoClickOutside(menuPopRef, openMenuBtn, closeMenu) {
   function userClicksOutsideOfPopup(event) {
@@ -69,7 +66,7 @@ function alsoClickOutside(menuPopRef, openMenuBtn, closeMenu) {
 }
 
 /**
- * Vollbildmodus umschalten
+ * Toggle full screen mode.
  */
 function toggleFullscreen(event) {
   event.preventDefault();
@@ -98,8 +95,7 @@ function enterFullscreen(element) {
   }
 
   document.getElementById("menuPop").style.display = "none";
-  // checkWidth();
-  adjustDisplayBasedOnWidthAndOrientation(isGameRunning);
+  adjustDisplayBasedOnWidthAndOrientation();
 }
 
 function exitFullscreen() {
@@ -114,8 +110,7 @@ function exitFullscreen() {
   }
 
   document.getElementById("menuPop").style.display = "none";
-  // checkWidth();
-  adjustDisplayBasedOnWidthAndOrientation(isGameRunning);
+  adjustDisplayBasedOnWidthAndOrientation();
 }
 
 /**
@@ -123,56 +118,13 @@ function exitFullscreen() {
  * Triggers the full screen mode itself; so that the F11 key is also focused.
  */
 document.addEventListener("fullscreenchange", () => {
-  // checkWidth();
-  adjustDisplayBasedOnWidthAndOrientation(isGameRunning);
+  adjustDisplayBasedOnWidthAndOrientation();
   if (!document.fullscreenElement) {
     resetCanvas();
   }
   resumeAllIntervals();
   resumeAllTimeouts();
 });
-
-/**
- * Anzeige der Rotationsbenachrichtigung basierend auf der Fensterbreite
- */
-// function checkWidth() {
-//   const rotateLayerRef = document.getElementById("rotateLayer");
-//   const mobileControlHubRef = document.getElementById("mobileControlHub");
-//   const width = window.innerWidth;
-//   const isLandscape = window.matchMedia("(orientation: landscape)").matches;
-
-//   if (isLandscape) {
-//     // Querformat
-//     if (width <= 667) {
-//       rotateLayerRef.style.display = "none";
-//       if (isGameRunning) {
-//         mobileControlHubRef.style.display = "flex";
-//       } else {
-//         mobileControlHubRef.style.display = "none";
-//       }
-//     } else if (width >= 668 && width <= 1080) {
-//       rotateLayerRef.style.display = "none";
-//       if (isGameRunning) {
-//         mobileControlHubRef.style.display = "flex";
-//       } else {
-//         mobileControlHubRef.style.display = "none";
-//       }
-//     } else {
-//       // Für sehr breite Bildschirme im Querformat
-//       rotateLayerRef.style.display = "none";
-//       mobileControlHubRef.style.display = "none";
-//     }
-//   } else {
-//     // Hochformat oder Querformat mit Breite >= 1080px
-//     if (width >= 667) {
-//       rotateLayerRef.style.display = "none";
-//       mobileControlHubRef.style.display = "none";
-//     } else {
-//       rotateLayerRef.style.display = "flex";
-//       mobileControlHubRef.style.display = "none";
-//     }
-//   }
-// }
 
 /**
  * Checks if the current device is in landscape orientation.
@@ -192,21 +144,15 @@ function getScreenWidth() {
 
 /**
  * Adjusts the display elements based on the width and orientation of the device.
- * @param {boolean} isGameRunning - Indicates whether the game is currently running.
  */
-function adjustDisplayBasedOnWidthAndOrientation(isGameRunning) {
+function adjustDisplayBasedOnWidthAndOrientation() {
   const rotateLayerRef = document.getElementById("rotateLayer");
   const mobileControlHubRef = document.getElementById("mobileControlHub");
   const width = getScreenWidth();
   const isLandscape = isLandscapeOrientation();
 
   if (isLandscape) {
-    handleLandscapeMode(
-      width,
-      isGameRunning,
-      rotateLayerRef,
-      mobileControlHubRef
-    );
+    handleLandscapeMode(width, rotateLayerRef, mobileControlHubRef);
   } else {
     handlePortraitMode(width, rotateLayerRef, mobileControlHubRef);
   }
@@ -214,20 +160,11 @@ function adjustDisplayBasedOnWidthAndOrientation(isGameRunning) {
 
 /**
  * Handles display elements in landscape mode.
- * @param {number} width - The current width of the browser window.
- * @param {boolean} isGameRunning - Indicates whether the game is currently running.
- * @param {HTMLElement} rotateLayerRef - Reference to the rotate layer element.
- * @param {HTMLElement} mobileControlHubRef - Reference to the mobile control hub element.
  */
-function handleLandscapeMode(
-  width,
-  isGameRunning,
-  rotateLayerRef,
-  mobileControlHubRef
-) {
+function handleLandscapeMode(width, rotateLayerRef, mobileControlHubRef) {
   if (width <= 667 || (width >= 668 && width <= 1080)) {
     rotateLayerRef.style.display = "none";
-    mobileControlHubRef.style.display = isGameRunning ? "flex" : "none";
+    mobileControlHubRef.style.display = gameStartetOnce ? "flex" : "none";
   } else {
     rotateLayerRef.style.display = "none";
     mobileControlHubRef.style.display = "none";
@@ -236,9 +173,6 @@ function handleLandscapeMode(
 
 /**
  * Handles display elements in portrait mode.
- * @param {number} width - The current width of the browser window.
- * @param {HTMLElement} rotateLayerRef - Reference to the rotate layer element.
- * @param {HTMLElement} mobileControlHubRef - Reference to the mobile control hub element.
  */
 function handlePortraitMode(width, rotateLayerRef, mobileControlHubRef) {
   if (width >= 667) {
@@ -253,17 +187,13 @@ function handlePortraitMode(width, rotateLayerRef, mobileControlHubRef) {
 /**
  * Adds event listeners that adjust the display when the window is resized
  * or when the document is loaded.
- * @global {boolean} isGameRunning - Indicates whether the game is currently running.
  */
 window.addEventListener("resize", () =>
-  adjustDisplayBasedOnWidthAndOrientation(isGameRunning)
+  adjustDisplayBasedOnWidthAndOrientation()
 );
 document.addEventListener("DOMContentLoaded", () =>
-  adjustDisplayBasedOnWidthAndOrientation(isGameRunning)
+  adjustDisplayBasedOnWidthAndOrientation()
 );
-
-// window.addEventListener("resize", checkWidth);
-// document.addEventListener("DOMContentLoaded", checkWidth);
 
 /**
  * Preload Data
@@ -275,8 +205,7 @@ async function prepareTheGamingExperience() {
 }
 
 async function loadingSpinnerStart() {
-  // checkWidth();
-  adjustDisplayBasedOnWidthAndOrientation(isGameRunning);
+  adjustDisplayBasedOnWidthAndOrientation();
   const loadingSpinnerLayerRef = document.getElementById("loadingSpinnerLayer");
   loadingSpinnerLayerRef.style.display = "flex";
 }
@@ -287,9 +216,9 @@ function loadingSpinnerEnd() {
 }
 
 /**
- * Definiere die Ressourcen, die vorgeladen werden sollen.
- * Lade Bilder, Audio und Schriftarten vor.
- * Warte, bis alle Ressourcen vorgeladen sind.
+ * Define the resources to preload.
+ * Preload images, audio and fonts.
+ * Wait until all resources are preloaded.
  */
 async function preloadAssets() {
   const imagesToLoad = [
@@ -440,7 +369,7 @@ async function preloadAssets() {
     "./audio/homeMenuSound01.mp3",
     "./audio/homeMenuSound02.mp3",
     "./audio/inGameSound01.mp3",
-    "./audio/chickenDeath02.mp3",
+    "./audio/chickenDeath01.mp3",
     "./audio/bossHurting01.mp3",
     "./audio/bossAttacking01.mp3",
     "./audio/coin01.mp3",
@@ -500,12 +429,12 @@ async function preloadAssets() {
 
     // console.log("Alle Assets wurden erfolgreich vorgeladen.");
   } catch (error) {
-    console.error("Fehler beim Vorladen von Assets:", error);
+    // console.error("Fehler beim Vorladen von Assets:", error);
   }
 }
 
 /**
- * Bilder vorladen und als Promises behandeln.
+ * Preload images and treat them as promises.
  */
 function preloadImages(paths) {
   return Promise.all(
@@ -524,7 +453,7 @@ function preloadImages(paths) {
 }
 
 /**
- * Audiodateien vorladen und als Promises behandeln.
+ * Preload audio files and treat them as promises.
  */
 function preloadAudio(paths) {
   return Promise.all(
@@ -543,7 +472,7 @@ function preloadAudio(paths) {
 }
 
 /**
- * Schriftarten vorladen und als Promises behandeln.
+ * Preload fonts and treat them as promises.
  */
 function preloadFonts(fonts) {
   return Promise.all(
