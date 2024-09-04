@@ -1,3 +1,5 @@
+"use strict";
+
 class CharacterStatusBar extends DrawableObject {
   IMAGES = [
     "./img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png",
@@ -21,9 +23,7 @@ class CharacterStatusBar extends DrawableObject {
   }
 
   /**
-   * Wird in der world.class.js auf Pepe sein "this.PepeStatusBar" angewand.
-   * In der "checkCollisions()", bezogen auf "energy" nach der "hit()" Fn auf den this.character, in movable-object.class.js.
-   * Bestimmung der Enerie in der Statusleiste.
+   * Determination of energy in the status bar.
    * @param {current energy from Pepe} percentage
    */
   setPercentage(percentage) {
@@ -34,7 +34,7 @@ class CharacterStatusBar extends DrawableObject {
   }
 
   /**
-   * Einstufung der Barleiste.
+   * Rating of the bar.
    * @returns number
    */
   resolveImageIndex() {

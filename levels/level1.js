@@ -3,28 +3,19 @@
 let level1;
 
 /**
- * Im Grunde ist "level1" nur eine Hilfsdatei.
- * Die eigentlichen Platzhalter für die Objekte sind in der "class Level" Deklaliert.
- * Durch die Erstellung von "new Level" wird durch die Parameter in dem "constructor" der "class Level" die Objekte in den Jeweiligen Variablen gesetzt.\
- * Beachte die Reichenfolge der Parameter in dem "construktor" und zu dem "new Level" Objekt.
- */
-
-/**
- * best chatGPT practices (empfohlene Vorgehensweise).
- * Funktion, um eine bestimmte Anzahl von Objekten zu erstellen
+ * Function to create a specific number of objects.
  */
 function createObjects(count, createFunc) {
   const objects = [];
   for (let i = 0; i < count; i++) {
     objects.push(createFunc());
   }
-  // console.log(objects);
   return objects;
 }
 
 /**
- * Funktion, um die Level-Objekte zu erstellen
- * @returns Die Objekte, also: enemies, clouds und background.
+ * Function to create the level objects
+ * @returns The objects, namely: enemies, clouds and background.
  */
 function createLevel() {
   const bossChicken = [];
@@ -35,18 +26,12 @@ function createLevel() {
   const clouds = createObjects(20, () => new Cloud());
   const chicks = createObjects(30, () => new Chick());
   const chickens = createObjects(20, () => new Chicken());
-  // const counterStrikeChickens = createObjects(
-  //   0,
-  //   () => new CounterStrikeChicken()
-  // );
 
   let enemies = [
     ...chickens,
     ...chicks,
     ...bossChicken,
-    // ...counterStrikeChickens,
   ];
-  // console.log(enemies);
 
   const backgroundObjects = [];
   const positions = [
@@ -91,8 +76,7 @@ function createLevel() {
 }
 
 /**
- * Initialisiere das Level und erstelle die Level-Objekte.
- * Soll erst beim Starten des Spieles gesetzt werden.
+ * Initialize the level and create the level objects.
  */
 function initLevel() {
   level1 = createLevel();

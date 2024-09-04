@@ -1,3 +1,5 @@
+"use strict";
+
 class Bottle extends PickableObject {
   IMAGES_SALSA_GROUND = [
     "./img/6_salsa_bottle/1_salsa_bottle_on_ground.png",

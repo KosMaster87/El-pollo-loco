@@ -34,17 +34,18 @@ class CounterStrikeChicken extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Determining the position of the strike chicken when it appears.
+   * @param {Strike chicken self} index
+   */
   spawnRightPlace(index) {
     const boss = this.endBossRef;
     const bossHeight = boss.height;
     const bossMidY = boss.y + bossHeight / 2;
-
     const offsetX = 10 * (index % 10) + Math.random() * 50;
     const offsetY = (Math.random() - 0.5) * 0.4 * bossHeight;
-
     this.x = boss.x + offsetX;
     this.y = bossMidY + offsetY;
-    // console.log(this);
   }
 
   startAttackPhase() {
@@ -76,6 +77,7 @@ class CounterStrikeChicken extends MovableObject {
   /**
    * Speed options and Running direction.
    * Also some animations.
+   * Add random jumping
    */
   animate() {
     this.walkingInterval = setStoppableInterval(
@@ -88,7 +90,6 @@ class CounterStrikeChicken extends MovableObject {
       1800 / 7
     );
 
-    // Zufälliges Springen hinzufügen
     this.jumpInterval = setStoppableInterval(() => {
       if (!this.isAboveGround() && !this.isAttacking && !this.isJumping) {
         this.jump();
@@ -96,6 +97,9 @@ class CounterStrikeChicken extends MovableObject {
     }, 2000 + Math.random() * 3000);
   }
 
+  /**
+   * The jump sequence from the Strike Chicken.
+   */
   jump() {
     if (this.isJumping) return;
     this.isJumping = true;
@@ -118,7 +122,7 @@ class CounterStrikeChicken extends MovableObject {
   }
 
   /**
-   * Logik für Treffer an dem Gegner.
+   * Logic for hitting the opponent.
    */
   hit_anyOpponent() {
     this.energy = 0;
@@ -126,8 +130,8 @@ class CounterStrikeChicken extends MovableObject {
   }
 
   /**
-   * Tötungslogik für das Huhn.
-   * Aus dem enemy array löschen.
+   * Kill logic for the chicken.
+   * Delete from enemy array.
    */
   die_this() {
     this.world.audioManager.playSound("bossDeath");

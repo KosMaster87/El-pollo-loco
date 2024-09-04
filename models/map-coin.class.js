@@ -1,3 +1,5 @@
+"use strict";
+
 class Coin extends MovableObject {
   offset = {
     top: 35,
@@ -22,7 +24,7 @@ class Coin extends MovableObject {
   }
 
   /**
-   * animate the coin
+   * Animate the coin
    */
   animate() {
     setStoppableInterval(() => {

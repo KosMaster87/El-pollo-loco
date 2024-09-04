@@ -30,8 +30,7 @@ class DrawableObject {
   }
 
   /**
-   * Import from world.class.js
-   * Hier werden die zu Zeichnenden Bilder auf die Canvas gezeichnet.
+   * Here the images to be drawn are drawn onto the canvas.
    * @param {each movable object} ctx
    */
   draw(ctx) {
@@ -41,9 +40,9 @@ class DrawableObject {
   }
 
   /**
-   * Import from world.class.js
-   * "InstanceOf" bedeutet, dass nur die in der if Bediengung markierten Objekte die Umrandung bekommen.
-   * Und das nur für die drawable-object.class.js, da hier auch mit "this" bezeichnet ist.
+   * Is disabled by default.
+   * "InstanceOf" means that only the objects marked in the if condition get the border.
+   * And that only applies to the drawable-object.class.js, since it is also referred to as "this" here.
    */
   drawFrame(ctx) {
     if (

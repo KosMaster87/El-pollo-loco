@@ -7,13 +7,11 @@ class Level {
   bottles;
   coins;
 
-  // Das ist die Grende für den Pepe zur rechten Seite. Zur linken Seite ist in der character.class in der animate() bzw. EnterKeyboard() Methode.
   level_begin_x = 0;
   level_end_x = 4000;
-  // level_end_x = 5800;
 
   /**
-   * Hier ist die Reichenfolge der Argumente entscheident im Bezug zu der Reichenfolge des "new Level" Objektes.
+   * Here the order of the arguments is crucial in relation to the range order of the "new level" object.
    */
   constructor(
     enemiesArray,

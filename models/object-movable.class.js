@@ -5,11 +5,11 @@ class MovableObject extends DrawableObject {
   lastHit = 0;
   hitCooldown = 1000;
   otherDirection = false;
-  speedY = 0; // Geschwindigkeit nach unten.
-  acceleration = 1; // Beschleunigung
+  speedY = 0;
+  acceleration = 1;
 
   /**
-   * Berechnung des Bereiches für das jeweiliege Objekt.
+   * Calculation of the area for each object.
    */
   isColliding(obj) {
     return (
@@ -21,8 +21,8 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Die Schwerkraft für den Charakter und für die Flaschen definieren.
-   * Das mit größer als 0 muss sein, da die Sprung fn nur über dem Boden funktionieren soll.
+   * Define the gravity for the character and for the bottles.
+   * This must be greater than 0 because the jump fn should only work above the ground.
    */
   applyGravity() {
     setStoppableInterval(() => {
@@ -34,9 +34,8 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Bestätigung, ob das Objekt über dem Boden ist.
    * Confirming whether the object is above the ground.
-   * Für Pepe wird immer der else-Teil der Abfrage ausgeführt.
+   * For Pepe, the else part of the query is always executed.
    * @returns boolean
    */
   isAboveGround() {
@@ -63,7 +62,7 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   *
+   * Pushing Pepe back during a collision with an enemy.
    */
   handleCharacterPushback(enemy) {
     let targetPosition;
@@ -82,7 +81,7 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   *
+   * A smooth push back of Pepe in a collision with the opponent.
    */
   pushLeftSmooth(targetPosition) {
     let step = 2;
@@ -102,17 +101,16 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Nur für den Pepe, um seine beschleunigung zum Springen zu steuern.
+   * Only for Pepe to control his acceleration for jumping.
    */
   jump() {
     this.speedY = 15;
-    // this.pepeJump_sound.play();
   }
 
   /**
-   * #1 Treffer: Pepe Lebensenergie => Pepe für eine Sekunde unverwundbar.
-   * Überprüft, ob Pepe innerhalb der letzten Sekunde Schaden erlitten hat.
-   * => Dann erst Treffer (this.lastHit)!
+   * #1 hit: Pepe's life energy => Pepe is invulnerable for one second.
+   * Checks whether Pepe has taken damage within the last second.
+   * => Only then hit (this.lastHit)!
    * @returns Boolean
    */
   isHurt() {
@@ -122,11 +120,11 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * #2 Egergie: Pepe Lebensenergie => Nur jede eine Sekunde möglich Energie zu reduzieren.
-   * Verursacht Schaden am Charakter und aktualisiert die Statusleiste.
+   * #2 Egergie: Pepe's life energy => Energy can only be reduced every one second.
+   * Causes damage to the character and updates the status bar.
    *
-   * Ein Treffer wird nur gewertet, wenn die Differenz zwischen dem aktuellen Zeitpunkt und dem letzten Treffer
-   * größer oder gleich dem festgelegten Abklingzeitraum (hitCooldown) ist.
+   * A hit is only counted if the difference between the current time and the last hit
+   * is greater than or equal to the specified cooldown period (hitCooldown).
    */
   hitPepe() {
     const now = Date.now();
@@ -142,7 +140,7 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Pepes sein sterben.
+   * Pepes is dying.
    * @returns Boolean
    */
   isDead() {

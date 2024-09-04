@@ -87,8 +87,6 @@ class Character extends MovableObject {
   idle = false;
   sleep = false;
 
-  // TODO: Zentrale Methode erstellen, um die Animationen zu steuern.
-
   constructor(audioManager) {
     super().loadImage("./img/2_character_pepe/2_walk/W-21.png");
     this.images = {};
@@ -105,9 +103,6 @@ class Character extends MovableObject {
     this.animate();
   }
 
-  /**
-   * Sammlung von Flaschen.
-   */
   collectBottle() {
     this.bottles.push(new Bottle());
     this.world.audioManager.playSound("bottleEarn");
@@ -214,48 +209,47 @@ class Character extends MovableObject {
    * Some auto playback images and gameOver.
    */
   pepeAnimate() {
-    // TODO: Flags setzen das Pepe nur einmal verletzt werden kann oder nur einen gegner töten kann, und weiteres.
-    // console.log(this.speedY);
-    // Wenn speedY einen minus Wert hat.
-    // character.class.js:222 16
-    // character.class.js:222 13
-    // character.class.js:222 9
-    // character.class.js:222 6
-    // character.class.js:222 2
-    // character.class.js:222 -2
-    // character.class.js:222 -6
-    // character.class.js:222 -9
-    // character.class.js:222 -13
-    // character.class.js:222 -16
-    if (this.isHurt() && !this.isDead()) {
-      this.animateHurt();
-      setTimeout(() => {
-        this.world.audioManager.playSound("hurting");
-      }, 500);
-    } else if (this.isDead()) {
+    this.hurting();
+    if (this.isDead()) {
       this.animateDead();
     } else if (this.isAboveGround()) {
       this.animateJumping();
     } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
       this.animateWalking();
-    } else if (
+    } else this.handleIdleState();
+    this.handleSnoringSound();
+  }
+
+  hurting() {
+    if (this.isHurt() && !this.isDead()) {
+      this.animateHurt();
+      setTimeout(() => {
+        this.world.audioManager.playSound("hurting");
+      }, 500);
+    }
+  }
+
+  handleIdleState() {
+    if (
       this.idleTimer() &&
       !this.isAboveGround() &&
       !this.isHurt() &&
       !this.isDead()
     ) {
-      if (this.sleepTimer()) {
-        this.animateSleeping();
-        this.sleep = true;
-        this.idle = false;
-      } else {
-        this.animateIdle();
-        this.idle = true;
-        this.sleep = false;
-      }
+      this.idleAlsoSleep();
     }
+  }
 
-    this.handleSnoringSound();
+  idleAlsoSleep() {
+    if (this.sleepTimer()) {
+      this.animateSleeping();
+      this.sleep = true;
+      this.idle = false;
+    } else {
+      this.animateIdle();
+      this.idle = true;
+      this.sleep = false;
+    }
   }
 
   animateHurt() {
@@ -278,7 +272,6 @@ class Character extends MovableObject {
   animateWalking() {
     this.playAnimation(this.IMAGES_WALKING);
     this.resetTimers();
-    // this.world.audioManager.playSound("walking");
   }
 
   animateIdle() {
@@ -290,17 +283,11 @@ class Character extends MovableObject {
     this.playAnimation(this.IMAGES_SLEEP);
   }
 
-  /**
-   * The functions when Pepe moving right.
-   */
   pepeMoveRightOptions() {
     this.moveRight();
     this.otherDirection = false;
   }
 
-  /**
-   * The functions when Pepe moving left.
-   */
   pepeMoveLeftOptions() {
     this.moveLeft();
     this.otherDirection = true;

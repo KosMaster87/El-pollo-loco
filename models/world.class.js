@@ -59,8 +59,8 @@ class World {
   }
 
   /**
-   * Prüft die Zeitvorgabe für Kolusion von Pepe mit den Feinden.
-   * Sowie auch die Berührung der Flaschen.
+   * Check the timing of Pepe's collusion with the enemies.
+   * As well as the touch of the bottles.
    */
   run() {
     setStoppableInterval(() => {
@@ -81,8 +81,8 @@ class World {
   }
 
   /**
-   * Durch hit_Boss() wird der Counter-Strike getriggert.
-   * Und hier wird der Zeitpunkt des Erscheinens festgelegt.
+   * Counter-Strike is triggered by hit_Boss().
+   * And this is where the time of appearance is determined.
    */
   scheduleChickenSpawn() {
     setTimeout(() => {
@@ -91,7 +91,8 @@ class World {
   }
 
   /**
-   *
+   * Creating the counter strike chicken.
+   * As well as integrating it into the enemy array.
    */
   spawnChickens() {
     this.counterStrikeChickens = this.createObjects(
@@ -109,7 +110,7 @@ class World {
   }
 
   /**
-   *
+   * Helper function to create the strike chicken as an object.
    */
   createObjects(count, createFunc) {
     const objects = [];
@@ -131,7 +132,6 @@ class World {
   }
 
   /**
-   * Simples auslesen des Momentanen Zustand des Schadens selber.
    * Simply read out the current state of the damage itself.
    * @returns Bolean
    */
@@ -157,7 +157,7 @@ class World {
   }
 
   /**
-   * Bislang nur für den Boss gedacht.
+   * The boss should go on alert.
    */
   checkAlerts() {
     this.level.enemies.forEach((enemy) => {
@@ -168,7 +168,6 @@ class World {
   }
 
   /**
-   * Hier ist der Umfang der kollidierenden Objekte.
    * Here is the scope of the colliding objects.
    * @returns boolean
    */
@@ -178,26 +177,30 @@ class World {
     }
 
     this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy)) {
-        if (
-          this.character.y + this.character.height < enemy.y + enemy.height &&
-          this.character.speedY < 0
-        ) {
-          this.activeEnemyInteraction = true;
-          if (enemy instanceof Endboss) {
-            enemy.hit_Boss();
-          } else {
-            enemy.hit_anyOpponent();
-          }
-
-          this.character.speedY = 10;
-
-          setTimeout(() => {
-            this.activeEnemyInteraction = false;
-          }, 200);
-        }
-      }
+      this.handleCollisionWithEnemy(enemy);
     });
+  }
+
+  handleCollisionWithEnemy(enemy) {
+    if (this.character.isColliding(enemy)) {
+      if (
+        this.character.y + this.character.height < enemy.y + enemy.height &&
+        this.character.speedY < 0
+      ) {
+        this.activeEnemyInteraction = true;
+        if (enemy instanceof Endboss) {
+          enemy.hit_Boss();
+        } else {
+          enemy.hit_anyOpponent();
+        }
+
+        this.character.speedY = 10;
+
+        setTimeout(() => {
+          this.activeEnemyInteraction = false;
+        }, 200);
+      }
+    }
   }
 
   /**
@@ -235,7 +238,7 @@ class World {
   }
 
   /**
-   *
+   * Check if the thrown bottle collided with an opponent.
    */
   checkThrowableObjectCollisions() {
     this.throwableObjects.forEach((throwableObject) => {
@@ -246,8 +249,7 @@ class World {
   }
 
   /**
-   * Flasche erstellen und Werfen.
-   * Die Wurfrichtung der Flasche und die Flaschenanzahl von Pepe prüfen.
+   * Throw a salsa bottle.
    */
   throwObject() {
     const now = Date.now();
@@ -257,27 +259,37 @@ class World {
       this.character.bottles.length > 0 &&
       now - this.lastThrowTime >= this.throwCooldown
     ) {
-      let throwDirectionX = this.character.otherDirection ? -1 : 1;
-
-      let bottle = new ThrowableObject(
-        this.character.x + (throwDirectionX === 1 ? 70 : -70),
-        this.character.y + 35,
-        this,
-        throwDirectionX
-      );
-
-      bottle.world = this;
-      this.throwableObjects.push(bottle);
-      this.character.bottles.pop();
-      this.statusBarBottle.setPercentage(this.character.bottles.length * 20);
-      this.lastThrowTime = now;
+      const bottle = this.createThrowableObject();
+      this.handleThrowableObject(bottle);
     }
   }
 
   /**
-   * Draw() wird immer wieder aufgerufen.
+   * Create and throw a bottle.
+   */
+  createThrowableObject() {
+    const throwDirectionX = this.character.otherDirection ? -1 : 1;
+    return new ThrowableObject(
+      this.character.x + (throwDirectionX === 1 ? 70 : -70),
+      this.character.y + 35,
+      this,
+      throwDirectionX
+    );
+  }
+
+  /**
+   * Check the direction of the bottle throw and the number of bottles Pepe has.
+   */
+  handleThrowableObject(bottle) {
+    bottle.world = this;
+    this.throwableObjects.push(bottle);
+    this.character.bottles.pop();
+    this.statusBarBottle.setPercentage(this.character.bottles.length * 20);
+    this.lastThrowTime = Date.now();
+  }
+
+  /**
    * Draw what ever in this.World
-   * ACHTUNG: Es ist nicht das Selbe "draw()"  wie es in der class DrawableObject definiert ist.
    */
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -293,7 +305,7 @@ class World {
   }
 
   /**
-   *Zu Zeichnen!
+   *To draw!
    */
   addLevelObjects() {
     this.addObjectsToMap(this.level.background);
@@ -304,7 +316,7 @@ class World {
   }
 
   /**
-   *Zu Zeichnen!
+   *To draw!
    */
   addBars() {
     this.addToMap(this.statusBarPepe);
@@ -313,6 +325,9 @@ class World {
     this.addToMap(this.statusBarBottle);
   }
 
+  /**
+   * A repetition of itself to create a frame rate.
+   */
   setSelfDraw() {
     let self = this;
 
@@ -322,9 +337,8 @@ class World {
   }
 
   /**
-   * Die Fn ist nur eine Zwischenfunktion vom Zeichnen-Fn zum Zeichnen-addToMap, die auch eine Hilfsfunktion für die "draw"-Fn ist.
    * Adds any objects with specific attributes.
-   * Im Grunde sollen sich diese Objekte ohne einer Benutzeingabe Automatisch bewegen. Im gegensatz zu Pepe wo der erst gezeichnet wird, alsbald eine Eingabe erfolg.
+   * Basically, these objects should move automatically without any user input. In contrast to Pepe, where he is only drawn as soon as an input is made.
    * @param {The objects in this world.} objects
    */
   addObjectsToMap(objects) {
@@ -334,7 +348,6 @@ class World {
   }
 
   /**
-   * Die if Abfragen händelt den Charakter, seinen Spiegelbild. Sowie die Gespiegelte Koardinaten des Canvas für den Charakter.
    * The if query handles the character, its mirror image, and the mirrored coordinates of the canvas for the character.
    * Add to Canvas Board each things.
    * @param {movable object} mo
@@ -345,7 +358,7 @@ class World {
     }
 
     mo.draw(this.ctx);
-    // mo.drawFrame(this.ctx); // Hier Ausblenden - Kann man dev. mode schalter mache!
+    // mo.drawFrame(this.ctx); // Hide or show here.
 
     if (mo.otherDirection) {
       this.flipImageBack(mo);
@@ -353,24 +366,24 @@ class World {
   }
 
   /**
-   * Die "Flips" sind zum Spiegeln der Bilder.
-   * Den von rechts-nach-links zustand setzen.
+   * The "flips" are for mirroring the images.
+   * Set the right-to-left state.
    * @param {movable-object} mo
    */
   flipImage(mo) {
     this.ctx.save();
-    this.ctx.translate(mo.width, 0); // Die Verschiebung um die eigene Y-Achse.
-    this.ctx.scale(-1, 1); // Die Spieglung mit "-1" in der X-Achse. Die Y-Achse bleibt unverändert mit "1".
-    mo.x = mo.x * -1; // Das Koardinatensystem zu dem Bild muss auch noch gespiegelt werden.
+    this.ctx.translate(mo.width, 0);
+    this.ctx.scale(-1, 1);
+    mo.x = mo.x * -1;
   }
 
   /**
-   * Die "Flips" sind zum Spiegeln der Bilder.
-   * Den von-links-nach-rechts zustand setzen.
+   * The "flips" are for mirroring the images.
+   * Set the left-to-right state.
    * @param {movable-object} mo
    */
   flipImageBack(mo) {
-    mo.x = mo.x * -1; // Das Koardinatensystem zu dem Bild muss auch noch gespiegelt werden.
+    mo.x = mo.x * -1;
     this.ctx.restore();
   }
 }

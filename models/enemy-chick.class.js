@@ -25,7 +25,7 @@ class Chick extends MovableObject {
   }
 
   /**
-   * Startet die Bewegungs- und Animationsintervalle.
+   * Starts the movement and animation intervals.
    */
   animate() {
     this.walkingInterval = setStoppableInterval(
@@ -39,7 +39,7 @@ class Chick extends MovableObject {
   }
 
   /**
-   * Logik für Treffer an dem Gegner.
+   * Logic for hitting the opponent.
    */
   hit_anyOpponent() {
     this.energy = 0;
@@ -47,8 +47,8 @@ class Chick extends MovableObject {
   }
 
   /**
-   * Tötungslogik für das Huhn.
-   * Aus dem ememie array löschen.
+   * Kill logic for the chicken.
+   * Delete from the ememie array.
    */
   die_this() {
     this.audioManager.playSound("opponentDeath");

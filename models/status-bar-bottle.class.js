@@ -1,3 +1,5 @@
+"use strict";
+
 class BottleStatusBar extends DrawableObject {
   IMAGES = [
     "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png",
@@ -21,6 +23,10 @@ class BottleStatusBar extends DrawableObject {
     this.setPercentage(0);
   }
 
+  /**
+   * Determination of energy in the status bar.
+   * @param {current energy from Pepe} percentage
+   */
   setPercentage(percentage) {
     this.percentage = Math.max(0, Math.min(100, percentage));
     let path = this.IMAGES[this.resolveImageIndex()];
@@ -28,7 +34,7 @@ class BottleStatusBar extends DrawableObject {
   }
 
   /**
-   * Einstufung der Barleiste.
+   * Rating of the bar.
    * @returns number
    */
   resolveImageIndex() {

@@ -74,16 +74,6 @@ class Endboss extends MovableObject {
     this.checkDistanceToCharacter();
   }
 
-  // loadImages(imagePaths) {
-  //   // Stellt sicher, dass Bilder geladen werden und im Array gespeichert werden
-  //   imagePaths.forEach((path) => {
-  //     this.images[path] = Static.getImage(path);
-  //   });
-  // }
-
-  /**
-   * Laufen Animation ist OK.
-   */
   animate() {
     this.animationInterval = setStoppableInterval(() => {
       if (this.isBossDead) {
@@ -103,8 +93,8 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Bewege den Boss-ATTACK auf den Charakter zu.
-   * Hier der Multiplikator für speed.
+   * Move the boss ATTACK towards the character.
+   * Here is the multiplier for speed.
    */
   moveTowardsCharacter() {
     let speed = this.isBossAttack
@@ -114,8 +104,8 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * 1. Abfrage für Boss sterben.
-   * 2. Logik für Treffer an dem Gegner.
+   * 1. Query for boss death.
+   * 2. Logic for hitting the enemy.
    */
   hit_Boss() {
     this.hits += 1;
@@ -131,16 +121,16 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Der Boss bleibt für 3 Sekunden im Angriffszustand
-   * Boss ist verletzt für 1 Sekunden
-   *
+   * The boss remains in attack state for 3 seconds.
+   * Boss is injured for 1 second.
+   * Instructions for the strike chicken.
    */
   triggerCounterStrike() {
     this.world.audioManager.playSound("bossAttacking");
     if (!this.isBossAttack) {
       this.isBossHurt = true;
       this.isBossAttack = true;
-      this.world.scheduleChickenSpawn(); // Zeitplan für stike-Chicken
+      this.world.scheduleChickenSpawn();
       setTimeout(() => {
         this.isBossHurt = false;
         setTimeout(() => {
@@ -152,12 +142,10 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Tötungslogik für das Huhn.
+   * Killing logic for the chicken.
    */
   die() {
     this.isBossDead = true;
-
-    // clearInterval(this.animationInterval);
 
     setTimeout(() => {
       this.world.level.enemies = this.world.level.enemies.filter(
@@ -176,7 +164,6 @@ class Endboss extends MovableObject {
       if (this.isCloseTo(this.world.character, 250)) {
         if (!this.isBossAlert) {
           this.isBossAlert = true;
-          // TODO: BOSS in Alarmbereitschaft Musik.
         }
       } else {
         this.isBossAlert = false;

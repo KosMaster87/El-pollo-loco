@@ -1,10 +1,10 @@
 "use strict";
 
+let openMenuBtn, closeMenuBtn, menuPopRef, mobileControlHubRef;
+
 /**
  * Show or hide menu.
  */
-let openMenuBtn, closeMenuBtn, menuPopRef, mobileControlHubRef;
-
 document.addEventListener("DOMContentLoaded", function () {
   openMenuBtn = document.getElementById("openMenuBtn");
   closeMenuBtn = document.getElementById("closeMenuBtn");

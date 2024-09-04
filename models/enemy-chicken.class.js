@@ -39,7 +39,7 @@ class Chicken extends MovableObject {
   }
 
   /**
-   * Logik für Treffer an dem Gegner.
+   * Logic for hitting the opponent.
    */
   hit_anyOpponent() {
     this.energy = 0;
@@ -47,8 +47,8 @@ class Chicken extends MovableObject {
   }
 
   /**
-   * Tötungslogik für das Huhn.
-   * Aus dem enemy array löschen.
+   * Kill logic for the chicken.
+   * Delete from enemy array.
    */
   die_this() {
     this.audioManager.playSound("opponentDeath");

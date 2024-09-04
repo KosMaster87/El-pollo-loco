@@ -1,3 +1,5 @@
+"use strict";
+
 class CoinStatusBar extends DrawableObject {
   IMAGES = [
     "./img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png",
@@ -21,13 +23,20 @@ class CoinStatusBar extends DrawableObject {
     this.setPercentage(0);
   }
 
+  /**
+   * Determination of energy in the status bar.
+   * @param {current energy from Pepe} percentage
+   */
   setPercentage(percentage) {
-    // this.percentage = percentage;
     this.percentage = Math.max(0, Math.min(100, percentage));
     let path = this.IMAGES[this.resolveImageIndex()];
     this.img = Static.imageCache[path];
   }
 
+  /**
+   * Rating of the bar.
+   * @returns number
+   */
   resolveImageIndex() {
     if (this.percentage == 100) {
       return 5;

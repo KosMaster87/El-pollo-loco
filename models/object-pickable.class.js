@@ -1,3 +1,5 @@
+"use strict";
+
 class PickableObject extends DrawableObject {
   offset = {
     top: 0,

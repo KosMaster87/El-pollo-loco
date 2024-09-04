@@ -6,29 +6,27 @@ let pausedIntervals = [];
 let pausedTimeoutIds = [];
 
 /**
- * Startet ein neues Intervall und speichert die Intervall-ID.
+ * Starts a new interval and saves the interval ID.
  */
 function setStoppableInterval(fn, time) {
   let id = setInterval(fn, time);
   intervalIds.push({ id, fn, time });
-  // console.log("Aktuelle Intervalle:", intervalIds);
   return id;
 }
 
 /**
- * Startet ein neues Timeout und speichert die Timeout-ID.
+ * Starts a new timeout and saves the timeout ID.
  */
 function setStoppableTimeout(fn, time) {
   let id = setTimeout(() => {
     fn();
   }, time);
   timeoutIds.push({ id, fn, time });
-  // console.log("Aktuelle Timeouts:", timeoutIds);
   return id;
 }
 
 /**
- * Pausiert alle laufenden Intervalle.
+ * Pauses all running intervals.
  */
 function pauseAllIntervals() {
   intervalIds.forEach((interval) => {
@@ -36,11 +34,10 @@ function pauseAllIntervals() {
     pausedIntervals.push(interval);
   });
   intervalIds = [];
-  // console.log("Pausiere Intervalle:", pausedIntervals);
 }
 
 /**
- * Pausiert alle laufenden Timeouts.
+ * Pauses all running timeouts.
  */
 function pauseAllTimeouts() {
   timeoutIds.forEach((timeout) => {
@@ -48,11 +45,10 @@ function pauseAllTimeouts() {
     pausedTimeoutIds.push(timeout);
   });
   timeoutIds = [];
-  // console.log("Pausiere Timeouts:", pausedTimeoutIds);
 }
 
 /**
- * Setzt alle pausierten Intervalle fort.
+ * Resumes all paused intervals.
  */
 function resumeAllIntervals() {
   pausedIntervals.forEach((interval) => {
@@ -60,11 +56,10 @@ function resumeAllIntervals() {
     intervalIds.push({ id, fn: interval.fn, time: interval.time });
   });
   pausedIntervals = [];
-  // console.log("Resume Intervalle:", intervalIds);
 }
 
 /**
- * Setzt alle pausierten Timeouts fort.
+ * Resumes all paused timeouts.
  */
 function resumeAllTimeouts() {
   pausedTimeoutIds.forEach((timeout) => {
@@ -72,11 +67,10 @@ function resumeAllTimeouts() {
     timeoutIds.push({ id, fn: timeout.fn, time: timeout.time });
   });
   pausedTimeoutIds = [];
-  // console.log("Resume Timeouts:", timeoutIds);
 }
 
 /**
- * Löscht alle laufenden Intervalle und Timeouts.
+ * Clears all running intervals and timeouts.
  */
 function clearAllIntervals() {
   intervalIds.forEach(({ id }) => clearInterval(id));
@@ -90,7 +84,7 @@ function clearAllIntervals() {
 }
 
 /**
- * Setzt globale Variablen zurück.
+ * Resets global variables.
  */
 function resetGlobals() {
   isGameRunning = false;

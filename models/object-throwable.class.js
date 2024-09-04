@@ -41,7 +41,7 @@ class ThrowableObject extends MovableObject {
   }
 
   /**
-   * Setze den Wurf der Flaschen.
+   * Set the bottle throw.
    */
   throw() {
     this.world.audioManager.playSound("bottleThrow");
@@ -64,11 +64,10 @@ class ThrowableObject extends MovableObject {
   }
 
   /**
-   * Kollision mit Feinden prüfen
+   * Check collision with enemies.
    */
   handleEnemyCollision_thisBottle(enemy) {
     if (this.isColliding(enemy) && !this.collide) {
-      // this.audioManager.playSound("opponentDeath");
       this.collide = true;
       this.xSpeed = 2;
       if (enemy instanceof Endboss) {
@@ -82,10 +81,11 @@ class ThrowableObject extends MovableObject {
   }
 
   /**
-   * Startet die Splash-Animation
+   * Starts the splash animation.
+   * Splash is only started once.
    */
   startSplash() {
-    if (this.splashStarted) return; // Splash wird nur einmal gestartet
+    if (this.splashStarted) return;
     this.splashStarted = true;
 
     if (this.rotateIntervalId) {
@@ -98,14 +98,12 @@ class ThrowableObject extends MovableObject {
     }, 100);
 
     this.removeTimeoutId = setTimeout(() => {
-    // this.removeTimeoutId = setStoppableTimeout(() => {
-      // clearInterval(this.splashIntervalId);
       this.removeBottle();
     }, 700);
   }
 
   /**
-   * Entferne die Flasche aus der Welt, wenn sie den Boden berührt
+   * Remove the bottle from the world when it touches the ground.
    */
   removeBottle() {
     clearInterval(this.throwIntervalId);
@@ -119,7 +117,7 @@ class ThrowableObject extends MovableObject {
   }
 
   /**
-   * Animate the throwable object
+   * Animate the throwable object.
    */
   animate() {
     this.rotateIntervalId = setStoppableInterval(() => {

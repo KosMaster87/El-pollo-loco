@@ -1,5 +1,7 @@
+"use strict";
+
 /**
- * Just include.
+ * Adds a page to the content.
  */
 async function loadPage(filePath) {
   const w3_includeRef = document.getElementById("w3_include");
@@ -16,6 +18,9 @@ async function loadPage(filePath) {
   }
 }
 
+/**
+ * Turns off the menu once a page has been initialized.
+ */
 function menuPopManager() {
   const menuPopRef = document.getElementById("menuPop");
 
