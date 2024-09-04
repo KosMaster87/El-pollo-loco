@@ -12,7 +12,7 @@ class Keyboard {
   RESTART = false;
 
   /**
-* Integrate keyboard and touch input.
+   * Integrate keyboard and touch input.
    */
   constructor() {
     window.addEventListener("keydown", this.handleKeyDownEvent.bind(this));
