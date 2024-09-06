@@ -348,3 +348,12 @@ footer p {
     display: none;
   }
 }
+
+
+/* @media screen and (max-width: 1368px) and (orientation: landscape) {
+  .mobileControlHub {
+    display: flex !important;
+  }
+} */
+
+

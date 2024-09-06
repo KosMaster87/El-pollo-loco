@@ -104,9 +104,16 @@ function exitFullscreen() {
   } else if (document.msExitFullscreen) {
     document.msExitFullscreen();
   }
-
+  
   document.getElementById("menuPop").style.display = "none";
   adjustDisplayBasedOnWidthAndOrientation();
+
+  if (!isGameRunning) {
+    document
+      .getElementById("mobileControlHub")
+      .style.setProperty("display", "none", "important");
+  }
+
 }
 
 /**
@@ -157,10 +164,30 @@ function adjustDisplayBasedOnWidthAndOrientation() {
 /**
  * Handles display elements in landscape mode.
  */
+// function handleLandscapeMode(width, rotateLayerRef, mobileControlHubRef) {
+//   if (width <= 667 || (width >= 668 && width <= 1080)) {
+//     rotateLayerRef.style.display = "none";
+//     mobileControlHubRef.style.display = gameStartetOnce ? "flex" : "none";
+//   } else {
+//     rotateLayerRef.style.display = "none";
+//     mobileControlHubRef.style.display = "none";
+//   }
+//   // if (ist ein Tablet. Das heisst eine auflösung von max 1366px in der Breite) {
+//   //   rotateLayerRef.style.display = "none";
+//   //   mobileControlHubRef.style.display = "none";
+//   // }
+// }
+
+/**
+ * Handles display elements in landscape mode.
+ */
 function handleLandscapeMode(width, rotateLayerRef, mobileControlHubRef) {
   if (width <= 667 || (width >= 668 && width <= 1080)) {
     rotateLayerRef.style.display = "none";
     mobileControlHubRef.style.display = gameStartetOnce ? "flex" : "none";
+  } else if (width <= 1368) {
+    rotateLayerRef.style.display = "none";
+    mobileControlHubRef.style.display = "flex";
   } else {
     rotateLayerRef.style.display = "none";
     mobileControlHubRef.style.display = "none";
