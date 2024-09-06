@@ -351,7 +351,7 @@ class World {
     }
 
     mo.draw(this.ctx);
-    mo.drawFrame(this.ctx); // Hide or show here.
+    // mo.drawFrame(this.ctx); // Hide or show here.
 
     if (mo.otherDirection) {
       this.flipImageBack(mo);
