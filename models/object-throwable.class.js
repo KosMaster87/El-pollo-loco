@@ -17,8 +17,10 @@ class ThrowableObject extends MovableObject {
     "./img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
   ];
 
-  width = 40;
-  height = 40;
+  width = 50;  // Setze dieselbe Breite wie bei Bottle
+  height = 60; // gleiche Höhe wie bei Bottle
+  // width = 40;
+  // height = 40;
   collide = false;
   groundY = 370;
   throwIntervalId;
@@ -26,6 +28,13 @@ class ThrowableObject extends MovableObject {
   splashIntervalId;
   splashStarted = false;
   xSpeed = 10;
+
+  offset = {
+    top: 10,
+    bottom: 10,
+    left: 10,
+    right: 10,
+  };
 
   constructor(x, y, world, throwDirectionX = 1) {
     super().loadImage("./img/6_salsa_bottle/salsa_bottle.png");

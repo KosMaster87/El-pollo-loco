@@ -17,8 +17,11 @@ class Bottle extends PickableObject {
     super().loadImage("./img/6_salsa_bottle/salsa_bottle.png");
     this.images = {};
     this.loadImages(this.IMAGES_SALSA_GROUND);
-    this.x = 100 + Math.random() * 720 * 4;
-    this.y = 370 + Math.random();
+    // this.x = 100 + Math.random() * 720 * 4;
+    // this.y = 370 + Math.random();
+    // Zufällige Platzierung der Flaschen auf der Karte
+    this.x = x || 100 + Math.random() * 720 * 4; // zufällige x-Position
+    this.y = y || 370 + Math.random(); // zufällige y-Position
     this.width = 50;
     this.height = 60;
     this.animate();

@@ -155,7 +155,7 @@ class Endboss extends MovableObject {
 
     setTimeout(() => {
       this.world.audioManager.playSound("gameWin");
-      gameOver();
+      gameWin();
     }, 1000);
   }
 

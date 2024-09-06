@@ -73,7 +73,7 @@ class World {
 
     setStoppableInterval(() => {
       this.throwObject();
-    }, 200);
+    }, 100);
 
     setStoppableInterval(() => {
       this.checkAlerts();
@@ -183,6 +183,11 @@ class World {
 
   handleCollisionWithEnemy(enemy) {
     if (this.character.isColliding(enemy)) {
+      this.character.lastCollidedEnemy = {
+        ...enemy,
+        x: enemy.x,
+        y: enemy.y,
+      };
       if (
         this.character.y + this.character.height < enemy.y + enemy.height &&
         this.character.speedY < 0
@@ -198,7 +203,7 @@ class World {
 
         setTimeout(() => {
           this.activeEnemyInteraction = false;
-        }, 200);
+        }, 100);
       }
     }
   }
@@ -266,12 +271,16 @@ class World {
 
   /**
    * Create and throw a bottle.
+   * Offset for position of the thrown bottle.
    */
   createThrowableObject() {
     const throwDirectionX = this.character.otherDirection ? -1 : 1;
+    const xOffset = 0;
+    const yOffset = 10;
+
     return new ThrowableObject(
-      this.character.x + (throwDirectionX === 1 ? 70 : -70),
-      this.character.y + 35,
+      this.character.x + (throwDirectionX === 1 ? 70 : -70) + xOffset,
+      this.character.y + 35 + yOffset,
       this,
       throwDirectionX
     );
@@ -358,7 +367,7 @@ class World {
     }
 
     mo.draw(this.ctx);
-    // mo.drawFrame(this.ctx); // Hide or show here.
+    mo.drawFrame(this.ctx); // Hide or show here.
 
     if (mo.otherDirection) {
       this.flipImageBack(mo);

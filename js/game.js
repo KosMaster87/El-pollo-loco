@@ -65,8 +65,20 @@ function gameOver() {
   adjustDisplayBasedOnWidthAndOrientation();
 }
 
+function gameWin() {
+  resetGlobals();
+  clearAllIntervals();
+  apertureGameWin();
+  resetCanvas();
+  audioManager.stopSound("inGameMusic");
+  setTimeout(() => {
+    audioManager.playSound("inHomeMusic");
+  }, 1500);
+  adjustDisplayBasedOnWidthAndOrientation();
+}
+
 /**
- * Aperture gameOver
+ * Aperture gameOver.
  */
 function apertureGameOver() {
   document.getElementById("apertureGameOver").classList.remove("hidden");
@@ -75,6 +87,21 @@ function apertureGameOver() {
   setTimeout(() => {
     document.getElementById("apertureGameOver").classList.remove("visible");
     document.getElementById("apertureGameOver").classList.add("hidden");
+    document.getElementById("menuPop").style.display = "flex";
+  }, 3000);
+  document.getElementById("homeLayer").style.display = "block";
+}
+
+/**
+ * Aperture gameWin.
+ */
+function apertureGameWin() {
+  document.getElementById("apertureGameWin").classList.remove("hidden");
+  document.getElementById("apertureGameWin").classList.add("visible");
+
+  setTimeout(() => {
+    document.getElementById("apertureGameWin").classList.remove("visible");
+    document.getElementById("apertureGameWin").classList.add("hidden");
     document.getElementById("menuPop").style.display = "flex";
   }, 3000);
   document.getElementById("homeLayer").style.display = "block";

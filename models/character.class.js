@@ -86,6 +86,7 @@ class Character extends MovableObject {
   sleepStart;
   idle = false;
   sleep = false;
+  lastCollidedEnemy = null;
 
   constructor(audioManager) {
     super().loadImage("./img/2_character_pepe/2_walk/W-21.png");
@@ -169,10 +170,17 @@ class Character extends MovableObject {
     );
   }
 
-  /**
-   * Control Pepe using the enter keys.
-   */
   pepeMove() {
+    if (this.activeEnemyInteraction && this.character.lastCollidedEnemy) {
+      const collidedEnemy = this.character.lastCollidedEnemy;
+      if (this.world.keyboard.RIGHT && this.x < collidedEnemy.x) {
+        return;
+      }
+      if (this.world.keyboard.LEFT && this.x > collidedEnemy.x) {
+        return;
+      }
+    }
+
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
       this.pepeMoveRightOptions();
       this.pepesIdleFalse();
@@ -193,8 +201,36 @@ class Character extends MovableObject {
       this.pepesIdleFalse();
       this.world.audioManager.playSound("jumping");
     }
+
     this.world.camera_x = -this.x + 150;
   }
+
+  // /**
+  //  * Control Pepe using the enter keys.
+  //  */
+  // pepeMove() {
+  //   if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+  //     this.pepeMoveRightOptions();
+  //     this.pepesIdleFalse();
+  //     this.world.audioManager.playSound("walking");
+  //   }
+
+  //   if (this.world.keyboard.LEFT && this.x > this.world.level.level_begin_x) {
+  //     this.pepeMoveLeftOptions();
+  //     this.pepesIdleFalse();
+  //     this.world.audioManager.playSound("walking");
+  //   }
+
+  //   if (
+  //     (this.world.keyboard.SPACE && !this.isAboveGround()) ||
+  //     (this.world.keyboard.UP && !this.isAboveGround())
+  //   ) {
+  //     this.jump();
+  //     this.pepesIdleFalse();
+  //     this.world.audioManager.playSound("jumping");
+  //   }
+  //   this.world.camera_x = -this.x + 150;
+  // }
 
   /**
    *

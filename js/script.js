@@ -1,19 +1,15 @@
 "use strict";
 
-let openMenuBtn, closeMenuBtn, menuPopRef, mobileControlHubRef;
+let openMenuBtn, menuPopRef, mobileControlHubRef;
 
 /**
  * Show or hide menu.
  */
 document.addEventListener("DOMContentLoaded", function () {
   openMenuBtn = document.getElementById("openMenuBtn");
-  closeMenuBtn = document.getElementById("closeMenuBtn");
   menuPopRef = document.getElementById("menuPop");
   mobileControlHubRef = document.getElementById("mobileControlHub");
-
   openMenuBtn.addEventListener("click", openMenu);
-  closeMenuBtn.addEventListener("click", closeMenu);
-
   alsoClickOutside(menuPopRef, openMenuBtn, closeMenu);
 });
 
@@ -44,7 +40,7 @@ function closeMenu() {
   } else if (isGameRunning && w3_includeRef) {
     w3_includeRef.style.display = "none";
   }
-  adjustDisplayBasedOnWidthAndOrientation();
+  startGame();
 }
 
 /**
@@ -60,7 +56,7 @@ function alsoClickOutside(menuPopRef, openMenuBtn, closeMenu) {
       menuPopRef.style.display === "flex" &&
       userClicksOutsideOfPopup(event)
     ) {
-      closeMenu();
+      returnToHome();
     }
   });
 }
@@ -353,11 +349,8 @@ async function preloadAssets() {
     "./img/7_statusbars/3_icons/icon_salsa_bottle.png",
     "./img/8_coin/coin_1.png",
     "./img/8_coin/coin_2.png",
-    "./img/9_intro_outro_screens/game_over/gameOver.png",
-    "./img/9_intro_outro_screens/game_over/gameOver.jpg",
-    "./img/9_intro_outro_screens/game_over/game over.png",
-    "./img/9_intro_outro_screens/game_over/oh no you lost!.png",
-    "./img/9_intro_outro_screens/game_over/you lost.png",
+    "./img/9_intro_outro_screens/game_over/youWin.png",
+    "./img/9_intro_outro_screens/game_over/youLose.png",
     "./img/9_intro_outro_screens/start/startscreen_1.png",
     "./img/9_intro_outro_screens/start/startscreen_2.png",
     "./img/desert.png",

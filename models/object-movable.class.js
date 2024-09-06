@@ -8,6 +8,13 @@ class MovableObject extends DrawableObject {
   speedY = 0;
   acceleration = 1;
 
+  offset = {
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  };
+
   /**
    * Calculation of the area for each object.
    */
@@ -62,26 +69,47 @@ class MovableObject extends DrawableObject {
   }
 
   /**
+   * Pushing Pepe back during a collision with an enemy, considering enemy's offset.
+   */
+  /**
    * Pushing Pepe back during a collision with an enemy.
    */
   handleCharacterPushback(enemy) {
-    let targetPosition;
-
-    if (enemy instanceof Endboss) {
-      targetPosition = this.x - 150;
-    } else if (enemy instanceof Chicken) {
-      targetPosition = this.x - 70;
-    } else if (enemy instanceof CounterStrikeChicken) {
-      targetPosition = this.x - 70;
-    } else if (enemy instanceof Chick) {
-      targetPosition = this.x - 55;
+    if (enemy.x < this.x) {
+      const targetPosition = this.calculatePushTarget(enemy, "right");
+      this.pushRightSmooth(targetPosition);
+    } else {
+      const targetPosition = this.calculatePushTarget(enemy, "left");
+      this.pushLeftSmooth(targetPosition);
     }
-
-    this.pushLeftSmooth(targetPosition);
   }
 
   /**
-   * A smooth push back of Pepe in a collision with the opponent.
+   * Calculate the target position based on the type of enemy and direction.
+   * @param {Object} enemy - The enemy object
+   * @param {string} direction - "left" or "right"
+   * @returns {number} targetPosition - The new position to push Pepe to
+   */
+  calculatePushTarget(enemy, direction) {
+    let offset;
+
+    if (enemy instanceof Endboss) {
+      offset = 150;
+    } else if (
+      enemy instanceof Chicken ||
+      enemy instanceof CounterStrikeChicken
+    ) {
+      offset = 70;
+    } else if (enemy instanceof Chick) {
+      offset = 55;
+    }
+
+    // Adjust the offset based on direction
+    return direction === "right" ? this.x + offset : this.x - offset;
+  }
+
+  /**
+   * A smooth push back of Pepe to the left.
    */
   pushLeftSmooth(targetPosition) {
     let step = 2;
@@ -93,6 +121,26 @@ class MovableObject extends DrawableObject {
 
       if (this.x > targetPosition) {
         this.x -= step;
+        requestAnimationFrame(smoothMove);
+      }
+    };
+
+    smoothMove();
+  }
+
+  /**
+   * A smooth push back of Pepe to the right.
+   */
+  pushRightSmooth(targetPosition) {
+    let step = 2;
+
+    const smoothMove = () => {
+      if (this.world.keyboard.RIGHT) {
+        return;
+      }
+
+      if (this.x < targetPosition) {
+        this.x += step;
         requestAnimationFrame(smoothMove);
       }
     };
@@ -120,7 +168,7 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * #2 Egergie: Pepe's life energy => Energy can only be reduced every one second.
+   * #2 Energie: Pepe's life energy => Energy can only be reduced every one second.
    * Causes damage to the character and updates the status bar.
    *
    * A hit is only counted if the difference between the current time and the last hit
@@ -140,7 +188,7 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Pepes is dying.
+   * Pepe is dying.
    * @returns Boolean
    */
   isDead() {
