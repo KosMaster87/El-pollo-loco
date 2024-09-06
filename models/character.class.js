@@ -163,7 +163,7 @@ class Character extends MovableObject {
    * Also some animations.
    */
   animate() {
-    this.moveInterval = setStoppableInterval(() => this.pepeMove(), 1000 / 60);
+    this.moveInterval = setStoppableInterval(() => this.pepeMove(), 1000 / 45);
     this.animateInterval = setStoppableInterval(
       () => this.pepeAnimate(),
       1000 / 7
@@ -171,6 +171,20 @@ class Character extends MovableObject {
   }
 
   pepeMove() {
+    if (this.collisionBlocked) {
+      return;
+    }
+
+    this.preventSlidingPastEnemy();
+    this.moveOnXAxis();
+    this.pepeJump();
+    this.world.camera_x = -this.x + 150;
+  }
+
+  /**
+   * Blocks Pepe from sliding past enemies.
+   */
+  preventSlidingPastEnemy() {
     if (this.activeEnemyInteraction && this.character.lastCollidedEnemy) {
       const collidedEnemy = this.character.lastCollidedEnemy;
       if (this.world.keyboard.RIGHT && this.x < collidedEnemy.x) {
@@ -180,7 +194,12 @@ class Character extends MovableObject {
         return;
       }
     }
+  }
 
+  /**
+   * Controls Pepe's movement on the X-axis.
+   */
+  moveOnXAxis() {
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
       this.pepeMoveRightOptions();
       this.pepesIdleFalse();
@@ -192,7 +211,12 @@ class Character extends MovableObject {
       this.pepesIdleFalse();
       this.world.audioManager.playSound("walking");
     }
+  }
 
+  /**
+   * Controls Pepe's jumping actions.
+   */
+  pepeJump() {
     if (
       (this.world.keyboard.SPACE && !this.isAboveGround()) ||
       (this.world.keyboard.UP && !this.isAboveGround())
@@ -201,40 +225,8 @@ class Character extends MovableObject {
       this.pepesIdleFalse();
       this.world.audioManager.playSound("jumping");
     }
-
-    this.world.camera_x = -this.x + 150;
   }
 
-  // /**
-  //  * Control Pepe using the enter keys.
-  //  */
-  // pepeMove() {
-  //   if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-  //     this.pepeMoveRightOptions();
-  //     this.pepesIdleFalse();
-  //     this.world.audioManager.playSound("walking");
-  //   }
-
-  //   if (this.world.keyboard.LEFT && this.x > this.world.level.level_begin_x) {
-  //     this.pepeMoveLeftOptions();
-  //     this.pepesIdleFalse();
-  //     this.world.audioManager.playSound("walking");
-  //   }
-
-  //   if (
-  //     (this.world.keyboard.SPACE && !this.isAboveGround()) ||
-  //     (this.world.keyboard.UP && !this.isAboveGround())
-  //   ) {
-  //     this.jump();
-  //     this.pepesIdleFalse();
-  //     this.world.audioManager.playSound("jumping");
-  //   }
-  //   this.world.camera_x = -this.x + 150;
-  // }
-
-  /**
-   *
-   */
   pepesIdleFalse() {
     this.resetTimers();
     this.idle = false;

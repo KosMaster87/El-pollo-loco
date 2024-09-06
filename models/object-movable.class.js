@@ -71,9 +71,6 @@ class MovableObject extends DrawableObject {
   /**
    * Pushing Pepe back during a collision with an enemy, considering enemy's offset.
    */
-  /**
-   * Pushing Pepe back during a collision with an enemy.
-   */
   handleCharacterPushback(enemy) {
     if (enemy.x < this.x) {
       const targetPosition = this.calculatePushTarget(enemy, "right");
@@ -104,7 +101,6 @@ class MovableObject extends DrawableObject {
       offset = 55;
     }
 
-    // Adjust the offset based on direction
     return direction === "right" ? this.x + offset : this.x - offset;
   }
 
@@ -132,7 +128,7 @@ class MovableObject extends DrawableObject {
    * A smooth push back of Pepe to the right.
    */
   pushRightSmooth(targetPosition) {
-    let step = 2;
+    let step = 3;
 
     const smoothMove = () => {
       if (this.world.keyboard.RIGHT) {

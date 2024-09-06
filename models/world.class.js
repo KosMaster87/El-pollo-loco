@@ -21,6 +21,7 @@ class World {
   throwCooldown = 500;
 
   activeEnemyInteraction = false;
+  collisionBlocked = false;
   bossAttackStartTime = null;
   counterStrikeChickens = [];
 
@@ -78,47 +79,6 @@ class World {
     setStoppableInterval(() => {
       this.checkAlerts();
     }, 200);
-  }
-
-  /**
-   * Counter-Strike is triggered by hit_Boss().
-   * And this is where the time of appearance is determined.
-   */
-  scheduleChickenSpawn() {
-    setTimeout(() => {
-      this.spawnChickens();
-    }, 500);
-  }
-
-  /**
-   * Creating the counter strike chicken.
-   * As well as integrating it into the enemy array.
-   */
-  spawnChickens() {
-    this.counterStrikeChickens = this.createObjects(
-      5,
-      () => new CounterStrikeChicken(this.endBossRef)
-    );
-
-    this.counterStrikeChickens.forEach((chicken, index) => {
-      chicken.world = this;
-      chicken.spawnRightPlace(index);
-      chicken.startAttackPhase();
-    });
-
-    this.level.enemies.push(...this.counterStrikeChickens);
-  }
-
-  /**
-   * Helper function to create the strike chicken as an object.
-   */
-  createObjects(count, createFunc) {
-    const objects = [];
-    for (let i = 0; i < count; i++) {
-      objects.push(createFunc());
-    }
-
-    return objects;
   }
 
   /**
@@ -181,31 +141,55 @@ class World {
     });
   }
 
+  /**
+   * Handles the collision between Pepe and an opponent.
+   * @param {Object} enemy - Enemy object
+   */
   handleCollisionWithEnemy(enemy) {
     if (this.character.isColliding(enemy)) {
-      this.character.lastCollidedEnemy = {
-        ...enemy,
-        x: enemy.x,
-        y: enemy.y,
-      };
+      this.lastEnemyColliding(enemy);
+
       if (
         this.character.y + this.character.height < enemy.y + enemy.height &&
         this.character.speedY < 0
       ) {
-        this.activeEnemyInteraction = true;
-        if (enemy instanceof Endboss) {
-          enemy.hit_Boss();
-        } else {
-          enemy.hit_anyOpponent();
-        }
-
-        this.character.speedY = 10;
-
-        setTimeout(() => {
-          this.activeEnemyInteraction = false;
-        }, 100);
+        this.activeEnemyAlsoHit(enemy);
       }
     }
+  }
+
+  /**
+   * Saves the last enemy Pepe collided with.
+   * @param {Object} enemy - Enemy object
+   */
+  lastEnemyColliding(enemy) {
+    this.character.lastCollidedEnemy = {
+      ...enemy,
+      x: enemy.x,
+      y: enemy.y,
+    };
+  }
+
+  /**
+   * Performs actions when Pepe interacts with an enemy and hits the enemy.
+   * @param {Object} enemy - Enemy object
+   */
+  activeEnemyAlsoHit(enemy) {
+    this.activeEnemyInteraction = true;
+    this.character.speedY = 10;
+
+    if (enemy instanceof Endboss) {
+      enemy.hit_Boss();
+    } else {
+      enemy.hit_anyOpponent();
+    }
+
+    this.collisionBlocked = true;
+
+    setTimeout(() => {
+      this.collisionBlocked = false;
+      this.activeEnemyInteraction = false;
+    }, 100);
   }
 
   /**
@@ -394,5 +378,46 @@ class World {
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();
+  }
+
+  /**
+   * Counter-Strike is triggered by hit_Boss().
+   * And this is where the time of appearance is determined.
+   */
+  scheduleChickenSpawn() {
+    setTimeout(() => {
+      this.spawnChickens();
+    }, 500);
+  }
+
+  /**
+   * Creating the counter strike chicken.
+   * As well as integrating it into the enemy array.
+   */
+  spawnChickens() {
+    this.counterStrikeChickens = this.createObjects(
+      5,
+      () => new CounterStrikeChicken(this.endBossRef)
+    );
+
+    this.counterStrikeChickens.forEach((chicken, index) => {
+      chicken.world = this;
+      chicken.spawnRightPlace(index);
+      chicken.startAttackPhase();
+    });
+
+    this.level.enemies.push(...this.counterStrikeChickens);
+  }
+
+  /**
+   * Helper function to create the strike chicken as an object.
+   */
+  createObjects(count, createFunc) {
+    const objects = [];
+    for (let i = 0; i < count; i++) {
+      objects.push(createFunc());
+    }
+
+    return objects;
   }
 }
