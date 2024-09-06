@@ -45,7 +45,7 @@
 
   <body onload="prepareTheGamingExperience()">
     <header>
-      <h1 class="customH1" id="customH1">El POLLO LOCO</h1>
+      <h1 class="customH1 disableTextSelection" id="customH1">El POLLO LOCO</h1>
     </header>
 
     <main class="mainLayerAsRelative" id="mainLayerAsRelative">
@@ -67,7 +67,13 @@
       <div class="w3_include" id="w3_include"></div>
 
       <div class="hotMenu" id="hotMenu">
-        <button class="openMenuBtn" id="openMenuBtn">Menu</button>
+        <button
+          class="openMenuBtn disableTextSelection"
+          id="openMenuBtn"
+          tabindex="-1"
+        >
+          Menu
+        </button>
         <img
           class="muteButton"
           id="muteButton"
@@ -76,18 +82,37 @@
         />
       </div>
 
-      <div class="menuPop" id="menuPop" style="display: none">
-        <h3 class="menuHeader" id="menuHeader">PAUSE</h3>
+      <div
+        class="menuPop disableTextSelection"
+        id="menuPop"
+        style="display: none"
+      >
+        <h3 class="menuHeader disableTextSelection" id="menuHeader">PAUSE</h3>
 
         <div class="menuBtnContainer">
-          <button onclick="initGame()">NEW GAME</button>
-          <button onclick="toggleFullscreen(event)">Fullscreen</button>
-          <button onclick="loadPage('../templates/story.html')">STORY</button>
-          <button onclick="loadPage('../templates/settings.html')">
+          <button class="disableTextSelection" onclick="initGame()">
+            NEW GAME
+          </button>
+          <button
+            class="disableTextSelection"
+            onclick="toggleFullscreen(event)"
+          >
+            Fullscreen
+          </button>
+          <button
+            class="disableTextSelection"
+            onclick="loadPage('../templates/story.html')"
+          >
+            STORY
+          </button>
+          <button
+            class="disableTextSelection"
+            onclick="loadPage('../templates/settings.html')"
+          >
             SETTINGS
           </button>
           <button
-            class="returnToHomeBtn"
+            class="returnToHomeBtn disableTextSelection"
             id="returnToHomeBtn"
             onclick="returnToHome()"
           >
@@ -97,20 +122,38 @@
         </div>
 
         <div class="menuFooter" id="menuFooter">
-          <p onclick="loadPage('../templates/about.html')">About developer</p>
-          <p onclick="loadPage('../templates/imprint.html')">Imprint</p>
+          <p
+            class="disableTextSelection"
+            onclick="loadPage('../templates/about.html')"
+          >
+            About developer
+          </p>
+          <p
+            class="disableTextSelection"
+            onclick="loadPage('../templates/imprint.html')"
+          >
+            Imprint
+          </p>
         </div>
       </div>
 
-      <div class="mobileControlHub" id="mobileControlHub">
-        <div class="panelWrapper" id="panelWrapper">
-          <button class="mobileBtn" id="leftButton">←</button>
-          <button class="mobileBtn" id="rightButton">→</button>
+      <div class="mobileControlHub disableTextSelection" id="mobileControlHub">
+        <div class="panelWrapper disableTextSelection" id="panelWrapper">
+          <button class="mobileBtn disableTextSelection" id="leftButton">
+            ←
+          </button>
+          <button class="mobileBtn disableTextSelection" id="rightButton">
+            →
+          </button>
         </div>
 
-        <div class="panelWrapper" id="panelWrapper">
-          <button class="mobileBtn" id="jumpButton">↑</button>
-          <button class="mobileBtn" id="throwButton">★</button>
+        <div class="panelWrapper disableTextSelection" id="panelWrapper">
+          <button class="mobileBtn disableTextSelection" id="jumpButton">
+            ↑
+          </button>
+          <button class="mobileBtn disableTextSelection" id="throwButton">
+            ★
+          </button>
         </div>
       </div>
 
@@ -119,7 +162,7 @@
           src="./../img/10_menu/screen_rotation.svg"
           alt="Rotate layer image."
         />
-        <p>Turn your Phone</p>
+        <p class="disableTextSelection">Turn your Phone</p>
       </div>
 
       <img
@@ -137,8 +180,18 @@
     </main>
 
     <footer>
-      <p onclick="loadPage('../templates/about.html')">About developer</p>
-      <p onclick="loadPage('../templates/imprint.html')">Imprint</p>
+      <p
+        class="disableTextSelection"
+        onclick="loadPage('../templates/about.html')"
+      >
+        About developer
+      </p>
+      <p
+        class="disableTextSelection"
+        onclick="loadPage('../templates/imprint.html')"
+      >
+        Imprint
+      </p>
     </footer>
 
     <div class="loadingSpinnerLayer" id="loadingSpinnerLayer">
@@ -148,7 +201,10 @@
         src="./../img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png"
         alt="You are Welkom - Experience is being prepared."
       />
-      <p class="loadingSpinnerPara" id="loadingSpinnerPara">
+      <p
+        class="loadingSpinnerPara disableTextSelection"
+        id="loadingSpinnerPara"
+      >
         Your gaming experience is being prepared. <br />
         There are approximately 20 MB to download.
       </p>

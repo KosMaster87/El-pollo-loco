@@ -23,6 +23,10 @@ function initGame() {
     staticInstance,
     isGameRunning
   );
+
+  if (isLandscapeOrientation()) {
+    enterFullscreen(document.getElementById("mainLayerAsRelative"));
+  }
 }
 
 /**

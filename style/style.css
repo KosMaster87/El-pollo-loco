@@ -3,6 +3,13 @@
 @import url("./story.css");
 @import url("./settings.css");
 
+.disableTextSelection {
+  user-select: none; /* Für Webkit-Browser wie Chrome, Safari */
+  -webkit-user-select: none; /* Für Webkit-Browser */
+  -moz-user-select: none; /* Für Firefox */
+  -ms-user-select: none; /* Für Internet Explorer */
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -10,6 +17,7 @@
 }
 
 body {
+  /* user-select: none; */
   font-family: "Sancreek";
   height: 100dvh;
   display: grid;
