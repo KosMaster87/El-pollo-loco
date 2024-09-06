@@ -123,6 +123,7 @@ header {
 }
 
 .hotMenu {
+  flex-direction: column;
   grid-area: main;
   position: absolute;
   display: flex;
@@ -130,6 +131,13 @@ header {
   align-content: center;
   justify-content: center;
   margin-top: 0.8rem;
+  gap: 1rem;
+}
+
+.menuSoundBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 1rem;
 }
 

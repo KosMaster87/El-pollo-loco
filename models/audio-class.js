@@ -4,6 +4,7 @@ class AudioManager {
     this.isMuted = true;
     this.soundCooldowns = {};
     this.activeSounds = new Map();
+    this.volume = 1;
 
     document.addEventListener("DOMContentLoaded", () => {
       this.muteAll();
@@ -11,6 +12,14 @@ class AudioManager {
 
       document.getElementById("muteButton").src =
         "./img/10_menu/volume_off.svg";
+
+      volumeSlider.addEventListener("input", (event) => {
+        const volume = event.target.value / 100;
+        this.setVolume(volume);
+      });
+
+      // Setze die Anfangslautstärke basierend auf dem Slider-Wert
+      this.setVolume(volumeSlider.value / 100);
     });
 
     this.sounds = {
@@ -94,6 +103,28 @@ class AudioManager {
         // new Audio("./audio/chickenDeath02.mp3"),
       ],
     };
+  }
+
+  setVolume(volume) {
+    if (volume < 0 || volume > 1) {
+      console.error("Lautstärke muss zwischen 0 und 1 liegen.");
+      return;
+    }
+    this.volume = volume;
+    this.updateAllSoundsVolume();
+  }
+
+  /**
+   * Updates the volume for all sounds.
+   */
+  updateAllSoundsVolume() {
+    for (let soundArray in this.sounds) {
+      if (Array.isArray(this.sounds[soundArray])) {
+        this.sounds[soundArray].forEach(
+          (sound) => (sound.volume = this.volume)
+        );
+      }
+    }
   }
 
   initMuteButton() {
@@ -190,4 +221,3 @@ class AudioManager {
     }
   }
 }
-

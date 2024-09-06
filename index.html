@@ -67,19 +67,31 @@
       <div class="w3_include" id="w3_include"></div>
 
       <div class="hotMenu" id="hotMenu">
-        <button
-          class="openMenuBtn disableTextSelection"
-          id="openMenuBtn"
-          tabindex="-1"
-        >
-          Menu
-        </button>
-        <img
-          class="muteButton"
-          id="muteButton"
-          src="./../img/10_menu/volume_up.svg"
-          alt="Mute Button."
+        <input
+          type="range"
+          id="volumeSlider"
+          min="0"
+          max="100"
+          value="0"
+          step="1"
         />
+
+        <div class="menuSoundBox" id="menuSoundBox">
+          <button
+            class="openMenuBtn disableTextSelection"
+            id="openMenuBtn"
+            tabindex="-1"
+          >
+            Menu
+          </button>
+          <img
+            class="muteButton"
+            id="muteButton"
+            src="./../img/10_menu/volume_up.svg"
+            alt="Mute Button."
+            style="display: none"
+          />
+        </div>
       </div>
 
       <div
