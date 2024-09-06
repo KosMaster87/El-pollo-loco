@@ -17,10 +17,8 @@ class ThrowableObject extends MovableObject {
     "./img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
   ];
 
-  width = 50;  // Setze dieselbe Breite wie bei Bottle
-  height = 60; // gleiche Höhe wie bei Bottle
-  // width = 40;
-  // height = 40;
+  width = 50;
+  height = 60;
   collide = false;
   groundY = 370;
   throwIntervalId;
@@ -63,13 +61,17 @@ class ThrowableObject extends MovableObject {
         }
       });
 
-      if (this.y > this.groundY) {
-        this.y = this.groundY;
-        this.collide = true;
-        this.xSpeed = 2;
-        this.startSplash();
-      }
+      this.splashOnGround();
     }, 25);
+  }
+
+  splashOnGround() {
+    if (this.y > this.groundY) {
+      this.y = this.groundY;
+      this.collide = true;
+      this.xSpeed = 2;
+      this.startSplash();
+    }
   }
 
   /**
@@ -78,15 +80,33 @@ class ThrowableObject extends MovableObject {
   handleEnemyCollision_thisBottle(enemy) {
     if (this.isColliding(enemy) && !this.collide) {
       this.collide = true;
-      this.xSpeed = 2;
-      if (enemy instanceof Endboss) {
-        enemy.hit_Boss();
-      } else {
-        this.audioManager.playSound("opponentDeath");
-        enemy.hit_anyOpponent();
+      this.xSpeed = 0;
+
+      if (
+        enemy instanceof Chick ||
+        enemy instanceof Chicken ||
+        enemy instanceof CounterStrikeChicken
+      ) {
+        this.handleBottleActionEnemies(enemy);
+      } else if (enemy instanceof Endboss) {
+        this.handleBottleActionEndboss(enemy);
       }
-      this.startSplash();
     }
+  }
+
+  handleBottleActionEnemies(enemy) {
+    this.xSpeed = 0;
+    this.startSplash();
+    this.audioManager.playSound("opponentDeath");
+    enemy.hit_anyOpponent();
+  }
+
+  handleBottleActionEndboss(enemy) {
+    this.xSpeed = 2;
+    enemy.hit_Boss();
+    this.startSplash();
+    this.audioManager.playSound("opponentDeath");
+    enemy.hit_anyOpponent();
   }
 
   /**
@@ -95,7 +115,7 @@ class ThrowableObject extends MovableObject {
    */
   startSplash() {
     if (this.splashStarted) return;
-    this.splashStarted = true;
+    this.xSpeed = 2;
 
     if (this.rotateIntervalId) {
       clearInterval(this.rotateIntervalId);
@@ -104,7 +124,7 @@ class ThrowableObject extends MovableObject {
 
     this.splashIntervalId = setStoppableInterval(() => {
       this.playAnimation(this.IMAGES_SPLASH);
-    }, 100);
+    }, 60);
 
     this.removeTimeoutId = setTimeout(() => {
       this.removeBottle();
