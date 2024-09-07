@@ -24,17 +24,10 @@
         url('../fonts/OpenSans-Light-webfont.svg#open_sanslight') format('svg');
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 html
 {
     overflow: auto;
-    /* background-color: #fff; */
-    background-color: rgba(253, 91, 79, 0.191);
+    background-color: #fff;
     font-size: 14px;
 }
 
@@ -43,8 +36,7 @@ body
     font-family: 'Open Sans', sans-serif;
     line-height: 1.5;
     color: #4d4e53;
-    /* background-color: white; */
-    background-color: rgba(240, 125, 25, 0.359);
+    background-color: white;
 }
 
 a, a:visited, a:active {
@@ -93,12 +85,10 @@ article img {
 section
 {
     display: block;
-    /* background-color: #fff; */
-    background-color: rgba(234, 94, 0, 0.367);
+    background-color: #fff;
     padding: 12px 24px;
     border-bottom: 1px solid #ccc;
     margin-right: 30px;
-    border-radius: 0.5rem;
 }
 
 .variation {
@@ -255,7 +245,7 @@ tr > th:last-child { border-right: 1px solid #ddd; }
 }
 
 .type-signature {
-    color: rgb(197, 39, 58);
+    color: #aaa;
 }
 
 .name, .signature {
@@ -301,8 +291,7 @@ tr > th:last-child { border-right: 1px solid #ddd; }
     display: block;
     padding: 4px 12px;
     margin: 0;
-    background-color: rgb(248, 243, 243);
-    /* background-color: #fff; */
+    background-color: #fff;
     color: #4D4E53;
 }
 

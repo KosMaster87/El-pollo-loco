@@ -1,3 +1,10 @@
+"use strict";
+
+/**
+ * Manages the game's audio, including muting, volume control, and playing sounds.
+ * Initializes event listeners for volume and mute button control.
+ * @constructor
+ */
 class AudioManager {
   constructor() {
     this.gamePaused = false;
@@ -18,7 +25,6 @@ class AudioManager {
         this.setVolume(volume);
       });
 
-      // Setze die Anfangslautstärke basierend auf dem Slider-Wert
       this.setVolume(volumeSlider.value / 100);
     });
 
@@ -27,18 +33,9 @@ class AudioManager {
         new Audio("./audio/homeMenuSound01.mp3"),
         new Audio("./audio/homeMenuSound02.mp3"),
       ],
-      inGameMusic: [
-        new Audio("./audio/inGameSound01.mp3"),
-        // new Audio("./audio/loose.mp3"),
-      ],
-      gameLose: [
-        new Audio("./audio/loose.mp3"),
-        // new Audio("./audio/loose.mp3"),
-      ],
-      gameWin: [
-        new Audio("./audio/win.mp3"),
-        // new Audio("./audio/win.mp3")
-      ],
+      inGameMusic: [new Audio("./audio/inGameSound01.mp3")],
+      gameLose: [new Audio("./audio/loose.mp3")],
+      gameWin: [new Audio("./audio/win.mp3")],
       walking: [
         new Audio("./audio/steps01.mp3"),
         new Audio("./audio/steps02.mp3"),
@@ -62,10 +59,7 @@ class AudioManager {
         new Audio("./audio/hurt04.mp3"),
         new Audio("./audio/hurt05.mp3"),
       ],
-      death: [
-        new Audio("./audio/deathPepe01.mp3"),
-        // new Audio("./audio/deathPepe02.mp3"),
-      ],
+      death: [new Audio("./audio/deathPepe01.mp3")],
       coinEarn: [
         new Audio("./audio/coin01.mp3"),
         new Audio("./audio/coin02.mp3"),
@@ -86,28 +80,20 @@ class AudioManager {
         new Audio("./audio/splash03.mp3"),
         new Audio("./audio/splash04.mp3"),
       ],
-      opponentDeath: [
-        new Audio("./audio/chickenDeath01.mp3"),
-        // new Audio("./audio/chickenDeath02.mp3"),
-      ],
-      bossAttacking: [
-        new Audio("./audio/bossAttacking01.mp3"),
-        // new Audio("./audio/chickenDeath2.mp3"),
-      ],
-      bossHurting: [
-        new Audio("./audio/bossHurting01.mp3"),
-        // new Audio("./audio/chickenDeath02.mp3"),
-      ],
-      bossDeath: [
-        new Audio("./audio/chickenDeath01.mp3"),
-        // new Audio("./audio/chickenDeath02.mp3"),
-      ],
+      opponentDeath: [new Audio("./audio/chickenDeath01.mp3")],
+      bossAttacking: [new Audio("./audio/bossAttacking01.mp3")],
+      bossHurting: [new Audio("./audio/bossHurting01.mp3")],
+      bossDeath: [new Audio("./audio/chickenDeath01.mp3")],
     };
   }
 
+  /**
+   * Sets the global volume for all sounds.
+   * @param {number} volume - The volume level between 0 and 1.
+   */
   setVolume(volume) {
     if (volume < 0 || volume > 1) {
-      console.error("Lautstärke muss zwischen 0 und 1 liegen.");
+      console.error("Volume must be between 0 and 1.");
       return;
     }
     this.volume = volume;
@@ -115,7 +101,7 @@ class AudioManager {
   }
 
   /**
-   * Updates the volume for all sounds.
+   * Updates the volume of all currently loaded sounds to the current volume setting.
    */
   updateAllSoundsVolume() {
     for (let soundArray in this.sounds) {
@@ -127,11 +113,17 @@ class AudioManager {
     }
   }
 
+  /**
+   * Initializes the mute button, adding a click event listener to toggle sound mute.
+   */
   initMuteButton() {
     const muteButton = document.getElementById("muteButton");
     muteButton.addEventListener("click", this.toggleMute.bind(this));
   }
 
+  /**
+   * Toggles the mute state of all sounds and updates the mute button icon accordingly.
+   */
   toggleMute() {
     this.isMuted = !this.isMuted;
     if (this.isMuted) {
@@ -143,11 +135,18 @@ class AudioManager {
     }
   }
 
+  /**
+   * Updates the icon of the mute button based on the mute state.
+   * @param {string} icon - The name of the icon to display ('volume_off' or 'volume_up').
+   */
   updateMuteButtonIcon(icon) {
     const muteButton = document.getElementById("muteButton");
     muteButton.src = `./../img/10_menu/${icon}.svg`;
   }
 
+  /**
+   * Mutes all sounds by setting their volume to 0.
+   */
   muteAll() {
     for (let soundArray in this.sounds) {
       if (Array.isArray(this.sounds[soundArray])) {
@@ -156,6 +155,9 @@ class AudioManager {
     }
   }
 
+  /**
+   * Unmutes all sounds by restoring their volume to the current global setting.
+   */
   unmuteAll() {
     for (let soundArray in this.sounds) {
       if (Array.isArray(this.sounds[soundArray])) {
@@ -165,8 +167,8 @@ class AudioManager {
   }
 
   /**
-   * Only plays the sound when the cooldown has expired.
-   * @param {string} soundKey
+   * Plays the sound associated with the provided key if it's not on cooldown and not currently playing.
+   * @param {string} soundKey - The key of the sound to play.
    */
   playSound(soundKey) {
     const now = Date.now();
@@ -186,6 +188,11 @@ class AudioManager {
     }
   }
 
+  /**
+   * Plays a random sound from the given array of sounds.
+   * @param {Array<Audio>} soundArray - The array of sounds to play from.
+   * @param {string} soundKey - The key associated with the sound.
+   */
   playRandomSound(soundArray, soundKey) {
     const randomIndex = Math.floor(Math.random() * soundArray.length);
     const sound = soundArray[randomIndex];
@@ -201,10 +208,19 @@ class AudioManager {
     }
   }
 
+  /**
+   * Checks if a sound is currently playing.
+   * @param {string} soundKey - The key of the sound to check.
+   * @returns {boolean} - True if the sound is currently playing, false otherwise.
+   */
   isSoundPlaying(soundKey) {
     return this.activeSounds.has(soundKey);
   }
 
+  /**
+   * Stops all sounds in the provided array.
+   * @param {Array<Audio>} soundArray - The array of sounds to stop.
+   */
   stopAllSounds(soundArray) {
     soundArray.forEach((sound) => {
       if (sound instanceof Audio && !sound.paused) {
@@ -214,6 +230,10 @@ class AudioManager {
     });
   }
 
+  /**
+   * Stops the sound associated with the provided key if it's currently playing.
+   * @param {string} soundName - The name of the sound to stop.
+   */
   stopSound(soundName) {
     if (this.isSoundPlaying(soundName)) {
       this.activeSounds.get(soundName).pause();

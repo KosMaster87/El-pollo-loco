@@ -26,12 +26,20 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>class AudioManager {
+            <pre class="prettyprint source linenums"><code>"use strict";
+
+/**
+ * Manages the game's audio, including muting, volume control, and playing sounds.
+ * Initializes event listeners for volume and mute button control.
+ * @constructor
+ */
+class AudioManager {
   constructor() {
     this.gamePaused = false;
     this.isMuted = true;
     this.soundCooldowns = {};
     this.activeSounds = new Map();
+    this.volume = 1;
 
     document.addEventListener("DOMContentLoaded", () => {
       this.muteAll();
@@ -39,6 +47,13 @@
 
       document.getElementById("muteButton").src =
         "./img/10_menu/volume_off.svg";
+
+      volumeSlider.addEventListener("input", (event) => {
+        const volume = event.target.value / 100;
+        this.setVolume(volume);
+      });
+
+      this.setVolume(volumeSlider.value / 100);
     });
 
     this.sounds = {
@@ -46,18 +61,9 @@
         new Audio("./audio/homeMenuSound01.mp3"),
         new Audio("./audio/homeMenuSound02.mp3"),
       ],
-      inGameMusic: [
-        new Audio("./audio/inGameSound01.mp3"),
-        // new Audio("./audio/loose.mp3"),
-      ],
-      gameLose: [
-        new Audio("./audio/loose.mp3"),
-        // new Audio("./audio/loose.mp3"),
-      ],
-      gameWin: [
-        new Audio("./audio/win.mp3"),
-        // new Audio("./audio/win.mp3")
-      ],
+      inGameMusic: [new Audio("./audio/inGameSound01.mp3")],
+      gameLose: [new Audio("./audio/loose.mp3")],
+      gameWin: [new Audio("./audio/win.mp3")],
       walking: [
         new Audio("./audio/steps01.mp3"),
         new Audio("./audio/steps02.mp3"),
@@ -81,10 +87,7 @@
         new Audio("./audio/hurt04.mp3"),
         new Audio("./audio/hurt05.mp3"),
       ],
-      death: [
-        new Audio("./audio/deathPepe01.mp3"),
-        // new Audio("./audio/deathPepe02.mp3"),
-      ],
+      death: [new Audio("./audio/deathPepe01.mp3")],
       coinEarn: [
         new Audio("./audio/coin01.mp3"),
         new Audio("./audio/coin02.mp3"),
@@ -105,30 +108,50 @@
         new Audio("./audio/splash03.mp3"),
         new Audio("./audio/splash04.mp3"),
       ],
-      opponentDeath: [
-        new Audio("./audio/chickenDeath01.mp3"),
-        // new Audio("./audio/chickenDeath02.mp3"),
-      ],
-      bossAttacking: [
-        new Audio("./audio/bossAttacking01.mp3"),
-        // new Audio("./audio/chickenDeath2.mp3"),
-      ],
-      bossHurting: [
-        new Audio("./audio/bossHurting01.mp3"),
-        // new Audio("./audio/chickenDeath02.mp3"),
-      ],
-      bossDeath: [
-        new Audio("./audio/chickenDeath01.mp3"),
-        // new Audio("./audio/chickenDeath02.mp3"),
-      ],
+      opponentDeath: [new Audio("./audio/chickenDeath01.mp3")],
+      bossAttacking: [new Audio("./audio/bossAttacking01.mp3")],
+      bossHurting: [new Audio("./audio/bossHurting01.mp3")],
+      bossDeath: [new Audio("./audio/chickenDeath01.mp3")],
     };
   }
 
+  /**
+   * Sets the global volume for all sounds.
+   * @param {number} volume - The volume level between 0 and 1.
+   */
+  setVolume(volume) {
+    if (volume &lt; 0 || volume > 1) {
+      console.error("Volume must be between 0 and 1.");
+      return;
+    }
+    this.volume = volume;
+    this.updateAllSoundsVolume();
+  }
+
+  /**
+   * Updates the volume of all currently loaded sounds to the current volume setting.
+   */
+  updateAllSoundsVolume() {
+    for (let soundArray in this.sounds) {
+      if (Array.isArray(this.sounds[soundArray])) {
+        this.sounds[soundArray].forEach(
+          (sound) => (sound.volume = this.volume)
+        );
+      }
+    }
+  }
+
+  /**
+   * Initializes the mute button, adding a click event listener to toggle sound mute.
+   */
   initMuteButton() {
     const muteButton = document.getElementById("muteButton");
     muteButton.addEventListener("click", this.toggleMute.bind(this));
   }
 
+  /**
+   * Toggles the mute state of all sounds and updates the mute button icon accordingly.
+   */
   toggleMute() {
     this.isMuted = !this.isMuted;
     if (this.isMuted) {
@@ -140,11 +163,18 @@
     }
   }
 
+  /**
+   * Updates the icon of the mute button based on the mute state.
+   * @param {string} icon - The name of the icon to display ('volume_off' or 'volume_up').
+   */
   updateMuteButtonIcon(icon) {
     const muteButton = document.getElementById("muteButton");
     muteButton.src = `./../img/10_menu/${icon}.svg`;
   }
 
+  /**
+   * Mutes all sounds by setting their volume to 0.
+   */
   muteAll() {
     for (let soundArray in this.sounds) {
       if (Array.isArray(this.sounds[soundArray])) {
@@ -153,6 +183,9 @@
     }
   }
 
+  /**
+   * Unmutes all sounds by restoring their volume to the current global setting.
+   */
   unmuteAll() {
     for (let soundArray in this.sounds) {
       if (Array.isArray(this.sounds[soundArray])) {
@@ -162,8 +195,8 @@
   }
 
   /**
-   * Only plays the sound when the cooldown has expired.
-   * @param {string} soundKey
+   * Plays the sound associated with the provided key if it's not on cooldown and not currently playing.
+   * @param {string} soundKey - The key of the sound to play.
    */
   playSound(soundKey) {
     const now = Date.now();
@@ -183,6 +216,11 @@
     }
   }
 
+  /**
+   * Plays a random sound from the given array of sounds.
+   * @param {Array&lt;Audio>} soundArray - The array of sounds to play from.
+   * @param {string} soundKey - The key associated with the sound.
+   */
   playRandomSound(soundArray, soundKey) {
     const randomIndex = Math.floor(Math.random() * soundArray.length);
     const sound = soundArray[randomIndex];
@@ -198,10 +236,19 @@
     }
   }
 
+  /**
+   * Checks if a sound is currently playing.
+   * @param {string} soundKey - The key of the sound to check.
+   * @returns {boolean} - True if the sound is currently playing, false otherwise.
+   */
   isSoundPlaying(soundKey) {
     return this.activeSounds.has(soundKey);
   }
 
+  /**
+   * Stops all sounds in the provided array.
+   * @param {Array&lt;Audio>} soundArray - The array of sounds to stop.
+   */
   stopAllSounds(soundArray) {
     soundArray.forEach((sound) => {
       if (sound instanceof Audio &amp;&amp; !sound.paused) {
@@ -211,6 +258,10 @@
     });
   }
 
+  /**
+   * Stops the sound associated with the provided key if it's currently playing.
+   * @param {string} soundName - The name of the sound to stop.
+   */
   stopSound(soundName) {
     if (this.isSoundPlaying(soundName)) {
       this.activeSounds.get(soundName).pause();
@@ -218,7 +269,6 @@
     }
   }
 }
-
 </code></pre>
         </article>
     </section>
@@ -229,13 +279,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li></ul><h3>Global</h3><ul><li><a href="global.html#adjustDisplayBasedOnWidthAndOrientation">adjustDisplayBasedOnWidthAndOrientation</a></li><li><a href="global.html#alsoClickOutside">alsoClickOutside</a></li><li><a href="global.html#apertureGameOver">apertureGameOver</a></li><li><a href="global.html#clearAllIntervals">clearAllIntervals</a></li><li><a href="global.html#createLevel">createLevel</a></li><li><a href="global.html#createObjects">createObjects</a></li><li><a href="global.html#getScreenWidth">getScreenWidth</a></li><li><a href="global.html#handleLandscapeMode">handleLandscapeMode</a></li><li><a href="global.html#handlePortraitMode">handlePortraitMode</a></li><li><a href="global.html#initGame">initGame</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#isLandscapeOrientation">isLandscapeOrientation</a></li><li><a href="global.html#loadPage">loadPage</a></li><li><a href="global.html#menuPopManager">menuPopManager</a></li><li><a href="global.html#pauseAllIntervals">pauseAllIntervals</a></li><li><a href="global.html#pauseAllTimeouts">pauseAllTimeouts</a></li><li><a href="global.html#preloadAssets">preloadAssets</a></li><li><a href="global.html#preloadAudio">preloadAudio</a></li><li><a href="global.html#preloadFonts">preloadFonts</a></li><li><a href="global.html#preloadImages">preloadImages</a></li><li><a href="global.html#prepareTheGamingExperience">prepareTheGamingExperience</a></li><li><a href="global.html#resetGlobals">resetGlobals</a></li><li><a href="global.html#resumeAllIntervals">resumeAllIntervals</a></li><li><a href="global.html#resumeAllTimeouts">resumeAllTimeouts</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setStoppableTimeout">setStoppableTimeout</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AudioManager.html">AudioManager</a></li><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bottle.html">Bottle</a></li><li><a href="Character.html">Character</a></li><li><a href="Chick.html">Chick</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="Coin.html">Coin</a></li><li><a href="CounterStrikeChicken.html">CounterStrikeChicken</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li></ul><h3>Global</h3><ul><li><a href="global.html#adjustDisplayBasedOnWidthAndOrientation">adjustDisplayBasedOnWidthAndOrientation</a></li><li><a href="global.html#alsoClickOutside">alsoClickOutside</a></li><li><a href="global.html#apertureGameOver">apertureGameOver</a></li><li><a href="global.html#apertureGameWin">apertureGameWin</a></li><li><a href="global.html#bottles">bottles</a></li><li><a href="global.html#clearAllIntervals">clearAllIntervals</a></li><li><a href="global.html#closeMenu">closeMenu</a></li><li><a href="global.html#coins">coins</a></li><li><a href="global.html#createLevel">createLevel</a></li><li><a href="global.html#createObjects">createObjects</a></li><li><a href="global.html#enterFullscreen">enterFullscreen</a></li><li><a href="global.html#exitFullscreen">exitFullscreen</a></li><li><a href="global.html#gameOver">gameOver</a></li><li><a href="global.html#gameWin">gameWin</a></li><li><a href="global.html#getScreenWidth">getScreenWidth</a></li><li><a href="global.html#handleLandscapeMode">handleLandscapeMode</a></li><li><a href="global.html#handlePortraitMode">handlePortraitMode</a></li><li><a href="global.html#height">height</a></li><li><a href="global.html#idle">idle</a></li><li><a href="global.html#initGame">initGame</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#isLandscapeOrientation">isLandscapeOrientation</a></li><li><a href="global.html#lastCollidedEnemy">lastCollidedEnemy</a></li><li><a href="global.html#loadPage">loadPage</a></li><li><a href="global.html#loadingSpinnerEnd">loadingSpinnerEnd</a></li><li><a href="global.html#loadingSpinnerStart">loadingSpinnerStart</a></li><li><a href="global.html#maxBottles">maxBottles</a></li><li><a href="global.html#maxCoins">maxCoins</a></li><li><a href="global.html#menuPopManager">menuPopManager</a></li><li><a href="global.html#offset">offset</a></li><li><a href="global.html#openMenu">openMenu</a></li><li><a href="global.html#pauseAllIntervals">pauseAllIntervals</a></li><li><a href="global.html#pauseAllTimeouts">pauseAllTimeouts</a></li><li><a href="global.html#preloadAssets">preloadAssets</a></li><li><a href="global.html#preloadAudio">preloadAudio</a></li><li><a href="global.html#preloadFonts">preloadFonts</a></li><li><a href="global.html#preloadImages">preloadImages</a></li><li><a href="global.html#prepareTheGamingExperience">prepareTheGamingExperience</a></li><li><a href="global.html#resetCanvas">resetCanvas</a></li><li><a href="global.html#resetGlobals">resetGlobals</a></li><li><a href="global.html#resumeAllIntervals">resumeAllIntervals</a></li><li><a href="global.html#resumeAllTimeouts">resumeAllTimeouts</a></li><li><a href="global.html#returnToHome">returnToHome</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setStoppableTimeout">setStoppableTimeout</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#speed">speed</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Sep 04 2024 14:12:19 GMT-0400 (Paraguayische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Sat Sep 07 2024 08:11:32 GMT-0400 (Paraguayische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>

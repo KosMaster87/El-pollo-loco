@@ -49,6 +49,7 @@ class World {
   throwCooldown = 500;
 
   activeEnemyInteraction = false;
+  collisionBlocked = false;
   bossAttackStartTime = null;
   counterStrikeChickens = [];
 
@@ -67,12 +68,18 @@ class World {
     this.run();
   }
 
+  /**
+   * Assigns the world reference to the character and sets its properties.
+   */
   assignWorldToCharacter() {
     this.character = new Character(this.audioManager, this.staticInstance);
     this.character.world = this;
     this.character.isGameRunning = this.isGameRunning;
   }
 
+  /**
+   * Assigns the world reference to each enemy in the level and sets their properties.
+   */
   assignWorldToEnemies() {
     this.level.enemies.forEach((enemy) => {
       enemy.world = this;
@@ -82,13 +89,17 @@ class World {
     });
   }
 
+  /**
+   * Finds and returns the reference to the boss in the level.
+   * @returns {Endboss} The boss instance.
+   */
   setBossRef() {
     return this.level.enemies.find((enemy) => enemy instanceof Endboss);
   }
 
   /**
-   * Check the timing of Pepe's collusion with the enemies.
-   * As well as the touch of the bottles.
+   * Starts the game loop with intervals for checking collisions, applying damage,
+   * throwing objects, and checking alerts.
    */
   run() {
     setStoppableInterval(() => {
@@ -101,7 +112,7 @@ class World {
 
     setStoppableInterval(() => {
       this.throwObject();
-    }, 200);
+    }, 100);
 
     setStoppableInterval(() => {
       this.checkAlerts();
@@ -109,48 +120,7 @@ class World {
   }
 
   /**
-   * Counter-Strike is triggered by hit_Boss().
-   * And this is where the time of appearance is determined.
-   */
-  scheduleChickenSpawn() {
-    setTimeout(() => {
-      this.spawnChickens();
-    }, 500);
-  }
-
-  /**
-   * Creating the counter strike chicken.
-   * As well as integrating it into the enemy array.
-   */
-  spawnChickens() {
-    this.counterStrikeChickens = this.createObjects(
-      5,
-      () => new CounterStrikeChicken(this.endBossRef)
-    );
-
-    this.counterStrikeChickens.forEach((chicken, index) => {
-      chicken.world = this;
-      chicken.spawnRightPlace(index);
-      chicken.startAttackPhase();
-    });
-
-    this.level.enemies.push(...this.counterStrikeChickens);
-  }
-
-  /**
-   * Helper function to create the strike chicken as an object.
-   */
-  createObjects(count, createFunc) {
-    const objects = [];
-    for (let i = 0; i &lt; count; i++) {
-      objects.push(createFunc());
-    }
-
-    return objects;
-  }
-
-  /**
-   * Check if Pepe collision with Objects.
+   * Checks for collisions between the character and enemies, bottles, and coins.
    */
   checkCollisions() {
     this.enemieStatusRelationPepe();
@@ -160,8 +130,7 @@ class World {
   }
 
   /**
-   * Simply read out the current state of the damage itself.
-   * @returns Bolean
+   * Applies damage to the character if they are colliding with an enemy.
    */
   applyDamageToCharacter() {
     if (this.activeEnemyInteraction) {
@@ -185,7 +154,7 @@ class World {
   }
 
   /**
-   * The boss should go on alert.
+   * Checks if the boss should go on alert based on its distance to the character.
    */
   checkAlerts() {
     this.level.enemies.forEach((enemy) => {
@@ -196,8 +165,7 @@ class World {
   }
 
   /**
-   * Here is the scope of the colliding objects.
-   * @returns boolean
+   * Handles the status and collisions of enemies with the character.
    */
   enemieStatusRelationPepe() {
     if (this.activeEnemyInteraction) {
@@ -209,30 +177,59 @@ class World {
     });
   }
 
+  /**
+   * Handles the collision between the character and an enemy.
+   * @param {Object} enemy - The enemy object involved in the collision.
+   */
   handleCollisionWithEnemy(enemy) {
     if (this.character.isColliding(enemy)) {
+      this.lastEnemyColliding(enemy);
+
       if (
         this.character.y + this.character.height &lt; enemy.y + enemy.height &amp;&amp;
         this.character.speedY &lt; 0
       ) {
-        this.activeEnemyInteraction = true;
-        if (enemy instanceof Endboss) {
-          enemy.hit_Boss();
-        } else {
-          enemy.hit_anyOpponent();
-        }
-
-        this.character.speedY = 10;
-
-        setTimeout(() => {
-          this.activeEnemyInteraction = false;
-        }, 200);
+        this.activeEnemyAlsoHit(enemy);
       }
     }
   }
 
   /**
-   * Check if Pepe collision with Bottle.
+   * Saves the last enemy the character collided with.
+   * @param {Object} enemy - The enemy object that was collided with.
+   */
+  lastEnemyColliding(enemy) {
+    this.character.lastCollidedEnemy = {
+      ...enemy,
+      x: enemy.x,
+      y: enemy.y,
+    };
+  }
+
+  /**
+   * Handles the actions when the character interacts with an enemy and hits the enemy.
+   * @param {Object} enemy - The enemy object that was hit.
+   */
+  activeEnemyAlsoHit(enemy) {
+    this.activeEnemyInteraction = true;
+    this.character.speedY = 10;
+
+    if (enemy instanceof Endboss) {
+      enemy.hit_Boss();
+    } else {
+      enemy.hit_anyOpponent();
+    }
+
+    this.collisionBlocked = true;
+
+    setTimeout(() => {
+      this.collisionBlocked = false;
+      this.activeEnemyInteraction = false;
+    }, 100);
+  }
+
+  /**
+   * Checks if the character has collided with a bottle and updates the status bar accordingly.
    */
   checkBottleStatusToEarn() {
     this.level.bottles.forEach((bottle, index) => {
@@ -249,7 +246,7 @@ class World {
   }
 
   /**
-   * Check if Pepe collision with Bottle.
+   * Checks if the character has collided with a coin and updates the status bar accordingly.
    */
   checkCoinStatusToEarn() {
     this.level.coins.forEach((coin, index) => {
@@ -266,7 +263,7 @@ class World {
   }
 
   /**
-   * Check if the thrown bottle collided with an opponent.
+   * Checks for collisions between thrown bottles and enemies.
    */
   checkThrowableObjectCollisions() {
     this.throwableObjects.forEach((throwableObject) => {
@@ -277,7 +274,7 @@ class World {
   }
 
   /**
-   * Throw a salsa bottle.
+   * Handles the logic for throwing a bottle.
    */
   throwObject() {
     const now = Date.now();
@@ -293,20 +290,25 @@ class World {
   }
 
   /**
-   * Create and throw a bottle.
+   * Creates a new throwable bottle object with a specific position and direction.
+   * @returns {ThrowableObject} The created throwable object.
    */
   createThrowableObject() {
     const throwDirectionX = this.character.otherDirection ? -1 : 1;
+    const xOffset = 0;
+    const yOffset = 10;
+
     return new ThrowableObject(
-      this.character.x + (throwDirectionX === 1 ? 70 : -70),
-      this.character.y + 35,
+      this.character.x + (throwDirectionX === 1 ? 70 : -70) + xOffset,
+      this.character.y + 35 + yOffset,
       this,
       throwDirectionX
     );
   }
 
   /**
-   * Check the direction of the bottle throw and the number of bottles Pepe has.
+   * Handles the throwing of a bottle and updates the character's bottle status.
+   * @param {ThrowableObject} bottle - The throwable object to be handled.
    */
   handleThrowableObject(bottle) {
     bottle.world = this;
@@ -317,7 +319,7 @@ class World {
   }
 
   /**
-   * Draw what ever in this.World
+   * Draws the current state of the world including all objects and status bars.
    */
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -333,7 +335,7 @@ class World {
   }
 
   /**
-   *To draw!
+   * Adds level-specific objects to the map.
    */
   addLevelObjects() {
     this.addObjectsToMap(this.level.background);
@@ -344,17 +346,18 @@ class World {
   }
 
   /**
-   *To draw!
+   * Adds all status bars to the map.
    */
   addBars() {
     this.addToMap(this.statusBarPepe);
     this.addToMap(this.statusBarBoss);
-    this.addToMap(this.statusBarCoin);
     this.addToMap(this.statusBarBottle);
+    this.addToMap(this.statusBarCoin);
   }
 
   /**
-   * A repetition of itself to create a frame rate.
+   * Creates a loop to maintain a frame rate for drawing.
+   * This method repeatedly calls `draw` using `requestAnimationFrame` to ensure smooth rendering.
    */
   setSelfDraw() {
     let self = this;
@@ -365,9 +368,9 @@ class World {
   }
 
   /**
-   * Adds any objects with specific attributes.
-   * Basically, these objects should move automatically without any user input. In contrast to Pepe, where he is only drawn as soon as an input is made.
-   * @param {The objects in this world.} objects
+   * Adds a collection of objects to the map.
+   * These objects are generally those that move automatically (e.g., enemies, items) and are not directly controlled by the user.
+   * @param {Object[]} objects - The array of objects to be added to the map.
    */
   addObjectsToMap(objects) {
     objects.forEach((o) => {
@@ -376,9 +379,9 @@ class World {
   }
 
   /**
-   * The if query handles the character, its mirror image, and the mirrored coordinates of the canvas for the character.
-   * Add to Canvas Board each things.
-   * @param {movable object} mo
+   * Adds a single movable object to the map.
+   * Handles the flipping of images for objects facing different directions.
+   * @param {MovableObject} mo - The movable object to be added to the map.
    */
   addToMap(mo) {
     if (mo.otherDirection) {
@@ -386,7 +389,7 @@ class World {
     }
 
     mo.draw(this.ctx);
-    // mo.drawFrame(this.ctx); // Hide or show here.
+    // mo.drawFrame(this.ctx); // Optional: Use this to show or hide frame.
 
     if (mo.otherDirection) {
       this.flipImageBack(mo);
@@ -394,9 +397,9 @@ class World {
   }
 
   /**
-   * The "flips" are for mirroring the images.
-   * Set the right-to-left state.
-   * @param {movable-object} mo
+   * Flips the image horizontally for objects facing right-to-left.
+   * Updates the object's x-coordinate to reflect the mirrored image.
+   * @param {MovableObject} mo - The movable object whose image is to be flipped.
    */
   flipImage(mo) {
     this.ctx.save();
@@ -406,13 +409,57 @@ class World {
   }
 
   /**
-   * The "flips" are for mirroring the images.
-   * Set the left-to-right state.
-   * @param {movable-object} mo
+   * Reverses the horizontal flip applied to an object.
+   * Restores the canvas state to its original, left-to-right configuration.
+   * @param {MovableObject} mo - The movable object whose image flip is to be reversed.
    */
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();
+  }
+
+  /**
+   * Schedules the spawning of Counter-Strike chickens after a delay.
+   * Calls `spawnChickens` method after 500 milliseconds.
+   */
+  scheduleChickenSpawn() {
+    setTimeout(() => {
+      this.spawnChickens();
+    }, 500);
+  }
+
+  /**
+   * Creates and initializes Counter-Strike chickens.
+   * Integrates these chickens into the enemy array and starts their attack phase.
+   */
+  spawnChickens() {
+    this.counterStrikeChickens = this.createObjects(
+      5,
+      () => new CounterStrikeChicken(this.endBossRef)
+    );
+
+    this.counterStrikeChickens.forEach((chicken, index) => {
+      chicken.world = this;
+      chicken.spawnRightPlace(index);
+      chicken.startAttackPhase();
+    });
+
+    this.level.enemies.push(...this.counterStrikeChickens);
+  }
+
+  /**
+   * Helper function to create a specified number of objects using a factory function.
+   * @param {number} count - The number of objects to create.
+   * @param {function} createFunc - The factory function to create an object.
+   * @returns {Object[]} An array of created objects.
+   */
+  createObjects(count, createFunc) {
+    const objects = [];
+    for (let i = 0; i &lt; count; i++) {
+      objects.push(createFunc());
+    }
+
+    return objects;
   }
 }
 </code></pre>
@@ -425,13 +472,13 @@ class World {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li></ul><h3>Global</h3><ul><li><a href="global.html#adjustDisplayBasedOnWidthAndOrientation">adjustDisplayBasedOnWidthAndOrientation</a></li><li><a href="global.html#alsoClickOutside">alsoClickOutside</a></li><li><a href="global.html#apertureGameOver">apertureGameOver</a></li><li><a href="global.html#clearAllIntervals">clearAllIntervals</a></li><li><a href="global.html#createLevel">createLevel</a></li><li><a href="global.html#createObjects">createObjects</a></li><li><a href="global.html#getScreenWidth">getScreenWidth</a></li><li><a href="global.html#handleLandscapeMode">handleLandscapeMode</a></li><li><a href="global.html#handlePortraitMode">handlePortraitMode</a></li><li><a href="global.html#initGame">initGame</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#isLandscapeOrientation">isLandscapeOrientation</a></li><li><a href="global.html#loadPage">loadPage</a></li><li><a href="global.html#menuPopManager">menuPopManager</a></li><li><a href="global.html#pauseAllIntervals">pauseAllIntervals</a></li><li><a href="global.html#pauseAllTimeouts">pauseAllTimeouts</a></li><li><a href="global.html#preloadAssets">preloadAssets</a></li><li><a href="global.html#preloadAudio">preloadAudio</a></li><li><a href="global.html#preloadFonts">preloadFonts</a></li><li><a href="global.html#preloadImages">preloadImages</a></li><li><a href="global.html#prepareTheGamingExperience">prepareTheGamingExperience</a></li><li><a href="global.html#resetGlobals">resetGlobals</a></li><li><a href="global.html#resumeAllIntervals">resumeAllIntervals</a></li><li><a href="global.html#resumeAllTimeouts">resumeAllTimeouts</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setStoppableTimeout">setStoppableTimeout</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AudioManager.html">AudioManager</a></li><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bottle.html">Bottle</a></li><li><a href="Character.html">Character</a></li><li><a href="Chick.html">Chick</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="Coin.html">Coin</a></li><li><a href="CounterStrikeChicken.html">CounterStrikeChicken</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li></ul><h3>Global</h3><ul><li><a href="global.html#adjustDisplayBasedOnWidthAndOrientation">adjustDisplayBasedOnWidthAndOrientation</a></li><li><a href="global.html#alsoClickOutside">alsoClickOutside</a></li><li><a href="global.html#apertureGameOver">apertureGameOver</a></li><li><a href="global.html#apertureGameWin">apertureGameWin</a></li><li><a href="global.html#bottles">bottles</a></li><li><a href="global.html#clearAllIntervals">clearAllIntervals</a></li><li><a href="global.html#closeMenu">closeMenu</a></li><li><a href="global.html#coins">coins</a></li><li><a href="global.html#createLevel">createLevel</a></li><li><a href="global.html#createObjects">createObjects</a></li><li><a href="global.html#enterFullscreen">enterFullscreen</a></li><li><a href="global.html#exitFullscreen">exitFullscreen</a></li><li><a href="global.html#gameOver">gameOver</a></li><li><a href="global.html#gameWin">gameWin</a></li><li><a href="global.html#getScreenWidth">getScreenWidth</a></li><li><a href="global.html#handleLandscapeMode">handleLandscapeMode</a></li><li><a href="global.html#handlePortraitMode">handlePortraitMode</a></li><li><a href="global.html#height">height</a></li><li><a href="global.html#idle">idle</a></li><li><a href="global.html#initGame">initGame</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#isLandscapeOrientation">isLandscapeOrientation</a></li><li><a href="global.html#lastCollidedEnemy">lastCollidedEnemy</a></li><li><a href="global.html#loadPage">loadPage</a></li><li><a href="global.html#loadingSpinnerEnd">loadingSpinnerEnd</a></li><li><a href="global.html#loadingSpinnerStart">loadingSpinnerStart</a></li><li><a href="global.html#maxBottles">maxBottles</a></li><li><a href="global.html#maxCoins">maxCoins</a></li><li><a href="global.html#menuPopManager">menuPopManager</a></li><li><a href="global.html#offset">offset</a></li><li><a href="global.html#openMenu">openMenu</a></li><li><a href="global.html#pauseAllIntervals">pauseAllIntervals</a></li><li><a href="global.html#pauseAllTimeouts">pauseAllTimeouts</a></li><li><a href="global.html#preloadAssets">preloadAssets</a></li><li><a href="global.html#preloadAudio">preloadAudio</a></li><li><a href="global.html#preloadFonts">preloadFonts</a></li><li><a href="global.html#preloadImages">preloadImages</a></li><li><a href="global.html#prepareTheGamingExperience">prepareTheGamingExperience</a></li><li><a href="global.html#resetCanvas">resetCanvas</a></li><li><a href="global.html#resetGlobals">resetGlobals</a></li><li><a href="global.html#resumeAllIntervals">resumeAllIntervals</a></li><li><a href="global.html#resumeAllTimeouts">resumeAllTimeouts</a></li><li><a href="global.html#returnToHome">returnToHome</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setStoppableTimeout">setStoppableTimeout</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#speed">speed</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Sep 04 2024 14:12:19 GMT-0400 (Paraguayische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Sat Sep 07 2024 08:11:32 GMT-0400 (Paraguayische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>

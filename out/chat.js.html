@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: models/status-bar-bottle.class.js</title>
+    <title>JSDoc: Source: chat.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: models/status-bar-bottle.class.js</h1>
+    <h1 class="page-title">Source: chat.js</h1>
 
     
 
@@ -26,61 +26,89 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
+            <pre class="prettyprint source linenums"><code>/**
+ * Offset values for the character's bounding box.
+ * @type {Object}
+ * @property {number} top - Top offset value.
+ * @property {number} bottom - Bottom offset value.
+ * @property {number} left - Left offset value.
+ * @property {number} right - Right offset value.
+ */
+offset = {
+  top: 80,
+  bottom: 10,
+  left: 20,
+  right: 20,
+};
 
-class BottleStatusBar extends DrawableObject {
-  IMAGES = [
-    "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png",
-    "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/20.png",
-    "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/40.png",
-    "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/60.png",
-    "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/80.png",
-    "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/100.png",
-  ];
+/**
+ * Number of bottles the character have.
+ * @type {number}
+ */
+bottles = [];
 
-  percentage = 0;
+/**
+ * Number of coins the character have.
+ * @type {number}
+ */
+coins = [];
 
-  constructor() {
-    super();
-    this.y = 85;
-    this.x = 10;
-    this.width = 200;
-    this.height = 60;
+/**
+ * Maximum number of bottles the character can carry.
+ * @type {number}
+ */
+maxBottles = 5;
 
-    this.loadImages(this.IMAGES);
-    this.setPercentage(0);
-  }
+/**
+ * Maximum number of coins the character can carry.
+ * @type {number}
+ */
+maxCoins = 5;
 
-  /**
-   * Sets the energy level displayed in the status bar.
-   * @param {number} percentage - The current energy level of the bottle as a percentage.
-   */
-  setPercentage(percentage) {
-    this.percentage = Math.max(0, Math.min(100, percentage));
-    let path = this.IMAGES[this.resolveImageIndex()];
-    this.img = Static.getImage(path);
-  }
+/**
+ * Initial character dimensions and position.
+ * @type {number}
+ */
+height = 170;
+width = 95;
+x = 0;
+y = 270;
 
-  /**
-   * Determines the index of the image to display based on the percentage.
-   * @returns {number} The index of the image in the IMAGES array.
-   */
-  resolveImageIndex() {
-    if (this.percentage == 100) {
-      return 5;
-    } else if (this.percentage >= 80) {
-      return 4;
-    } else if (this.percentage >= 60) {
-      return 3;
-    } else if (this.percentage >= 40) {
-      return 2;
-    } else if (this.percentage >= 20) {
-      return 1;
-    } else {
-      return 0;
-    }
-  }
-}
+/**
+ * Character's speed.
+ * @type {number}
+ */
+speed = 5;
+
+/**
+ * Tracks the idle start state of the character.
+ * @type {boolean}
+ */
+idleStart;
+
+/**
+ * Tracks the sleeping start state of the character.
+ * @type {boolean}
+ */
+sleepStart;
+
+/**
+ * Tracks the idle state of the character.
+ * @type {boolean}
+ */
+idle = false;
+
+/**
+ * Tracks the sleeping state of the character.
+ * @type {boolean}
+ */
+sleep = false;
+
+/**
+ * The last enemy that Pepe collided with.
+ * @type {Object|null}
+ */
+lastCollidedEnemy = null;
 </code></pre>
         </article>
     </section>

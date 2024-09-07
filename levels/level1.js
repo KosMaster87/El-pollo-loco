@@ -3,7 +3,10 @@
 let level1;
 
 /**
- * Function to create a specific number of objects.
+ * Creates a specified number of objects using the provided creation function.
+ * @param {number} count - The number of objects to create.
+ * @param {Function} createFunc - A function that generates a new object.
+ * @returns {Array} - An array of created objects.
  */
 function createObjects(count, createFunc) {
   const objects = [];
@@ -14,8 +17,8 @@ function createObjects(count, createFunc) {
 }
 
 /**
- * Function to create the level objects
- * @returns The objects, namely: enemies, clouds and background.
+ * Creates and initializes the level by generating enemies, clouds, background objects, bottles, and coins.
+ * @returns {Level} - A new level instance containing enemies, clouds, background objects, bottles, and coins.
  */
 function createLevel() {
   const bossChicken = [];
@@ -27,11 +30,7 @@ function createLevel() {
   const chicks = createObjects(30, () => new Chick());
   const chickens = createObjects(20, () => new Chicken());
 
-  let enemies = [
-    ...chickens,
-    ...chicks,
-    ...bossChicken,
-  ];
+  let enemies = [...chickens, ...chicks, ...bossChicken];
 
   const backgroundObjects = [];
   const positions = [
@@ -76,7 +75,7 @@ function createLevel() {
 }
 
 /**
- * Initialize the level and create the level objects.
+ * Initializes the level by creating the level objects and storing them in the `level1` variable.
  */
 function initLevel() {
   level1 = createLevel();

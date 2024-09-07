@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Keyboard</title>
+    <title>JSDoc: Class: Endboss</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Keyboard</h1>
+    <h1 class="page-title">Class: Endboss</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Keyboard<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Endboss<span class="signature">()</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -41,7 +41,7 @@
     
 
     
-    <h4 class="name" id="Keyboard"><span class="type-signature"></span>new Keyboard<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Endboss"><span class="type-signature"></span>new Endboss<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -49,8 +49,8 @@
 
 
 <div class="description">
-    Initializes keyboard and touch input events.
-Sets up event listeners for keyboard and touch events.
+    Creates an instance of Endboss.
+Initializes image loading and sets initial position and state.
 </div>
 
 
@@ -94,7 +94,7 @@ Sets up event listeners for keyboard and touch events.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_keyboard.class.js.html">models/keyboard.class.js</a>, <a href="models_keyboard.class.js.html#line18">line 18</a>
+        <a href="models_enemy-endboss.class.js.html">models/enemy-endboss.class.js</a>, <a href="models_enemy-endboss.class.js.html#line68">line 68</a>
     </li></ul></dd>
     
 
@@ -150,7 +150,7 @@ Sets up event listeners for keyboard and touch events.
     
 
     
-    <h4 class="name" id="bindTouchPressEvents"><span class="type-signature"></span>bindTouchPressEvents<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="animate"><span class="type-signature"></span>animate<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -158,8 +158,8 @@ Sets up event listeners for keyboard and touch events.
 
 
 <div class="description">
-    Binds touch events to on-screen buttons for controlling the character.
-Updates the corresponding key states based on touch events.
+    Handles the animation of the boss based on its current state.
+Updates the boss's animation and movement.
 </div>
 
 
@@ -203,7 +203,7 @@ Updates the corresponding key states based on touch events.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_keyboard.class.js.html">models/keyboard.class.js</a>, <a href="models_keyboard.class.js.html#line86">line 86</a>
+        <a href="models_enemy-endboss.class.js.html">models/enemy-endboss.class.js</a>, <a href="models_enemy-endboss.class.js.html#line85">line 85</a>
     </li></ul></dd>
     
 
@@ -239,7 +239,7 @@ Updates the corresponding key states based on touch events.
     
 
     
-    <h4 class="name" id="handleKeyDownEvent"><span class="type-signature"></span>handleKeyDownEvent<span class="signature">(e)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="checkDistanceToCharacter"><span class="type-signature"></span>checkDistanceToCharacter<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -247,7 +247,274 @@ Updates the corresponding key states based on touch events.
 
 
 <div class="description">
-    Handles key down events to set corresponding key states to true.
+    Checks the distance between the boss and the character periodically.
+Updates the boss's alert state based on proximity to the character.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_enemy-endboss.class.js.html">models/enemy-endboss.class.js</a>, <a href="models_enemy-endboss.class.js.html#line174">line 174</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="die"><span class="type-signature"></span>die<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Handles the boss's death logic.
+Removes the boss from the enemies list and triggers the game win sequence.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_enemy-endboss.class.js.html">models/enemy-endboss.class.js</a>, <a href="models_enemy-endboss.class.js.html#line155">line 155</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="hit_Boss"><span class="type-signature"></span>hit_Boss<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Handles the boss's hit logic.
+Updates the boss's hit count and triggers counter-strike if not dead.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_enemy-endboss.class.js.html">models/enemy-endboss.class.js</a>, <a href="models_enemy-endboss.class.js.html#line118">line 118</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="isCloseTo"><span class="type-signature"></span>isCloseTo<span class="signature">(character, distance)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Checks if the boss is within a specified distance from the character.
 </div>
 
 
@@ -283,13 +550,13 @@ Updates the corresponding key states based on touch events.
 
         <tr>
             
-                <td class="name"><code>e</code></td>
+                <td class="name"><code>character</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">KeyboardEvent</span>
+<span class="param-type">object</span>
 
 
             
@@ -299,7 +566,30 @@ Updates the corresponding key states based on touch events.
 
             
 
-            <td class="description last">The keyboard event object.</td>
+            <td class="description last">The character to check distance to.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>distance</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The distance threshold.</td>
         </tr>
 
     
@@ -340,7 +630,7 @@ Updates the corresponding key states based on touch events.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_keyboard.class.js.html">models/keyboard.class.js</a>, <a href="models_keyboard.class.js.html#line32">line 32</a>
+        <a href="models_enemy-endboss.class.js.html">models/enemy-endboss.class.js</a>, <a href="models_enemy-endboss.class.js.html#line192">line 192</a>
     </li></ul></dd>
     
 
@@ -365,6 +655,28 @@ Updates the corresponding key states based on touch events.
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - True if within distance, otherwise false.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -376,7 +688,7 @@ Updates the corresponding key states based on touch events.
     
 
     
-    <h4 class="name" id="handleKeyUpEvent"><span class="type-signature"></span>handleKeyUpEvent<span class="signature">(e)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="moveTowardsCharacter"><span class="type-signature"></span>moveTowardsCharacter<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -384,7 +696,8 @@ Updates the corresponding key states based on touch events.
 
 
 <div class="description">
-    Handles key up events to set corresponding key states to false.
+    Moves the boss towards the character during an attack.
+The speed of movement is adjusted based on the attack multiplier.
 </div>
 
 
@@ -393,55 +706,6 @@ Updates the corresponding key states based on touch events.
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>e</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">KeyboardEvent</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The keyboard event object.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -477,7 +741,96 @@ Updates the corresponding key states based on touch events.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_keyboard.class.js.html">models/keyboard.class.js</a>, <a href="models_keyboard.class.js.html#line59">line 59</a>
+        <a href="models_enemy-endboss.class.js.html">models/enemy-endboss.class.js</a>, <a href="models_enemy-endboss.class.js.html#line107">line 107</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="triggerCounterStrike"><span class="type-signature"></span>triggerCounterStrike<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Triggers the counter-strike phase where the boss attacks and spawns strike chickens.
+The boss remains in attack state for 3 seconds and is injured for 1 second.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_enemy-endboss.class.js.html">models/enemy-endboss.class.js</a>, <a href="models_enemy-endboss.class.js.html#line135">line 135</a>
     </li></ul></dd>
     
 

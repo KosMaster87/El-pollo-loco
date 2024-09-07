@@ -9,7 +9,8 @@ let isGameRunning = false;
 let gameStartetOnce = false;
 
 /**
- * First step to instruct to prepare to play.
+ * Initializes the game by setting up the canvas, starting the game,
+ * initializing the level, and creating a new World instance.
  */
 function initGame() {
   canvas = document.getElementById("canvas");
@@ -23,14 +24,11 @@ function initGame() {
     staticInstance,
     isGameRunning
   );
-
-  if (isLandscapeOrientation()) {
-    enterFullscreen(document.getElementById("mainLayerAsRelative"));
-  }
 }
 
 /**
- * Second step to initiate the Game script.
+ * Starts the game by resetting global states if necessary, hides
+ * menus, adjusts the display, and plays the in-game music.
  */
 function startGame() {
   if (isGameRunning) {
@@ -47,6 +45,10 @@ function startGame() {
   audioManager.playSound("inGameMusic");
 }
 
+/**
+ * Returns to the home screen by resetting global states, clearing
+ * intervals, resetting the canvas, and showing the home layer.
+ */
 function returnToHome() {
   document.getElementById("w3_include").style.display = "none";
   document.getElementById("menuPop").style.display = "none";
@@ -57,6 +59,11 @@ function returnToHome() {
   resetCanvas();
 }
 
+/**
+ * Handles the game over scenario by resetting global states,
+ * clearing intervals, showing the game over screen, and playing
+ * the appropriate sounds.
+ */
 function gameOver() {
   resetGlobals();
   clearAllIntervals();
@@ -69,6 +76,11 @@ function gameOver() {
   adjustDisplayBasedOnWidthAndOrientation();
 }
 
+/**
+ * Handles the game win scenario by resetting global states,
+ * clearing intervals, showing the game win screen, and playing
+ * the appropriate sounds.
+ */
 function gameWin() {
   resetGlobals();
   clearAllIntervals();
@@ -82,7 +94,8 @@ function gameWin() {
 }
 
 /**
- * Aperture gameOver.
+ * Displays the game over aperture animation and hides it after
+ * a timeout, then shows the game menu.
  */
 function apertureGameOver() {
   document.getElementById("apertureGameOver").classList.remove("hidden");
@@ -97,7 +110,8 @@ function apertureGameOver() {
 }
 
 /**
- * Aperture gameWin.
+ * Displays the game win aperture animation and hides it after
+ * a timeout, then shows the game menu.
  */
 function apertureGameWin() {
   document.getElementById("apertureGameWin").classList.remove("hidden");
@@ -111,6 +125,9 @@ function apertureGameWin() {
   document.getElementById("homeLayer").style.display = "block";
 }
 
+/**
+ * Resets the canvas by clearing its entire content.
+ */
 function resetCanvas() {
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");

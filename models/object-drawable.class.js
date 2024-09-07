@@ -19,19 +19,27 @@ class DrawableObject {
     this.currentImage = 0;
   }
 
+  /**
+   * Loads multiple images into the `images` object.
+   * @param {string[]} imagePaths - An array of image paths to be loaded.
+   */
   loadImages(imagePaths) {
     imagePaths.forEach((path) => {
       this.images[path] = Static.getImage(path);
     });
   }
 
+  /**
+   * Loads a single image into the `img` property.
+   * @param {string} path - The path to the image to be loaded.
+   */
   loadImage(path) {
     this.img = Static.getImage(path);
   }
 
   /**
-   * Here the images to be drawn are drawn onto the canvas.
-   * @param {each movable object} ctx
+   * Draws the current image onto the canvas at the object's position.
+   * @param {CanvasRenderingContext2D} ctx - The canvas rendering context used for drawing.
    */
   draw(ctx) {
     ctx.save();
@@ -40,9 +48,9 @@ class DrawableObject {
   }
 
   /**
-   * Is disabled by default.
-   * "InstanceOf" means that only the objects marked in the if condition get the border.
-   * And that only applies to the drawable-object.class.js, since it is also referred to as "this" here.
+   * Draws a border around the object if it is an instance of specific classes.
+   * This method is disabled by default and can be used for debugging.
+   * @param {CanvasRenderingContext2D} ctx - The canvas rendering context used for drawing.
    */
   drawFrame(ctx) {
     if (
@@ -72,8 +80,8 @@ class DrawableObject {
   }
 
   /**
-   * Play an animation by cycling through the images in the given array.
-   * @param {Array of image paths} images
+   * Plays an animation by cycling through the images in the given array.
+   * @param {string[]} images - An array of image paths to be used for the animation.
    */
   playAnimation(images) {
     let i = this.currentImage % images.length;

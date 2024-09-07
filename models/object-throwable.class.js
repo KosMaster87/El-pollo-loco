@@ -34,6 +34,13 @@ class ThrowableObject extends MovableObject {
     right: 10,
   };
 
+  /**
+   * Initializes a new throwable object and starts its animation.
+   * @param {number} x - The x-coordinate of the object.
+   * @param {number} y - The y-coordinate of the object.
+   * @param {World} world - The world instance where the object is located.
+   * @param {number} [throwDirectionX=1] - The direction in which the object is thrown (1 for right, -1 for left).
+   */
   constructor(x, y, world, throwDirectionX = 1) {
     super().loadImage("./img/6_salsa_bottle/salsa_bottle.png");
     this.loadImages(this.IMAGES_ROTATION);
@@ -48,7 +55,8 @@ class ThrowableObject extends MovableObject {
   }
 
   /**
-   * Set the bottle throw.
+   * Starts the bottle throw and applies gravity to it.
+   * Continuously moves the bottle and checks for collisions with enemies.
    */
   throw() {
     this.world.audioManager.playSound("bottleThrow");
@@ -65,6 +73,9 @@ class ThrowableObject extends MovableObject {
     }, 25);
   }
 
+  /**
+   * Checks if the bottle has hit the ground and starts the splash effect.
+   */
   splashOnGround() {
     if (this.y > this.groundY) {
       this.y = this.groundY;
@@ -75,7 +86,8 @@ class ThrowableObject extends MovableObject {
   }
 
   /**
-   * Check collision with enemies.
+   * Handles collision between the bottle and enemies.
+   * @param {DrawableObject} enemy - The enemy object involved in the collision.
    */
   handleEnemyCollision_thisBottle(enemy) {
     if (this.isColliding(enemy) && !this.collide) {
@@ -94,6 +106,10 @@ class ThrowableObject extends MovableObject {
     }
   }
 
+  /**
+   * Handles the action when the bottle collides with enemies.
+   * @param {DrawableObject} enemy - The enemy object.
+   */
   handleBottleActionEnemies(enemy) {
     this.xSpeed = 0;
     this.startSplash();
@@ -101,17 +117,20 @@ class ThrowableObject extends MovableObject {
     enemy.hit_anyOpponent();
   }
 
+  /**
+   * Handles the action when the bottle collides with the end boss.
+   * @param {Endboss} enemy - The end boss object.
+   */
   handleBottleActionEndboss(enemy) {
     this.xSpeed = 2;
     enemy.hit_Boss();
     this.startSplash();
     this.audioManager.playSound("opponentDeath");
-    enemy.hit_anyOpponent();
   }
 
   /**
-   * Starts the splash animation.
-   * Splash is only started once.
+   * Starts the splash animation and removes the bottle after a delay.
+   * The splash animation is only started once.
    */
   startSplash() {
     if (this.splashStarted) return;
@@ -132,7 +151,7 @@ class ThrowableObject extends MovableObject {
   }
 
   /**
-   * Remove the bottle from the world when it touches the ground.
+   * Removes the bottle from the world and stops all associated intervals.
    */
   removeBottle() {
     clearInterval(this.throwIntervalId);
@@ -146,7 +165,7 @@ class ThrowableObject extends MovableObject {
   }
 
   /**
-   * Animate the throwable object.
+   * Animates the throwable object by rotating it.
    */
   animate() {
     this.rotateIntervalId = setStoppableInterval(() => {

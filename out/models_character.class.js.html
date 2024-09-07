@@ -28,7 +28,15 @@
         <article>
             <pre class="prettyprint source linenums"><code>"use strict";
 
+/**
+ * The `Character` class extends `MovableObject` and represents the main player character with various animations and actions.
+ * @extends {MovableObject}
+ */
 class Character extends MovableObject {
+  /**
+   * Array of walking animation images for the character.
+   * @type {string[]}
+   */
   IMAGES_WALKING = [
     "./img/2_character_pepe/2_walk/W-21.png",
     "./img/2_character_pepe/2_walk/W-22.png",
@@ -38,6 +46,10 @@ class Character extends MovableObject {
     "./img/2_character_pepe/2_walk/W-26.png",
   ];
 
+  /**
+   * Array of jumping animation images for the character.
+   * @type {string[]}
+   */
   IMAGES_JUMPING = [
     "./img/2_character_pepe/3_jump/J-31.png",
     "./img/2_character_pepe/3_jump/J-32.png",
@@ -50,12 +62,20 @@ class Character extends MovableObject {
     "./img/2_character_pepe/3_jump/J-39.png",
   ];
 
+  /**
+   * Array of hurt animation images for the character.
+   * @type {string[]}
+   */
   IMAGES_HURT = [
     "./img/2_character_pepe/4_hurt/H-41.png",
     "./img/2_character_pepe/4_hurt/H-42.png",
     "./img/2_character_pepe/4_hurt/H-43.png",
   ];
 
+  /**
+   * Array of dead animation images for the character.
+   * @type {string[]}
+   */
   IMAGES_DEAD = [
     "./img/2_character_pepe/5_dead/D-51.png",
     "./img/2_character_pepe/5_dead/D-52.png",
@@ -66,6 +86,10 @@ class Character extends MovableObject {
     "./img/2_character_pepe/5_dead/D-57.png",
   ];
 
+  /**
+   * Array of idle animation images for the character.
+   * @type {string[]}
+   */
   IMAGES_IDLE = [
     "./img/2_character_pepe/1_idle/idle/I-1.png",
     "./img/2_character_pepe/1_idle/idle/I-2.png",
@@ -79,6 +103,10 @@ class Character extends MovableObject {
     "./img/2_character_pepe/1_idle/idle/I-10.png",
   ];
 
+  /**
+   * Array of sleeping animation images for the character.
+   * @type {string[]}
+   */
   IMAGES_SLEEP = [
     "./img/2_character_pepe/1_idle/long_idle/I-11.png",
     "./img/2_character_pepe/1_idle/long_idle/I-12.png",
@@ -103,21 +131,22 @@ class Character extends MovableObject {
   coins = [];
   maxBottles = 5;
   maxCoins = 5;
-
   height = 170;
   width = 95;
   x = 0;
   y = 270;
   speed = 5;
-
   idleStart;
   sleepStart;
   idle = false;
   sleep = false;
+  lastCollidedEnemy = null;
 
+  /**
+   * @param {AudioManager} audioManager - Manages sound effects in the game.
+   */
   constructor(audioManager) {
     super().loadImage("./img/2_character_pepe/2_walk/W-21.png");
-    this.images = {};
     this.audioManager = audioManager;
     this.idleStart = Date.now();
     this.sleepStart = Date.now();
@@ -131,11 +160,17 @@ class Character extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Collects a bottle and plays the associated sound.
+   */
   collectBottle() {
     this.bottles.push(new Bottle());
     this.world.audioManager.playSound("bottleEarn");
   }
 
+  /**
+   * Collects a coin and plays the associated sound if the maximum number of coins has not been reached.
+   */
   collectCoin() {
     if (this.coins.length &lt; this.maxCoins) {
       this.coins.push(new Coin());
@@ -143,29 +178,49 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Returns true if the idle time exceeds 0.1 seconds.
+   * @returns {boolean}
+   */
   idleTimer() {
     let idleTime = (Date.now() - this.idleStart) / 1000;
     return idleTime >= 0.1;
   }
 
+  /**
+   * Returns true if the sleep time exceeds 2.5 seconds.
+   * @returns {boolean}
+   */
   sleepTimer() {
     let sleepTime = (Date.now() - this.sleepStart) / 1000;
     return sleepTime >= 2.5;
   }
 
+  /**
+   * Resets both the idle and sleep timers.
+   */
   resetTimers() {
     this.reset_idleStartTimer();
     this.reset_sleepStartTimer();
   }
 
+  /**
+   * Resets the sleep timer.
+   */
   reset_sleepStartTimer() {
     this.sleepStart = Date.now();
   }
 
+  /**
+   * Resets the idle timer.
+   */
   reset_idleStartTimer() {
     this.idleStart = Date.now();
   }
 
+  /**
+   * Plays or stops the snoring sound based on the character's sleep state.
+   */
   handleSnoringSound() {
     if (this.sleep) {
       if (!this.snoringPlaying) {
@@ -180,17 +235,19 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Stops all active intervals for the character's movement and animations.
+   */
   stopIntervals() {
     clearInterval(this.moveInterval);
     clearInterval(this.animateInterval);
   }
 
   /**
-   * Speed options and running direction.
-   * Also some animations.
+   * Handles the character's movement and animation by setting up stoppable intervals for movement and animation updates.
    */
   animate() {
-    this.moveInterval = setStoppableInterval(() => this.pepeMove(), 1000 / 60);
+    this.moveInterval = setStoppableInterval(() => this.pepeMove(), 1000 / 45);
     this.animateInterval = setStoppableInterval(
       () => this.pepeAnimate(),
       1000 / 7
@@ -198,9 +255,38 @@ class Character extends MovableObject {
   }
 
   /**
-   * Control Pepe using the enter keys.
+   * Handles Pepe's movement, including collision checks, axis movement, and jumping.
    */
   pepeMove() {
+    if (this.collisionBlocked) {
+      return;
+    }
+
+    this.preventSlidingPastEnemy();
+    this.moveOnXAxis();
+    this.pepeJump();
+    this.world.camera_x = -this.x + 150;
+  }
+
+  /**
+   * Blocks Pepe from sliding past enemies.
+   */
+  preventSlidingPastEnemy() {
+    if (this.activeEnemyInteraction &amp;&amp; this.character.lastCollidedEnemy) {
+      const collidedEnemy = this.character.lastCollidedEnemy;
+      if (this.world.keyboard.RIGHT &amp;&amp; this.x &lt; collidedEnemy.x) {
+        return;
+      }
+      if (this.world.keyboard.LEFT &amp;&amp; this.x > collidedEnemy.x) {
+        return;
+      }
+    }
+  }
+
+  /**
+   * Controls Pepe's movement on the X-axis.
+   */
+  moveOnXAxis() {
     if (this.world.keyboard.RIGHT &amp;&amp; this.x &lt; this.world.level.level_end_x) {
       this.pepeMoveRightOptions();
       this.pepesIdleFalse();
@@ -212,7 +298,12 @@ class Character extends MovableObject {
       this.pepesIdleFalse();
       this.world.audioManager.playSound("walking");
     }
+  }
 
+  /**
+   * Controls Pepe's jumping actions.
+   */
+  pepeJump() {
     if (
       (this.world.keyboard.SPACE &amp;&amp; !this.isAboveGround()) ||
       (this.world.keyboard.UP &amp;&amp; !this.isAboveGround())
@@ -221,11 +312,10 @@ class Character extends MovableObject {
       this.pepesIdleFalse();
       this.world.audioManager.playSound("jumping");
     }
-    this.world.camera_x = -this.x + 150;
   }
 
   /**
-   *
+   * Resets timers and sets the character's idle and sleep states to false.
    */
   pepesIdleFalse() {
     this.resetTimers();
@@ -234,7 +324,7 @@ class Character extends MovableObject {
   }
 
   /**
-   * Some auto playback images and gameOver.
+   * Handles Pepe's animation updates based on the current state of the character.
    */
   pepeAnimate() {
     this.hurting();
@@ -244,10 +334,15 @@ class Character extends MovableObject {
       this.animateJumping();
     } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
       this.animateWalking();
-    } else this.handleIdleState();
+    } else {
+      this.handleIdleState();
+    }
     this.handleSnoringSound();
   }
 
+  /**
+   * Handles the character's hurt animation and sound effect.
+   */
   hurting() {
     if (this.isHurt() &amp;&amp; !this.isDead()) {
       this.animateHurt();
@@ -257,6 +352,9 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Handles the idle state of the character when appropriate.
+   */
   handleIdleState() {
     if (
       this.idleTimer() &amp;&amp;
@@ -268,6 +366,9 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Handles the character's idle and sleeping animations based on timers.
+   */
   idleAlsoSleep() {
     if (this.sleepTimer()) {
       this.animateSleeping();
@@ -280,42 +381,66 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Plays the hurt animation and sound effect, and resets timers.
+   */
   animateHurt() {
     this.playAnimation(this.IMAGES_HURT);
     this.resetTimers();
     this.world.audioManager.playSound("hurting");
   }
 
+  /**
+   * Plays the dead animation and sound effect, and triggers the game over sequence.
+   */
   animateDead() {
     this.playAnimation(this.IMAGES_DEAD);
     this.world.audioManager.playSound("gameLose");
     gameOver();
   }
 
+  /**
+   * Plays the jumping animation and resets timers.
+   */
   animateJumping() {
     this.playAnimation(this.IMAGES_JUMPING);
     this.resetTimers();
   }
 
+  /**
+   * Plays the walking animation and resets timers.
+   */
   animateWalking() {
     this.playAnimation(this.IMAGES_WALKING);
     this.resetTimers();
   }
 
+  /**
+   * Plays the idle animation and resets the idle start timer.
+   */
   animateIdle() {
     this.playAnimation(this.IMAGES_IDLE);
     this.reset_idleStartTimer();
   }
 
+  /**
+   * Plays the sleeping animation.
+   */
   animateSleeping() {
     this.playAnimation(this.IMAGES_SLEEP);
   }
 
+  /**
+   * Handles Pepe's movement to the right.
+   */
   pepeMoveRightOptions() {
     this.moveRight();
     this.otherDirection = false;
   }
 
+  /**
+   * Handles Pepe's movement to the left.
+   */
   pepeMoveLeftOptions() {
     this.moveLeft();
     this.otherDirection = true;
@@ -331,13 +456,13 @@ class Character extends MovableObject {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li></ul><h3>Global</h3><ul><li><a href="global.html#adjustDisplayBasedOnWidthAndOrientation">adjustDisplayBasedOnWidthAndOrientation</a></li><li><a href="global.html#alsoClickOutside">alsoClickOutside</a></li><li><a href="global.html#apertureGameOver">apertureGameOver</a></li><li><a href="global.html#clearAllIntervals">clearAllIntervals</a></li><li><a href="global.html#createLevel">createLevel</a></li><li><a href="global.html#createObjects">createObjects</a></li><li><a href="global.html#getScreenWidth">getScreenWidth</a></li><li><a href="global.html#handleLandscapeMode">handleLandscapeMode</a></li><li><a href="global.html#handlePortraitMode">handlePortraitMode</a></li><li><a href="global.html#initGame">initGame</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#isLandscapeOrientation">isLandscapeOrientation</a></li><li><a href="global.html#loadPage">loadPage</a></li><li><a href="global.html#menuPopManager">menuPopManager</a></li><li><a href="global.html#pauseAllIntervals">pauseAllIntervals</a></li><li><a href="global.html#pauseAllTimeouts">pauseAllTimeouts</a></li><li><a href="global.html#preloadAssets">preloadAssets</a></li><li><a href="global.html#preloadAudio">preloadAudio</a></li><li><a href="global.html#preloadFonts">preloadFonts</a></li><li><a href="global.html#preloadImages">preloadImages</a></li><li><a href="global.html#prepareTheGamingExperience">prepareTheGamingExperience</a></li><li><a href="global.html#resetGlobals">resetGlobals</a></li><li><a href="global.html#resumeAllIntervals">resumeAllIntervals</a></li><li><a href="global.html#resumeAllTimeouts">resumeAllTimeouts</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setStoppableTimeout">setStoppableTimeout</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AudioManager.html">AudioManager</a></li><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bottle.html">Bottle</a></li><li><a href="Character.html">Character</a></li><li><a href="Chick.html">Chick</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="Coin.html">Coin</a></li><li><a href="CounterStrikeChicken.html">CounterStrikeChicken</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li></ul><h3>Global</h3><ul><li><a href="global.html#adjustDisplayBasedOnWidthAndOrientation">adjustDisplayBasedOnWidthAndOrientation</a></li><li><a href="global.html#alsoClickOutside">alsoClickOutside</a></li><li><a href="global.html#apertureGameOver">apertureGameOver</a></li><li><a href="global.html#apertureGameWin">apertureGameWin</a></li><li><a href="global.html#bottles">bottles</a></li><li><a href="global.html#clearAllIntervals">clearAllIntervals</a></li><li><a href="global.html#closeMenu">closeMenu</a></li><li><a href="global.html#coins">coins</a></li><li><a href="global.html#createLevel">createLevel</a></li><li><a href="global.html#createObjects">createObjects</a></li><li><a href="global.html#enterFullscreen">enterFullscreen</a></li><li><a href="global.html#exitFullscreen">exitFullscreen</a></li><li><a href="global.html#gameOver">gameOver</a></li><li><a href="global.html#gameWin">gameWin</a></li><li><a href="global.html#getScreenWidth">getScreenWidth</a></li><li><a href="global.html#handleLandscapeMode">handleLandscapeMode</a></li><li><a href="global.html#handlePortraitMode">handlePortraitMode</a></li><li><a href="global.html#height">height</a></li><li><a href="global.html#idle">idle</a></li><li><a href="global.html#initGame">initGame</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#isLandscapeOrientation">isLandscapeOrientation</a></li><li><a href="global.html#lastCollidedEnemy">lastCollidedEnemy</a></li><li><a href="global.html#loadPage">loadPage</a></li><li><a href="global.html#loadingSpinnerEnd">loadingSpinnerEnd</a></li><li><a href="global.html#loadingSpinnerStart">loadingSpinnerStart</a></li><li><a href="global.html#maxBottles">maxBottles</a></li><li><a href="global.html#maxCoins">maxCoins</a></li><li><a href="global.html#menuPopManager">menuPopManager</a></li><li><a href="global.html#offset">offset</a></li><li><a href="global.html#openMenu">openMenu</a></li><li><a href="global.html#pauseAllIntervals">pauseAllIntervals</a></li><li><a href="global.html#pauseAllTimeouts">pauseAllTimeouts</a></li><li><a href="global.html#preloadAssets">preloadAssets</a></li><li><a href="global.html#preloadAudio">preloadAudio</a></li><li><a href="global.html#preloadFonts">preloadFonts</a></li><li><a href="global.html#preloadImages">preloadImages</a></li><li><a href="global.html#prepareTheGamingExperience">prepareTheGamingExperience</a></li><li><a href="global.html#resetCanvas">resetCanvas</a></li><li><a href="global.html#resetGlobals">resetGlobals</a></li><li><a href="global.html#resumeAllIntervals">resumeAllIntervals</a></li><li><a href="global.html#resumeAllTimeouts">resumeAllTimeouts</a></li><li><a href="global.html#returnToHome">returnToHome</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setStoppableTimeout">setStoppableTimeout</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#speed">speed</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Sep 04 2024 14:12:19 GMT-0400 (Paraguayische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Sat Sep 07 2024 08:11:32 GMT-0400 (Paraguayische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>

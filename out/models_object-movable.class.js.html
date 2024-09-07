@@ -36,8 +36,17 @@ class MovableObject extends DrawableObject {
   speedY = 0;
   acceleration = 1;
 
+  offset = {
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  };
+
   /**
-   * Calculation of the area for each object.
+   * Checks if this object is colliding with another object.
+   * @param {DrawableObject} obj - The object to check for collision with.
+   * @returns {boolean} - True if the objects are colliding, false otherwise.
    */
   isColliding(obj) {
     return (
@@ -49,8 +58,8 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Define the gravity for the character and for the bottles.
-   * This must be greater than 0 because the jump fn should only work above the ground.
+   * Applies gravity to the object, affecting its vertical position and speed.
+   * Gravity is applied as long as the object is above the ground or falling.
    */
   applyGravity() {
     setStoppableInterval(() => {
@@ -62,9 +71,8 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Confirming whether the object is above the ground.
-   * For Pepe, the else part of the query is always executed.
-   * @returns boolean
+   * Checks if the object is above the ground.
+   * @returns {boolean} - True if the object is above the ground, false otherwise.
    */
   isAboveGround() {
     if (this instanceof ThrowableObject) {
@@ -75,14 +83,14 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Pepes Controls
+   * Moves the object to the right.
    */
   moveRight() {
     this.x += this.speed;
   }
 
   /**
-   * Pepes Controls
+   * Moves the object to the left.
    * Also moves the clouds and the chickens.
    */
   moveLeft() {
@@ -90,26 +98,45 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Pushing Pepe back during a collision with an enemy.
+   * Handles the pushback of the character during a collision with an enemy, considering the enemy's offset.
+   * @param {MovableObject} enemy - The enemy object causing the pushback.
    */
   handleCharacterPushback(enemy) {
-    let targetPosition;
-
-    if (enemy instanceof Endboss) {
-      targetPosition = this.x - 150;
-    } else if (enemy instanceof Chicken) {
-      targetPosition = this.x - 70;
-    } else if (enemy instanceof CounterStrikeChicken) {
-      targetPosition = this.x - 70;
-    } else if (enemy instanceof Chick) {
-      targetPosition = this.x - 55;
+    if (enemy.x &lt; this.x) {
+      const targetPosition = this.calculatePushTarget(enemy, "right");
+      this.pushRightSmooth(targetPosition);
+    } else {
+      const targetPosition = this.calculatePushTarget(enemy, "left");
+      this.pushLeftSmooth(targetPosition);
     }
-
-    this.pushLeftSmooth(targetPosition);
   }
 
   /**
-   * A smooth push back of Pepe in a collision with the opponent.
+   * Calculates the target position for the pushback based on the enemy and direction.
+   * @param {MovableObject} enemy - The enemy object.
+   * @param {string} direction - The direction of the push ("left" or "right").
+   * @returns {number} - The target position to push the character to.
+   */
+  calculatePushTarget(enemy, direction) {
+    let offset;
+
+    if (enemy instanceof Endboss) {
+      offset = 150;
+    } else if (
+      enemy instanceof Chicken ||
+      enemy instanceof CounterStrikeChicken
+    ) {
+      offset = 70;
+    } else if (enemy instanceof Chick) {
+      offset = 55;
+    }
+
+    return direction === "right" ? this.x + offset : this.x - offset;
+  }
+
+  /**
+   * Smoothly pushes the character to the left until the target position is reached.
+   * @param {number} targetPosition - The target position to move the character to.
    */
   pushLeftSmooth(targetPosition) {
     let step = 2;
@@ -129,17 +156,36 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Only for Pepe to control his acceleration for jumping.
+   * Smoothly pushes the character to the right until the target position is reached.
+   * @param {number} targetPosition - The target position to move the character to.
+   */
+  pushRightSmooth(targetPosition) {
+    let step = 3;
+
+    const smoothMove = () => {
+      if (this.world.keyboard.RIGHT) {
+        return;
+      }
+
+      if (this.x &lt; targetPosition) {
+        this.x += step;
+        requestAnimationFrame(smoothMove);
+      }
+    };
+
+    smoothMove();
+  }
+
+  /**
+   * Makes the character jump by setting the vertical speed.
    */
   jump() {
     this.speedY = 15;
   }
 
   /**
-   * #1 hit: Pepe's life energy => Pepe is invulnerable for one second.
-   * Checks whether Pepe has taken damage within the last second.
-   * => Only then hit (this.lastHit)!
-   * @returns Boolean
+   * Checks if the character is currently hurt based on the last hit time.
+   * @returns {boolean} - True if the character is hurt, false otherwise.
    */
   isHurt() {
     let timePassed = new Date().getTime() - this.lastHit;
@@ -148,11 +194,8 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * #2 Egergie: Pepe's life energy => Energy can only be reduced every one second.
-   * Causes damage to the character and updates the status bar.
-   *
-   * A hit is only counted if the difference between the current time and the last hit
-   * is greater than or equal to the specified cooldown period (hitCooldown).
+   * Applies damage to the character and updates the cooldown period between hits.
+   * The character's energy is reduced and cannot go below zero.
    */
   hitPepe() {
     const now = Date.now();
@@ -168,8 +211,8 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Pepes is dying.
-   * @returns Boolean
+   * Checks if the character is dead based on its energy.
+   * @returns {boolean} - True if the character is dead, false otherwise.
    */
   isDead() {
     return this.energy == 0;
@@ -185,13 +228,13 @@ class MovableObject extends DrawableObject {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li></ul><h3>Global</h3><ul><li><a href="global.html#adjustDisplayBasedOnWidthAndOrientation">adjustDisplayBasedOnWidthAndOrientation</a></li><li><a href="global.html#alsoClickOutside">alsoClickOutside</a></li><li><a href="global.html#apertureGameOver">apertureGameOver</a></li><li><a href="global.html#clearAllIntervals">clearAllIntervals</a></li><li><a href="global.html#createLevel">createLevel</a></li><li><a href="global.html#createObjects">createObjects</a></li><li><a href="global.html#getScreenWidth">getScreenWidth</a></li><li><a href="global.html#handleLandscapeMode">handleLandscapeMode</a></li><li><a href="global.html#handlePortraitMode">handlePortraitMode</a></li><li><a href="global.html#initGame">initGame</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#isLandscapeOrientation">isLandscapeOrientation</a></li><li><a href="global.html#loadPage">loadPage</a></li><li><a href="global.html#menuPopManager">menuPopManager</a></li><li><a href="global.html#pauseAllIntervals">pauseAllIntervals</a></li><li><a href="global.html#pauseAllTimeouts">pauseAllTimeouts</a></li><li><a href="global.html#preloadAssets">preloadAssets</a></li><li><a href="global.html#preloadAudio">preloadAudio</a></li><li><a href="global.html#preloadFonts">preloadFonts</a></li><li><a href="global.html#preloadImages">preloadImages</a></li><li><a href="global.html#prepareTheGamingExperience">prepareTheGamingExperience</a></li><li><a href="global.html#resetGlobals">resetGlobals</a></li><li><a href="global.html#resumeAllIntervals">resumeAllIntervals</a></li><li><a href="global.html#resumeAllTimeouts">resumeAllTimeouts</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setStoppableTimeout">setStoppableTimeout</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AudioManager.html">AudioManager</a></li><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bottle.html">Bottle</a></li><li><a href="Character.html">Character</a></li><li><a href="Chick.html">Chick</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="Coin.html">Coin</a></li><li><a href="CounterStrikeChicken.html">CounterStrikeChicken</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li></ul><h3>Global</h3><ul><li><a href="global.html#adjustDisplayBasedOnWidthAndOrientation">adjustDisplayBasedOnWidthAndOrientation</a></li><li><a href="global.html#alsoClickOutside">alsoClickOutside</a></li><li><a href="global.html#apertureGameOver">apertureGameOver</a></li><li><a href="global.html#apertureGameWin">apertureGameWin</a></li><li><a href="global.html#bottles">bottles</a></li><li><a href="global.html#clearAllIntervals">clearAllIntervals</a></li><li><a href="global.html#closeMenu">closeMenu</a></li><li><a href="global.html#coins">coins</a></li><li><a href="global.html#createLevel">createLevel</a></li><li><a href="global.html#createObjects">createObjects</a></li><li><a href="global.html#enterFullscreen">enterFullscreen</a></li><li><a href="global.html#exitFullscreen">exitFullscreen</a></li><li><a href="global.html#gameOver">gameOver</a></li><li><a href="global.html#gameWin">gameWin</a></li><li><a href="global.html#getScreenWidth">getScreenWidth</a></li><li><a href="global.html#handleLandscapeMode">handleLandscapeMode</a></li><li><a href="global.html#handlePortraitMode">handlePortraitMode</a></li><li><a href="global.html#height">height</a></li><li><a href="global.html#idle">idle</a></li><li><a href="global.html#initGame">initGame</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#isLandscapeOrientation">isLandscapeOrientation</a></li><li><a href="global.html#lastCollidedEnemy">lastCollidedEnemy</a></li><li><a href="global.html#loadPage">loadPage</a></li><li><a href="global.html#loadingSpinnerEnd">loadingSpinnerEnd</a></li><li><a href="global.html#loadingSpinnerStart">loadingSpinnerStart</a></li><li><a href="global.html#maxBottles">maxBottles</a></li><li><a href="global.html#maxCoins">maxCoins</a></li><li><a href="global.html#menuPopManager">menuPopManager</a></li><li><a href="global.html#offset">offset</a></li><li><a href="global.html#openMenu">openMenu</a></li><li><a href="global.html#pauseAllIntervals">pauseAllIntervals</a></li><li><a href="global.html#pauseAllTimeouts">pauseAllTimeouts</a></li><li><a href="global.html#preloadAssets">preloadAssets</a></li><li><a href="global.html#preloadAudio">preloadAudio</a></li><li><a href="global.html#preloadFonts">preloadFonts</a></li><li><a href="global.html#preloadImages">preloadImages</a></li><li><a href="global.html#prepareTheGamingExperience">prepareTheGamingExperience</a></li><li><a href="global.html#resetCanvas">resetCanvas</a></li><li><a href="global.html#resetGlobals">resetGlobals</a></li><li><a href="global.html#resumeAllIntervals">resumeAllIntervals</a></li><li><a href="global.html#resumeAllTimeouts">resumeAllTimeouts</a></li><li><a href="global.html#returnToHome">returnToHome</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setStoppableTimeout">setStoppableTimeout</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#speed">speed</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Sep 04 2024 14:12:19 GMT-0400 (Paraguayische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Sat Sep 07 2024 08:11:32 GMT-0400 (Paraguayische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>

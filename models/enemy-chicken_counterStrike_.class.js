@@ -29,6 +29,11 @@ class CounterStrikeChicken extends MovableObject {
     right: 5,
   };
 
+  /**
+   * Creates an instance of CounterStrikeChicken.
+   * Initializes image loading, sets random speed, applies gravity, and starts animation.
+   * @param {Object} endBossRef - Reference to the end boss.
+   */
   constructor(endBossRef) {
     super().loadImage("./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
     this.images = {};
@@ -42,7 +47,7 @@ class CounterStrikeChicken extends MovableObject {
   }
 
   /**
-   * Determining the position of the strike chicken when it appears.
+   * Determines the spawn position of the strike chicken based on its index.
    * @param {number} index - The index of the strike chicken.
    */
   spawnRightPlace(index) {
@@ -55,6 +60,9 @@ class CounterStrikeChicken extends MovableObject {
     this.y = bossMidY + offsetY;
   }
 
+  /**
+   * Starts the attack phase, increasing speed and playing attack animation.
+   */
   startAttackPhase() {
     this.isAttacking = true;
     this.speed += 0.4;
@@ -71,20 +79,26 @@ class CounterStrikeChicken extends MovableObject {
     }, 2000);
   }
 
+  /**
+   * Stops the attack phase, resetting speed and clearing the attack interval.
+   */
   stopAttackPhase() {
     this.isAttacking = false;
     this.speed -= 0.2;
     clearInterval(this.attackInterval_first);
   }
 
+  /**
+   * Checks if the chicken is above ground.
+   * @returns {boolean} - True if the chicken is above ground, false otherwise.
+   */
   isAboveGround() {
     return this.y < 390;
   }
 
   /**
-   * Speed options and Running direction.
-   * Also some animations.
-   * Add random jumping
+   * Handles the animation of the chicken, including movement, walking, and jumping.
+   * Starts intervals for walking, animation, and random jumping.
    */
   animate() {
     this.walkingInterval = setStoppableInterval(
@@ -105,7 +119,7 @@ class CounterStrikeChicken extends MovableObject {
   }
 
   /**
-   * The jump sequence from the Strike Chicken.
+   * Executes the jump sequence for the strike chicken.
    */
   jump() {
     if (this.isJumping) return;
@@ -129,7 +143,8 @@ class CounterStrikeChicken extends MovableObject {
   }
 
   /**
-   * Logic for hitting the opponent.
+   * Handles the logic for hitting an opponent.
+   * Sets the energy to 0 and initiates the death sequence.
    */
   hit_anyOpponent() {
     this.energy = 0;
@@ -137,8 +152,8 @@ class CounterStrikeChicken extends MovableObject {
   }
 
   /**
-   * Kill logic for the chicken.
-   * Delete from enemy array.
+   * Handles the death sequence for the strike chicken.
+   * Plays the death animation, stops all intervals, and removes the chicken from the enemies array.
    */
   die_this() {
     this.world.audioManager.playSound("bossDeath");
@@ -151,6 +166,9 @@ class CounterStrikeChicken extends MovableObject {
     }, 700);
   }
 
+  /**
+   * Stops all intervals related to the chicken's behavior.
+   */
   stopAllIntervals() {
     clearInterval(this.attackInterval_first);
     clearInterval(this.walkingInterval);

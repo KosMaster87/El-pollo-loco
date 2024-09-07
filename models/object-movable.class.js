@@ -16,7 +16,9 @@ class MovableObject extends DrawableObject {
   };
 
   /**
-   * Calculation of the area for each object.
+   * Checks if this object is colliding with another object.
+   * @param {DrawableObject} obj - The object to check for collision with.
+   * @returns {boolean} - True if the objects are colliding, false otherwise.
    */
   isColliding(obj) {
     return (
@@ -28,8 +30,8 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Define the gravity for the character and for the bottles.
-   * This must be greater than 0 because the jump fn should only work above the ground.
+   * Applies gravity to the object, affecting its vertical position and speed.
+   * Gravity is applied as long as the object is above the ground or falling.
    */
   applyGravity() {
     setStoppableInterval(() => {
@@ -41,9 +43,8 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Confirming whether the object is above the ground.
-   * For Pepe, the else part of the query is always executed.
-   * @returns boolean
+   * Checks if the object is above the ground.
+   * @returns {boolean} - True if the object is above the ground, false otherwise.
    */
   isAboveGround() {
     if (this instanceof ThrowableObject) {
@@ -54,14 +55,14 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Pepes Controls
+   * Moves the object to the right.
    */
   moveRight() {
     this.x += this.speed;
   }
 
   /**
-   * Pepes Controls
+   * Moves the object to the left.
    * Also moves the clouds and the chickens.
    */
   moveLeft() {
@@ -69,7 +70,8 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Pushing Pepe back during a collision with an enemy, considering enemy's offset.
+   * Handles the pushback of the character during a collision with an enemy, considering the enemy's offset.
+   * @param {MovableObject} enemy - The enemy object causing the pushback.
    */
   handleCharacterPushback(enemy) {
     if (enemy.x < this.x) {
@@ -82,10 +84,10 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Calculate the target position based on the type of enemy and direction.
-   * @param {Object} enemy - The enemy object
-   * @param {string} direction - "left" or "right"
-   * @returns {number} targetPosition - The new position to push Pepe to
+   * Calculates the target position for the pushback based on the enemy and direction.
+   * @param {MovableObject} enemy - The enemy object.
+   * @param {string} direction - The direction of the push ("left" or "right").
+   * @returns {number} - The target position to push the character to.
    */
   calculatePushTarget(enemy, direction) {
     let offset;
@@ -105,7 +107,8 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * A smooth push back of Pepe to the left.
+   * Smoothly pushes the character to the left until the target position is reached.
+   * @param {number} targetPosition - The target position to move the character to.
    */
   pushLeftSmooth(targetPosition) {
     let step = 2;
@@ -125,7 +128,8 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * A smooth push back of Pepe to the right.
+   * Smoothly pushes the character to the right until the target position is reached.
+   * @param {number} targetPosition - The target position to move the character to.
    */
   pushRightSmooth(targetPosition) {
     let step = 3;
@@ -145,17 +149,15 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Only for Pepe to control his acceleration for jumping.
+   * Makes the character jump by setting the vertical speed.
    */
   jump() {
     this.speedY = 15;
   }
 
   /**
-   * #1 hit: Pepe's life energy => Pepe is invulnerable for one second.
-   * Checks whether Pepe has taken damage within the last second.
-   * => Only then hit (this.lastHit)!
-   * @returns Boolean
+   * Checks if the character is currently hurt based on the last hit time.
+   * @returns {boolean} - True if the character is hurt, false otherwise.
    */
   isHurt() {
     let timePassed = new Date().getTime() - this.lastHit;
@@ -164,11 +166,8 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * #2 Energie: Pepe's life energy => Energy can only be reduced every one second.
-   * Causes damage to the character and updates the status bar.
-   *
-   * A hit is only counted if the difference between the current time and the last hit
-   * is greater than or equal to the specified cooldown period (hitCooldown).
+   * Applies damage to the character and updates the cooldown period between hits.
+   * The character's energy is reduced and cannot go below zero.
    */
   hitPepe() {
     const now = Date.now();
@@ -184,8 +183,8 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Pepe is dying.
-   * @returns Boolean
+   * Checks if the character is dead based on its energy.
+   * @returns {boolean} - True if the character is dead, false otherwise.
    */
   isDead() {
     return this.energy == 0;

@@ -11,7 +11,12 @@ class Level {
   level_end_x = 4000;
 
   /**
-   * Here the order of the arguments is crucial in relation to the range order of the "new level" object.
+   * Initializes a new level with specified game objects.
+   * @param {Array<Enemy>} enemiesArray - Array of enemy objects to be included in the level.
+   * @param {Array<Cloud>} cloudsArray - Array of cloud objects to be included in the level.
+   * @param {Array<Background>} backgroundArray - Array of background objects to be included in the level.
+   * @param {Array<Bottle>} bottlesArray - Array of bottle objects to be included in the level.
+   * @param {Array<Coin>} coinsArray - Array of coin objects to be included in the level.
    */
   constructor(
     enemiesArray,

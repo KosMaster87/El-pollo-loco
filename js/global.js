@@ -6,7 +6,12 @@ let pausedIntervals = [];
 let pausedTimeoutIds = [];
 
 /**
- * Starts a new interval and saves the interval ID.
+ * Starts a new interval, executes the given function at the specified interval,
+ * and saves the interval ID to allow for stopping or pausing later.
+ *
+ * @param {Function} fn - The function to execute at each interval.
+ * @param {number} time - The interval time in milliseconds.
+ * @returns {number} The ID of the interval.
  */
 function setStoppableInterval(fn, time) {
   let id = setInterval(fn, time);
@@ -15,7 +20,12 @@ function setStoppableInterval(fn, time) {
 }
 
 /**
- * Starts a new timeout and saves the timeout ID.
+ * Starts a new timeout, executes the given function after the specified delay,
+ * and saves the timeout ID to allow for stopping or pausing later.
+ *
+ * @param {Function} fn - The function to execute after the delay.
+ * @param {number} time - The delay time in milliseconds.
+ * @returns {number} The ID of the timeout.
  */
 function setStoppableTimeout(fn, time) {
   let id = setTimeout(() => {
@@ -26,7 +36,8 @@ function setStoppableTimeout(fn, time) {
 }
 
 /**
- * Pauses all running intervals.
+ * Pauses all currently running intervals by clearing them,
+ * and saves them for resuming later.
  */
 function pauseAllIntervals() {
   intervalIds.forEach((interval) => {
@@ -37,7 +48,8 @@ function pauseAllIntervals() {
 }
 
 /**
- * Pauses all running timeouts.
+ * Pauses all currently running timeouts by clearing them,
+ * and saves them for resuming later.
  */
 function pauseAllTimeouts() {
   timeoutIds.forEach((timeout) => {
@@ -48,7 +60,8 @@ function pauseAllTimeouts() {
 }
 
 /**
- * Resumes all paused intervals.
+ * Resumes all paused intervals by restarting them using their original
+ * functions and timings, and re-saves their new IDs.
  */
 function resumeAllIntervals() {
   pausedIntervals.forEach((interval) => {
@@ -59,7 +72,8 @@ function resumeAllIntervals() {
 }
 
 /**
- * Resumes all paused timeouts.
+ * Resumes all paused timeouts by restarting them using their original
+ * functions and timings, and re-saves their new IDs.
  */
 function resumeAllTimeouts() {
   pausedTimeoutIds.forEach((timeout) => {
@@ -70,7 +84,8 @@ function resumeAllTimeouts() {
 }
 
 /**
- * Clears all running intervals and timeouts.
+ * Clears all currently running intervals and timeouts, as well as any paused
+ * ones, resetting the global interval and timeout arrays.
  */
 function clearAllIntervals() {
   intervalIds.forEach(({ id }) => clearInterval(id));
@@ -84,7 +99,8 @@ function clearAllIntervals() {
 }
 
 /**
- * Resets global variables.
+ * Resets global variables related to the game state, including
+ * game running status and world instance.
  */
 function resetGlobals() {
   isGameRunning = false;

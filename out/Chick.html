@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: models/status-bar-bottle.class.js</title>
+    <title>JSDoc: Class: Chick</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,73 +17,408 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: models/status-bar-bottle.class.js</h1>
+    <h1 class="page-title">Class: Chick</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
+        <h2><span class="attribs"><span class="type-signature"></span></span>Chick<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+    
+</header>
 
-class BottleStatusBar extends DrawableObject {
-  IMAGES = [
-    "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png",
-    "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/20.png",
-    "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/40.png",
-    "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/60.png",
-    "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/80.png",
-    "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/100.png",
-  ];
+<article>
+    <div class="container-overview">
+    
+        
 
-  percentage = 0;
+    
 
-  constructor() {
-    super();
-    this.y = 85;
-    this.x = 10;
-    this.width = 200;
-    this.height = 60;
+    
+    <h4 class="name" id="Chick"><span class="type-signature"></span>new Chick<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
-    this.loadImages(this.IMAGES);
-    this.setPercentage(0);
-  }
+    
 
-  /**
-   * Sets the energy level displayed in the status bar.
-   * @param {number} percentage - The current energy level of the bottle as a percentage.
-   */
-  setPercentage(percentage) {
-    this.percentage = Math.max(0, Math.min(100, percentage));
-    let path = this.IMAGES[this.resolveImageIndex()];
-    this.img = Static.getImage(path);
-  }
 
-  /**
-   * Determines the index of the image to display based on the percentage.
-   * @returns {number} The index of the image in the IMAGES array.
-   */
-  resolveImageIndex() {
-    if (this.percentage == 100) {
-      return 5;
-    } else if (this.percentage >= 80) {
-      return 4;
-    } else if (this.percentage >= 60) {
-      return 3;
-    } else if (this.percentage >= 40) {
-      return 2;
-    } else if (this.percentage >= 20) {
-      return 1;
-    } else {
-      return 0;
-    }
-  }
-}
-</code></pre>
-        </article>
-    </section>
+
+<div class="description">
+    Creates an instance of Chick.
+Initializes image loading, sets random speed and position, and starts animation.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_enemy-chick.class.js.html">models/enemy-chick.class.js</a>, <a href="models_enemy-chick.class.js.html#line28">line 28</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="animate"><span class="type-signature"></span>animate<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Starts the movement and animation intervals for the Chick.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_enemy-chick.class.js.html">models/enemy-chick.class.js</a>, <a href="models_enemy-chick.class.js.html#line41">line 41</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="die_this"><span class="type-signature"></span>die_this<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Handles the death sequence for the Chick.
+Plays the death animation, stops intervals, and removes the Chick from the enemies array.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_enemy-chick.class.js.html">models/enemy-chick.class.js</a>, <a href="models_enemy-chick.class.js.html#line65">line 65</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="hit_anyOpponent"><span class="type-signature"></span>hit_anyOpponent<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Handles the logic for hitting an opponent.
+Sets the energy to 0 and initiates the death sequence.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_enemy-chick.class.js.html">models/enemy-chick.class.js</a>, <a href="models_enemy-chick.class.js.html#line56">line 56</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

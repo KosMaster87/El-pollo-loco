@@ -13,22 +13,24 @@ class Bottle extends PickableObject {
     right: 10,
   };
 
+  /**
+   * Creates an instance of a bottle.
+   * @param {number} [x] - The x-coordinate position of the bottle. If not provided, a random value will be used.
+   * @param {number} [y] - The y-coordinate position of the bottle. If not provided, a random value will be used.
+   */
   constructor(x, y) {
     super().loadImage("./img/6_salsa_bottle/salsa_bottle.png");
     this.images = {};
     this.loadImages(this.IMAGES_SALSA_GROUND);
-    // this.x = 100 + Math.random() * 720 * 4;
-    // this.y = 370 + Math.random();
-    // Zufällige Platzierung der Flaschen auf der Karte
-    this.x = x || 100 + Math.random() * 720 * 4; // zufällige x-Position
-    this.y = y || 370 + Math.random(); // zufällige y-Position
+    this.x = x || 100 + Math.random() * 720 * 4;
+    this.y = y || 370 + Math.random();
     this.width = 50;
     this.height = 60;
     this.animate();
   }
 
   /**
-   * Animate the bottle
+   * Animate the bottle by playing the salsa ground images.
    */
   animate() {
     setStoppableInterval(() => {

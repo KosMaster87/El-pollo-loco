@@ -34,7 +34,12 @@ let pausedIntervals = [];
 let pausedTimeoutIds = [];
 
 /**
- * Starts a new interval and saves the interval ID.
+ * Starts a new interval, executes the given function at the specified interval,
+ * and saves the interval ID to allow for stopping or pausing later.
+ *
+ * @param {Function} fn - The function to execute at each interval.
+ * @param {number} time - The interval time in milliseconds.
+ * @returns {number} The ID of the interval.
  */
 function setStoppableInterval(fn, time) {
   let id = setInterval(fn, time);
@@ -43,7 +48,12 @@ function setStoppableInterval(fn, time) {
 }
 
 /**
- * Starts a new timeout and saves the timeout ID.
+ * Starts a new timeout, executes the given function after the specified delay,
+ * and saves the timeout ID to allow for stopping or pausing later.
+ *
+ * @param {Function} fn - The function to execute after the delay.
+ * @param {number} time - The delay time in milliseconds.
+ * @returns {number} The ID of the timeout.
  */
 function setStoppableTimeout(fn, time) {
   let id = setTimeout(() => {
@@ -54,7 +64,8 @@ function setStoppableTimeout(fn, time) {
 }
 
 /**
- * Pauses all running intervals.
+ * Pauses all currently running intervals by clearing them,
+ * and saves them for resuming later.
  */
 function pauseAllIntervals() {
   intervalIds.forEach((interval) => {
@@ -65,7 +76,8 @@ function pauseAllIntervals() {
 }
 
 /**
- * Pauses all running timeouts.
+ * Pauses all currently running timeouts by clearing them,
+ * and saves them for resuming later.
  */
 function pauseAllTimeouts() {
   timeoutIds.forEach((timeout) => {
@@ -76,7 +88,8 @@ function pauseAllTimeouts() {
 }
 
 /**
- * Resumes all paused intervals.
+ * Resumes all paused intervals by restarting them using their original
+ * functions and timings, and re-saves their new IDs.
  */
 function resumeAllIntervals() {
   pausedIntervals.forEach((interval) => {
@@ -87,7 +100,8 @@ function resumeAllIntervals() {
 }
 
 /**
- * Resumes all paused timeouts.
+ * Resumes all paused timeouts by restarting them using their original
+ * functions and timings, and re-saves their new IDs.
  */
 function resumeAllTimeouts() {
   pausedTimeoutIds.forEach((timeout) => {
@@ -98,7 +112,8 @@ function resumeAllTimeouts() {
 }
 
 /**
- * Clears all running intervals and timeouts.
+ * Clears all currently running intervals and timeouts, as well as any paused
+ * ones, resetting the global interval and timeout arrays.
  */
 function clearAllIntervals() {
   intervalIds.forEach(({ id }) => clearInterval(id));
@@ -112,7 +127,8 @@ function clearAllIntervals() {
 }
 
 /**
- * Resets global variables.
+ * Resets global variables related to the game state, including
+ * game running status and world instance.
  */
 function resetGlobals() {
   isGameRunning = false;
@@ -129,13 +145,13 @@ function resetGlobals() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li></ul><h3>Global</h3><ul><li><a href="global.html#adjustDisplayBasedOnWidthAndOrientation">adjustDisplayBasedOnWidthAndOrientation</a></li><li><a href="global.html#alsoClickOutside">alsoClickOutside</a></li><li><a href="global.html#apertureGameOver">apertureGameOver</a></li><li><a href="global.html#clearAllIntervals">clearAllIntervals</a></li><li><a href="global.html#createLevel">createLevel</a></li><li><a href="global.html#createObjects">createObjects</a></li><li><a href="global.html#getScreenWidth">getScreenWidth</a></li><li><a href="global.html#handleLandscapeMode">handleLandscapeMode</a></li><li><a href="global.html#handlePortraitMode">handlePortraitMode</a></li><li><a href="global.html#initGame">initGame</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#isLandscapeOrientation">isLandscapeOrientation</a></li><li><a href="global.html#loadPage">loadPage</a></li><li><a href="global.html#menuPopManager">menuPopManager</a></li><li><a href="global.html#pauseAllIntervals">pauseAllIntervals</a></li><li><a href="global.html#pauseAllTimeouts">pauseAllTimeouts</a></li><li><a href="global.html#preloadAssets">preloadAssets</a></li><li><a href="global.html#preloadAudio">preloadAudio</a></li><li><a href="global.html#preloadFonts">preloadFonts</a></li><li><a href="global.html#preloadImages">preloadImages</a></li><li><a href="global.html#prepareTheGamingExperience">prepareTheGamingExperience</a></li><li><a href="global.html#resetGlobals">resetGlobals</a></li><li><a href="global.html#resumeAllIntervals">resumeAllIntervals</a></li><li><a href="global.html#resumeAllTimeouts">resumeAllTimeouts</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setStoppableTimeout">setStoppableTimeout</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AudioManager.html">AudioManager</a></li><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bottle.html">Bottle</a></li><li><a href="Character.html">Character</a></li><li><a href="Chick.html">Chick</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="Coin.html">Coin</a></li><li><a href="CounterStrikeChicken.html">CounterStrikeChicken</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li></ul><h3>Global</h3><ul><li><a href="global.html#adjustDisplayBasedOnWidthAndOrientation">adjustDisplayBasedOnWidthAndOrientation</a></li><li><a href="global.html#alsoClickOutside">alsoClickOutside</a></li><li><a href="global.html#apertureGameOver">apertureGameOver</a></li><li><a href="global.html#apertureGameWin">apertureGameWin</a></li><li><a href="global.html#bottles">bottles</a></li><li><a href="global.html#clearAllIntervals">clearAllIntervals</a></li><li><a href="global.html#closeMenu">closeMenu</a></li><li><a href="global.html#coins">coins</a></li><li><a href="global.html#createLevel">createLevel</a></li><li><a href="global.html#createObjects">createObjects</a></li><li><a href="global.html#enterFullscreen">enterFullscreen</a></li><li><a href="global.html#exitFullscreen">exitFullscreen</a></li><li><a href="global.html#gameOver">gameOver</a></li><li><a href="global.html#gameWin">gameWin</a></li><li><a href="global.html#getScreenWidth">getScreenWidth</a></li><li><a href="global.html#handleLandscapeMode">handleLandscapeMode</a></li><li><a href="global.html#handlePortraitMode">handlePortraitMode</a></li><li><a href="global.html#height">height</a></li><li><a href="global.html#idle">idle</a></li><li><a href="global.html#initGame">initGame</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#isLandscapeOrientation">isLandscapeOrientation</a></li><li><a href="global.html#lastCollidedEnemy">lastCollidedEnemy</a></li><li><a href="global.html#loadPage">loadPage</a></li><li><a href="global.html#loadingSpinnerEnd">loadingSpinnerEnd</a></li><li><a href="global.html#loadingSpinnerStart">loadingSpinnerStart</a></li><li><a href="global.html#maxBottles">maxBottles</a></li><li><a href="global.html#maxCoins">maxCoins</a></li><li><a href="global.html#menuPopManager">menuPopManager</a></li><li><a href="global.html#offset">offset</a></li><li><a href="global.html#openMenu">openMenu</a></li><li><a href="global.html#pauseAllIntervals">pauseAllIntervals</a></li><li><a href="global.html#pauseAllTimeouts">pauseAllTimeouts</a></li><li><a href="global.html#preloadAssets">preloadAssets</a></li><li><a href="global.html#preloadAudio">preloadAudio</a></li><li><a href="global.html#preloadFonts">preloadFonts</a></li><li><a href="global.html#preloadImages">preloadImages</a></li><li><a href="global.html#prepareTheGamingExperience">prepareTheGamingExperience</a></li><li><a href="global.html#resetCanvas">resetCanvas</a></li><li><a href="global.html#resetGlobals">resetGlobals</a></li><li><a href="global.html#resumeAllIntervals">resumeAllIntervals</a></li><li><a href="global.html#resumeAllTimeouts">resumeAllTimeouts</a></li><li><a href="global.html#returnToHome">returnToHome</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setStoppableTimeout">setStoppableTimeout</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#speed">speed</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Sep 04 2024 14:12:19 GMT-0400 (Paraguayische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Sat Sep 07 2024 08:11:32 GMT-0400 (Paraguayische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>

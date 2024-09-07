@@ -1,6 +1,14 @@
 "use strict";
 
+/**
+ * The `Character` class extends `MovableObject` and represents the main player character with various animations and actions.
+ * @extends {MovableObject}
+ */
 class Character extends MovableObject {
+  /**
+   * Array of walking animation images for the character.
+   * @type {string[]}
+   */
   IMAGES_WALKING = [
     "./img/2_character_pepe/2_walk/W-21.png",
     "./img/2_character_pepe/2_walk/W-22.png",
@@ -10,6 +18,10 @@ class Character extends MovableObject {
     "./img/2_character_pepe/2_walk/W-26.png",
   ];
 
+  /**
+   * Array of jumping animation images for the character.
+   * @type {string[]}
+   */
   IMAGES_JUMPING = [
     "./img/2_character_pepe/3_jump/J-31.png",
     "./img/2_character_pepe/3_jump/J-32.png",
@@ -22,12 +34,20 @@ class Character extends MovableObject {
     "./img/2_character_pepe/3_jump/J-39.png",
   ];
 
+  /**
+   * Array of hurt animation images for the character.
+   * @type {string[]}
+   */
   IMAGES_HURT = [
     "./img/2_character_pepe/4_hurt/H-41.png",
     "./img/2_character_pepe/4_hurt/H-42.png",
     "./img/2_character_pepe/4_hurt/H-43.png",
   ];
 
+  /**
+   * Array of dead animation images for the character.
+   * @type {string[]}
+   */
   IMAGES_DEAD = [
     "./img/2_character_pepe/5_dead/D-51.png",
     "./img/2_character_pepe/5_dead/D-52.png",
@@ -38,6 +58,10 @@ class Character extends MovableObject {
     "./img/2_character_pepe/5_dead/D-57.png",
   ];
 
+  /**
+   * Array of idle animation images for the character.
+   * @type {string[]}
+   */
   IMAGES_IDLE = [
     "./img/2_character_pepe/1_idle/idle/I-1.png",
     "./img/2_character_pepe/1_idle/idle/I-2.png",
@@ -51,6 +75,10 @@ class Character extends MovableObject {
     "./img/2_character_pepe/1_idle/idle/I-10.png",
   ];
 
+  /**
+   * Array of sleeping animation images for the character.
+   * @type {string[]}
+   */
   IMAGES_SLEEP = [
     "./img/2_character_pepe/1_idle/long_idle/I-11.png",
     "./img/2_character_pepe/1_idle/long_idle/I-12.png",
@@ -75,22 +103,22 @@ class Character extends MovableObject {
   coins = [];
   maxBottles = 5;
   maxCoins = 5;
-
   height = 170;
   width = 95;
   x = 0;
   y = 270;
   speed = 5;
-
   idleStart;
   sleepStart;
   idle = false;
   sleep = false;
   lastCollidedEnemy = null;
 
+  /**
+   * @param {AudioManager} audioManager - Manages sound effects in the game.
+   */
   constructor(audioManager) {
     super().loadImage("./img/2_character_pepe/2_walk/W-21.png");
-    this.images = {};
     this.audioManager = audioManager;
     this.idleStart = Date.now();
     this.sleepStart = Date.now();
@@ -104,11 +132,17 @@ class Character extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Collects a bottle and plays the associated sound.
+   */
   collectBottle() {
     this.bottles.push(new Bottle());
     this.world.audioManager.playSound("bottleEarn");
   }
 
+  /**
+   * Collects a coin and plays the associated sound if the maximum number of coins has not been reached.
+   */
   collectCoin() {
     if (this.coins.length < this.maxCoins) {
       this.coins.push(new Coin());
@@ -116,29 +150,49 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Returns true if the idle time exceeds 0.1 seconds.
+   * @returns {boolean}
+   */
   idleTimer() {
     let idleTime = (Date.now() - this.idleStart) / 1000;
     return idleTime >= 0.1;
   }
 
+  /**
+   * Returns true if the sleep time exceeds 2.5 seconds.
+   * @returns {boolean}
+   */
   sleepTimer() {
     let sleepTime = (Date.now() - this.sleepStart) / 1000;
     return sleepTime >= 2.5;
   }
 
+  /**
+   * Resets both the idle and sleep timers.
+   */
   resetTimers() {
     this.reset_idleStartTimer();
     this.reset_sleepStartTimer();
   }
 
+  /**
+   * Resets the sleep timer.
+   */
   reset_sleepStartTimer() {
     this.sleepStart = Date.now();
   }
 
+  /**
+   * Resets the idle timer.
+   */
   reset_idleStartTimer() {
     this.idleStart = Date.now();
   }
 
+  /**
+   * Plays or stops the snoring sound based on the character's sleep state.
+   */
   handleSnoringSound() {
     if (this.sleep) {
       if (!this.snoringPlaying) {
@@ -153,14 +207,16 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Stops all active intervals for the character's movement and animations.
+   */
   stopIntervals() {
     clearInterval(this.moveInterval);
     clearInterval(this.animateInterval);
   }
 
   /**
-   * Speed options and running direction.
-   * Also some animations.
+   * Handles the character's movement and animation by setting up stoppable intervals for movement and animation updates.
    */
   animate() {
     this.moveInterval = setStoppableInterval(() => this.pepeMove(), 1000 / 45);
@@ -170,6 +226,9 @@ class Character extends MovableObject {
     );
   }
 
+  /**
+   * Handles Pepe's movement, including collision checks, axis movement, and jumping.
+   */
   pepeMove() {
     if (this.collisionBlocked) {
       return;
@@ -227,6 +286,9 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Resets timers and sets the character's idle and sleep states to false.
+   */
   pepesIdleFalse() {
     this.resetTimers();
     this.idle = false;
@@ -234,7 +296,7 @@ class Character extends MovableObject {
   }
 
   /**
-   * Some auto playback images and gameOver.
+   * Handles Pepe's animation updates based on the current state of the character.
    */
   pepeAnimate() {
     this.hurting();
@@ -244,10 +306,15 @@ class Character extends MovableObject {
       this.animateJumping();
     } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
       this.animateWalking();
-    } else this.handleIdleState();
+    } else {
+      this.handleIdleState();
+    }
     this.handleSnoringSound();
   }
 
+  /**
+   * Handles the character's hurt animation and sound effect.
+   */
   hurting() {
     if (this.isHurt() && !this.isDead()) {
       this.animateHurt();
@@ -257,6 +324,9 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Handles the idle state of the character when appropriate.
+   */
   handleIdleState() {
     if (
       this.idleTimer() &&
@@ -268,6 +338,9 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Handles the character's idle and sleeping animations based on timers.
+   */
   idleAlsoSleep() {
     if (this.sleepTimer()) {
       this.animateSleeping();
@@ -280,42 +353,66 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Plays the hurt animation and sound effect, and resets timers.
+   */
   animateHurt() {
     this.playAnimation(this.IMAGES_HURT);
     this.resetTimers();
     this.world.audioManager.playSound("hurting");
   }
 
+  /**
+   * Plays the dead animation and sound effect, and triggers the game over sequence.
+   */
   animateDead() {
     this.playAnimation(this.IMAGES_DEAD);
     this.world.audioManager.playSound("gameLose");
     gameOver();
   }
 
+  /**
+   * Plays the jumping animation and resets timers.
+   */
   animateJumping() {
     this.playAnimation(this.IMAGES_JUMPING);
     this.resetTimers();
   }
 
+  /**
+   * Plays the walking animation and resets timers.
+   */
   animateWalking() {
     this.playAnimation(this.IMAGES_WALKING);
     this.resetTimers();
   }
 
+  /**
+   * Plays the idle animation and resets the idle start timer.
+   */
   animateIdle() {
     this.playAnimation(this.IMAGES_IDLE);
     this.reset_idleStartTimer();
   }
 
+  /**
+   * Plays the sleeping animation.
+   */
   animateSleeping() {
     this.playAnimation(this.IMAGES_SLEEP);
   }
 
+  /**
+   * Handles Pepe's movement to the right.
+   */
   pepeMoveRightOptions() {
     this.moveRight();
     this.otherDirection = false;
   }
 
+  /**
+   * Handles Pepe's movement to the left.
+   */
   pepeMoveLeftOptions() {
     this.moveLeft();
     this.otherDirection = true;

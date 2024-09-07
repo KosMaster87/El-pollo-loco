@@ -8,6 +8,11 @@ class PickableObject extends DrawableObject {
     right: 0,
   };
 
+  /**
+   * Checks if this object is colliding with another object.
+   * @param {DrawableObject} obj - The object to check for collision with.
+   * @returns {boolean} - True if the objects are colliding, false otherwise.
+   */
   isColliding(obj) {
     return (
       this.x + this.width - this.offset.right >= obj.x + obj.offset.left &&

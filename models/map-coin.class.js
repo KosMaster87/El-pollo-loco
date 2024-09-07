@@ -10,6 +10,10 @@ class Coin extends MovableObject {
 
   IMAGES_COIN = ["./img/8_coin/coin_1.png", "./img/8_coin/coin_2.png"];
 
+  /**
+   * Creates an instance of a coin.
+   * The coin's position is randomly assigned within a specified range.
+   */
   constructor() {
     super().loadImage("./img/8_coin/coin_1.png");
     this.images = {};
@@ -24,7 +28,7 @@ class Coin extends MovableObject {
   }
 
   /**
-   * Animate the coin
+   * Animates the coin by cycling through its images.
    */
   animate() {
     setStoppableInterval(() => {

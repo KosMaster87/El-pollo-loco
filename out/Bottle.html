@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: models/status-bar-bottle.class.js</title>
+    <title>JSDoc: Class: Bottle</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,73 +17,323 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: models/status-bar-bottle.class.js</h1>
+    <h1 class="page-title">Class: Bottle</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
+        <h2><span class="attribs"><span class="type-signature"></span></span>Bottle<span class="signature">(x<span class="signature-attributes">opt</span>, y<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
+        
+    
+</header>
 
-class BottleStatusBar extends DrawableObject {
-  IMAGES = [
-    "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png",
-    "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/20.png",
-    "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/40.png",
-    "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/60.png",
-    "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/80.png",
-    "./img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/100.png",
-  ];
+<article>
+    <div class="container-overview">
+    
+        
 
-  percentage = 0;
+    
 
-  constructor() {
-    super();
-    this.y = 85;
-    this.x = 10;
-    this.width = 200;
-    this.height = 60;
+    
+    <h4 class="name" id="Bottle"><span class="type-signature"></span>new Bottle<span class="signature">(x<span class="signature-attributes">opt</span>, y<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    
 
-    this.loadImages(this.IMAGES);
-    this.setPercentage(0);
-  }
+    
 
-  /**
-   * Sets the energy level displayed in the status bar.
-   * @param {number} percentage - The current energy level of the bottle as a percentage.
-   */
-  setPercentage(percentage) {
-    this.percentage = Math.max(0, Math.min(100, percentage));
-    let path = this.IMAGES[this.resolveImageIndex()];
-    this.img = Static.getImage(path);
-  }
 
-  /**
-   * Determines the index of the image to display based on the percentage.
-   * @returns {number} The index of the image in the IMAGES array.
-   */
-  resolveImageIndex() {
-    if (this.percentage == 100) {
-      return 5;
-    } else if (this.percentage >= 80) {
-      return 4;
-    } else if (this.percentage >= 60) {
-      return 3;
-    } else if (this.percentage >= 40) {
-      return 2;
-    } else if (this.percentage >= 20) {
-      return 1;
-    } else {
-      return 0;
-    }
-  }
-}
-</code></pre>
-        </article>
-    </section>
+
+<div class="description">
+    Creates an instance of a bottle.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The x-coordinate position of the bottle. If not provided, a random value will be used.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The y-coordinate position of the bottle. If not provided, a random value will be used.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_map-bottle.class.js.html">models/map-bottle.class.js</a>, <a href="models_map-bottle.class.js.html#line21">line 21</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="animate"><span class="type-signature"></span>animate<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Animate the bottle by playing the salsa ground images.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_map-bottle.class.js.html">models/map-bottle.class.js</a>, <a href="models_map-bottle.class.js.html#line35">line 35</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

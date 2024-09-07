@@ -61,6 +61,10 @@ class Endboss extends MovableObject {
   isBossDead = false;
   attackSpeedMultiplier = 8;
 
+  /**
+   * Creates an instance of Endboss.
+   * Initializes image loading and sets initial position and state.
+   */
   constructor() {
     super().loadImage(this.IMAGES_WALKING[0]);
     this.images = {};
@@ -74,6 +78,10 @@ class Endboss extends MovableObject {
     this.checkDistanceToCharacter();
   }
 
+  /**
+   * Handles the animation of the boss based on its current state.
+   * Updates the boss's animation and movement.
+   */
   animate() {
     this.animationInterval = setStoppableInterval(() => {
       if (this.isBossDead) {
@@ -93,8 +101,8 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Move the boss ATTACK towards the character.
-   * Here is the multiplier for speed.
+   * Moves the boss towards the character during an attack.
+   * The speed of movement is adjusted based on the attack multiplier.
    */
   moveTowardsCharacter() {
     let speed = this.isBossAttack
@@ -104,8 +112,8 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * 1. Query for boss death.
-   * 2. Logic for hitting the enemy.
+   * Handles the boss's hit logic.
+   * Updates the boss's hit count and triggers counter-strike if not dead.
    */
   hit_Boss() {
     this.hits += 1;
@@ -121,9 +129,8 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * The boss remains in attack state for 3 seconds.
-   * Boss is injured for 1 second.
-   * Instructions for the strike chicken.
+   * Triggers the counter-strike phase where the boss attacks and spawns strike chickens.
+   * The boss remains in attack state for 3 seconds and is injured for 1 second.
    */
   triggerCounterStrike() {
     this.world.audioManager.playSound("bossAttacking");
@@ -142,7 +149,8 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Killing logic for the chicken.
+   * Handles the boss's death logic.
+   * Removes the boss from the enemies list and triggers the game win sequence.
    */
   die() {
     this.isBossDead = true;
@@ -159,6 +167,10 @@ class Endboss extends MovableObject {
     }, 1000);
   }
 
+  /**
+   * Checks the distance between the boss and the character periodically.
+   * Updates the boss's alert state based on proximity to the character.
+   */
   checkDistanceToCharacter() {
     setStoppableInterval(() => {
       if (this.isCloseTo(this.world.character, 250)) {
@@ -171,6 +183,12 @@ class Endboss extends MovableObject {
     }, 1000 / 10);
   }
 
+  /**
+   * Checks if the boss is within a specified distance from the character.
+   * @param {object} character - The character to check distance to.
+   * @param {number} distance - The distance threshold.
+   * @returns {boolean} - True if within distance, otherwise false.
+   */
   isCloseTo(character, distance) {
     return Math.abs(this.x - character.x) < distance;
   }

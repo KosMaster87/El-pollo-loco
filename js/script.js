@@ -3,7 +3,8 @@
 let openMenuBtn, menuPopRef, mobileControlHubRef;
 
 /**
- * Show or hide menu.
+ * Event listener to show or hide the menu after the DOM is fully loaded.
+ * Initializes the open menu button, menu popup, and mobile control hub references.
  */
 document.addEventListener("DOMContentLoaded", function () {
   openMenuBtn = document.getElementById("openMenuBtn");
@@ -13,6 +14,10 @@ document.addEventListener("DOMContentLoaded", function () {
   alsoClickOutside(menuPopRef, openMenuBtn, closeMenu);
 });
 
+/**
+ * Opens the in-game menu and pauses the game, stopping all intervals and timeouts.
+ * Switches music from in-game to home screen.
+ */
 function openMenu() {
   if (isGameRunning) {
     pauseAllIntervals();
@@ -26,6 +31,10 @@ function openMenu() {
   audioManager.playSound("inHomeMusic");
 }
 
+/**
+ * Closes the in-game menu and resumes the game if it was running previously.
+ * Switches music from home screen to in-game.
+ */
 function closeMenu() {
   const w3IncludeRef = document.getElementById("w3_include");
   w3IncludeRef.style.display = "none";
@@ -44,7 +53,11 @@ function closeMenu() {
 }
 
 /**
- * Close menu when clicked outside.
+ * Adds an event listener to close the menu if a click occurs outside the menu popup.
+ *
+ * @param {HTMLElement} menuPopRef - Reference to the menu popup element.
+ * @param {HTMLElement} openMenuBtn - Reference to the open menu button.
+ * @param {function} closeMenu - Function to close the menu.
  */
 function alsoClickOutside(menuPopRef, openMenuBtn, closeMenu) {
   function userClicksOutsideOfPopup(event) {
@@ -62,7 +75,10 @@ function alsoClickOutside(menuPopRef, openMenuBtn, closeMenu) {
 }
 
 /**
- * Toggle full screen mode.
+ * Toggles full screen mode on and off.
+ * If the game is over, it resets the game canvas.
+ *
+ * @param {Event} event - The event triggered by the full screen toggle.
  */
 function toggleFullscreen(event) {
   event.preventDefault();
@@ -79,6 +95,11 @@ function toggleFullscreen(event) {
   }
 }
 
+/**
+ * Enters full screen mode for the provided element.
+ *
+ * @param {HTMLElement} element - The element to display in full screen mode.
+ */
 function enterFullscreen(element) {
   if (element.requestFullscreen) {
     element.requestFullscreen();
@@ -94,6 +115,9 @@ function enterFullscreen(element) {
   adjustDisplayBasedOnWidthAndOrientation();
 }
 
+/**
+ * Exits full screen mode.
+ */
 function exitFullscreen() {
   if (document.exitFullscreen) {
     document.exitFullscreen();
@@ -110,8 +134,8 @@ function exitFullscreen() {
 }
 
 /**
- * Triggert den Vollbildmodus an sich; damit auch die Taste F11 fokussiert wird.
- * Triggers the full screen mode itself; so that the F11 key is also focused.
+ * Event listener triggered when the full screen mode changes.
+ * Adjusts the display based on the current screen width and orientation.
  */
 document.addEventListener("fullscreenchange", () => {
   adjustDisplayBasedOnWidthAndOrientation();
@@ -124,7 +148,8 @@ document.addEventListener("fullscreenchange", () => {
 
 /**
  * Checks if the current device is in landscape orientation.
- * @returns {boolean} - True if the device is in landscape orientation, otherwise False.
+ *
+ * @returns {boolean} - True if the device is in landscape orientation, otherwise false.
  */
 function isLandscapeOrientation() {
   return window.matchMedia("(orientation: landscape)").matches;
@@ -132,6 +157,7 @@ function isLandscapeOrientation() {
 
 /**
  * Returns the current width of the browser window.
+ *
  * @returns {number} - The width of the window in pixels.
  */
 function getScreenWidth() {
@@ -139,7 +165,7 @@ function getScreenWidth() {
 }
 
 /**
- * Adjusts the display elements based on the width and orientation of the device.
+ * Adjusts display elements based on the width and orientation of the device.
  */
 function adjustDisplayBasedOnWidthAndOrientation() {
   const rotateLayerRef = document.getElementById("rotateLayer");
@@ -155,7 +181,11 @@ function adjustDisplayBasedOnWidthAndOrientation() {
 }
 
 /**
- * Handles display elements in landscape mode.
+ * Handles the display of elements when the device is in landscape mode.
+ *
+ * @param {number} width - The width of the screen in pixels.
+ * @param {HTMLElement} rotateLayerRef - Reference to the rotate layer element.
+ * @param {HTMLElement} mobileControlHubRef - Reference to the mobile control hub element.
  */
 function handleLandscapeMode(width, rotateLayerRef, mobileControlHubRef) {
   if (width <= 667 || (width >= 668 && width <= 1080)) {
@@ -171,7 +201,11 @@ function handleLandscapeMode(width, rotateLayerRef, mobileControlHubRef) {
 }
 
 /**
- * Handles display elements in portrait mode.
+ * Handles the display of elements when the device is in portrait mode.
+ *
+ * @param {number} width - The width of the screen in pixels.
+ * @param {HTMLElement} rotateLayerRef - Reference to the rotate layer element.
+ * @param {HTMLElement} mobileControlHubRef - Reference to the mobile control hub element.
  */
 function handlePortraitMode(width, rotateLayerRef, mobileControlHubRef) {
   if (width >= 667) {
@@ -195,7 +229,7 @@ document.addEventListener("DOMContentLoaded", () =>
 );
 
 /**
- * Preload Data
+ * Prepares the gaming experience by starting a loading spinner and preloading assets.
  */
 async function prepareTheGamingExperience() {
   await loadingSpinnerStart();
@@ -203,21 +237,25 @@ async function prepareTheGamingExperience() {
   loadingSpinnerEnd();
 }
 
+/**
+ * Starts the loading spinner by displaying the loading spinner layer.
+ */
 async function loadingSpinnerStart() {
   adjustDisplayBasedOnWidthAndOrientation();
   const loadingSpinnerLayerRef = document.getElementById("loadingSpinnerLayer");
   loadingSpinnerLayerRef.style.display = "flex";
 }
 
+/**
+ * Ends the loading spinner by hiding the loading spinner layer.
+ */
 function loadingSpinnerEnd() {
   const loadingSpinnerLayerRef = document.getElementById("loadingSpinnerLayer");
   loadingSpinnerLayerRef.style.display = "none";
 }
 
 /**
- * Define the resources to preload.
- * Preload images, audio and fonts.
- * Wait until all resources are preloaded.
+ * Preloads the necessary assets, including images, audio, and fonts, for the game.
  */
 async function preloadAssets() {
   const imagesToLoad = [
@@ -430,7 +468,9 @@ async function preloadAssets() {
 }
 
 /**
- * Preload images and treat them as promises.
+ * Preloads a set of images and returns a promise that resolves when all images are loaded.
+ * @param {string[]} paths - An array of image file paths to preload.
+ * @returns {Promise<HTMLImageElement[]>} - A promise that resolves with an array of loaded images.
  */
 function preloadImages(paths) {
   return Promise.all(
@@ -449,7 +489,9 @@ function preloadImages(paths) {
 }
 
 /**
- * Preload audio files and treat them as promises.
+ * Preloads a set of audio files and returns a promise that resolves when all audio files are ready to play.
+ * @param {string[]} paths - An array of audio file paths to preload.
+ * @returns {Promise<HTMLAudioElement[]>} - A promise that resolves with an array of preloaded audio elements.
  */
 function preloadAudio(paths) {
   return Promise.all(
@@ -468,7 +510,9 @@ function preloadAudio(paths) {
 }
 
 /**
- * Preload fonts and treat them as promises.
+ * Preloads a set of fonts and returns a promise that resolves when all fonts are loaded and added to the document.
+ * @param {FontFace[]} fonts - An array of FontFace objects to preload.
+ * @returns {Promise<void[]>} - A promise that resolves when all fonts are loaded and added to the document.
  */
 function preloadFonts(fonts) {
   return Promise.all(

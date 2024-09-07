@@ -24,21 +24,21 @@ class CoinStatusBar extends DrawableObject {
   }
 
   /**
-   * Determination of energy in the status bar.
-   * @param {current energy from Pepe} percentage
+   * Sets the coin count displayed in the status bar.
+   * @param {number} percentage - The current number of coins as a percentage.
    */
   setPercentage(percentage) {
     this.percentage = Math.max(0, Math.min(100, percentage));
     let path = this.IMAGES[this.resolveImageIndex()];
-    this.img = Static.imageCache[path];
+    this.img = Static.getImage(path);
   }
 
   /**
-   * Rating of the bar.
-   * @returns number
+   * Determines the index of the image to display based on the percentage.
+   * @returns {number} The index of the image in the IMAGES array.
    */
   resolveImageIndex() {
-    if (this.percentage == 100) {
+    if (this.percentage === 100) {
       return 5;
     } else if (this.percentage >= 80) {
       return 4;

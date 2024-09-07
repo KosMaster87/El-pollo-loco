@@ -28,23 +28,24 @@
         <article>
             <pre class="prettyprint source linenums"><code>"use strict";
 
-let openMenuBtn, closeMenuBtn, menuPopRef, mobileControlHubRef;
+let openMenuBtn, menuPopRef, mobileControlHubRef;
 
 /**
- * Show or hide menu.
+ * Event listener to show or hide the menu after the DOM is fully loaded.
+ * Initializes the open menu button, menu popup, and mobile control hub references.
  */
 document.addEventListener("DOMContentLoaded", function () {
   openMenuBtn = document.getElementById("openMenuBtn");
-  closeMenuBtn = document.getElementById("closeMenuBtn");
   menuPopRef = document.getElementById("menuPop");
   mobileControlHubRef = document.getElementById("mobileControlHub");
-
   openMenuBtn.addEventListener("click", openMenu);
-  closeMenuBtn.addEventListener("click", closeMenu);
-
   alsoClickOutside(menuPopRef, openMenuBtn, closeMenu);
 });
 
+/**
+ * Opens the in-game menu and pauses the game, stopping all intervals and timeouts.
+ * Switches music from in-game to home screen.
+ */
 function openMenu() {
   if (isGameRunning) {
     pauseAllIntervals();
@@ -58,6 +59,10 @@ function openMenu() {
   audioManager.playSound("inHomeMusic");
 }
 
+/**
+ * Closes the in-game menu and resumes the game if it was running previously.
+ * Switches music from home screen to in-game.
+ */
 function closeMenu() {
   const w3IncludeRef = document.getElementById("w3_include");
   w3IncludeRef.style.display = "none";
@@ -72,11 +77,15 @@ function closeMenu() {
   } else if (isGameRunning &amp;&amp; w3_includeRef) {
     w3_includeRef.style.display = "none";
   }
-  adjustDisplayBasedOnWidthAndOrientation();
+  startGame();
 }
 
 /**
- * Close menu when clicked outside.
+ * Adds an event listener to close the menu if a click occurs outside the menu popup.
+ *
+ * @param {HTMLElement} menuPopRef - Reference to the menu popup element.
+ * @param {HTMLElement} openMenuBtn - Reference to the open menu button.
+ * @param {function} closeMenu - Function to close the menu.
  */
 function alsoClickOutside(menuPopRef, openMenuBtn, closeMenu) {
   function userClicksOutsideOfPopup(event) {
@@ -88,13 +97,16 @@ function alsoClickOutside(menuPopRef, openMenuBtn, closeMenu) {
       menuPopRef.style.display === "flex" &amp;&amp;
       userClicksOutsideOfPopup(event)
     ) {
-      closeMenu();
+      returnToHome();
     }
   });
 }
 
 /**
- * Toggle full screen mode.
+ * Toggles full screen mode on and off.
+ * If the game is over, it resets the game canvas.
+ *
+ * @param {Event} event - The event triggered by the full screen toggle.
  */
 function toggleFullscreen(event) {
   event.preventDefault();
@@ -111,6 +123,11 @@ function toggleFullscreen(event) {
   }
 }
 
+/**
+ * Enters full screen mode for the provided element.
+ *
+ * @param {HTMLElement} element - The element to display in full screen mode.
+ */
 function enterFullscreen(element) {
   if (element.requestFullscreen) {
     element.requestFullscreen();
@@ -126,6 +143,9 @@ function enterFullscreen(element) {
   adjustDisplayBasedOnWidthAndOrientation();
 }
 
+/**
+ * Exits full screen mode.
+ */
 function exitFullscreen() {
   if (document.exitFullscreen) {
     document.exitFullscreen();
@@ -142,8 +162,8 @@ function exitFullscreen() {
 }
 
 /**
- * Triggert den Vollbildmodus an sich; damit auch die Taste F11 fokussiert wird.
- * Triggers the full screen mode itself; so that the F11 key is also focused.
+ * Event listener triggered when the full screen mode changes.
+ * Adjusts the display based on the current screen width and orientation.
  */
 document.addEventListener("fullscreenchange", () => {
   adjustDisplayBasedOnWidthAndOrientation();
@@ -156,7 +176,8 @@ document.addEventListener("fullscreenchange", () => {
 
 /**
  * Checks if the current device is in landscape orientation.
- * @returns {boolean} - True if the device is in landscape orientation, otherwise False.
+ *
+ * @returns {boolean} - True if the device is in landscape orientation, otherwise false.
  */
 function isLandscapeOrientation() {
   return window.matchMedia("(orientation: landscape)").matches;
@@ -164,6 +185,7 @@ function isLandscapeOrientation() {
 
 /**
  * Returns the current width of the browser window.
+ *
  * @returns {number} - The width of the window in pixels.
  */
 function getScreenWidth() {
@@ -171,7 +193,7 @@ function getScreenWidth() {
 }
 
 /**
- * Adjusts the display elements based on the width and orientation of the device.
+ * Adjusts display elements based on the width and orientation of the device.
  */
 function adjustDisplayBasedOnWidthAndOrientation() {
   const rotateLayerRef = document.getElementById("rotateLayer");
@@ -187,12 +209,19 @@ function adjustDisplayBasedOnWidthAndOrientation() {
 }
 
 /**
- * Handles display elements in landscape mode.
+ * Handles the display of elements when the device is in landscape mode.
+ *
+ * @param {number} width - The width of the screen in pixels.
+ * @param {HTMLElement} rotateLayerRef - Reference to the rotate layer element.
+ * @param {HTMLElement} mobileControlHubRef - Reference to the mobile control hub element.
  */
 function handleLandscapeMode(width, rotateLayerRef, mobileControlHubRef) {
   if (width &lt;= 667 || (width >= 668 &amp;&amp; width &lt;= 1080)) {
     rotateLayerRef.style.display = "none";
     mobileControlHubRef.style.display = gameStartetOnce ? "flex" : "none";
+  } else if (width &lt;= 1368) {
+    rotateLayerRef.style.display = "none";
+    mobileControlHubRef.style.display = "flex";
   } else {
     rotateLayerRef.style.display = "none";
     mobileControlHubRef.style.display = "none";
@@ -200,7 +229,11 @@ function handleLandscapeMode(width, rotateLayerRef, mobileControlHubRef) {
 }
 
 /**
- * Handles display elements in portrait mode.
+ * Handles the display of elements when the device is in portrait mode.
+ *
+ * @param {number} width - The width of the screen in pixels.
+ * @param {HTMLElement} rotateLayerRef - Reference to the rotate layer element.
+ * @param {HTMLElement} mobileControlHubRef - Reference to the mobile control hub element.
  */
 function handlePortraitMode(width, rotateLayerRef, mobileControlHubRef) {
   if (width >= 667) {
@@ -224,7 +257,7 @@ document.addEventListener("DOMContentLoaded", () =>
 );
 
 /**
- * Preload Data
+ * Prepares the gaming experience by starting a loading spinner and preloading assets.
  */
 async function prepareTheGamingExperience() {
   await loadingSpinnerStart();
@@ -232,21 +265,25 @@ async function prepareTheGamingExperience() {
   loadingSpinnerEnd();
 }
 
+/**
+ * Starts the loading spinner by displaying the loading spinner layer.
+ */
 async function loadingSpinnerStart() {
   adjustDisplayBasedOnWidthAndOrientation();
   const loadingSpinnerLayerRef = document.getElementById("loadingSpinnerLayer");
   loadingSpinnerLayerRef.style.display = "flex";
 }
 
+/**
+ * Ends the loading spinner by hiding the loading spinner layer.
+ */
 function loadingSpinnerEnd() {
   const loadingSpinnerLayerRef = document.getElementById("loadingSpinnerLayer");
   loadingSpinnerLayerRef.style.display = "none";
 }
 
 /**
- * Define the resources to preload.
- * Preload images, audio and fonts.
- * Wait until all resources are preloaded.
+ * Preloads the necessary assets, including images, audio, and fonts, for the game.
  */
 async function preloadAssets() {
   const imagesToLoad = [
@@ -381,11 +418,8 @@ async function preloadAssets() {
     "./img/7_statusbars/3_icons/icon_salsa_bottle.png",
     "./img/8_coin/coin_1.png",
     "./img/8_coin/coin_2.png",
-    "./img/9_intro_outro_screens/game_over/gameOver.png",
-    "./img/9_intro_outro_screens/game_over/gameOver.jpg",
-    "./img/9_intro_outro_screens/game_over/game over.png",
-    "./img/9_intro_outro_screens/game_over/oh no you lost!.png",
-    "./img/9_intro_outro_screens/game_over/you lost.png",
+    "./img/9_intro_outro_screens/game_over/youWin.png",
+    "./img/9_intro_outro_screens/game_over/youLose.png",
     "./img/9_intro_outro_screens/start/startscreen_1.png",
     "./img/9_intro_outro_screens/start/startscreen_2.png",
     "./img/desert.png",
@@ -462,7 +496,9 @@ async function preloadAssets() {
 }
 
 /**
- * Preload images and treat them as promises.
+ * Preloads a set of images and returns a promise that resolves when all images are loaded.
+ * @param {string[]} paths - An array of image file paths to preload.
+ * @returns {Promise&lt;HTMLImageElement[]>} - A promise that resolves with an array of loaded images.
  */
 function preloadImages(paths) {
   return Promise.all(
@@ -481,7 +517,9 @@ function preloadImages(paths) {
 }
 
 /**
- * Preload audio files and treat them as promises.
+ * Preloads a set of audio files and returns a promise that resolves when all audio files are ready to play.
+ * @param {string[]} paths - An array of audio file paths to preload.
+ * @returns {Promise&lt;HTMLAudioElement[]>} - A promise that resolves with an array of preloaded audio elements.
  */
 function preloadAudio(paths) {
   return Promise.all(
@@ -500,7 +538,9 @@ function preloadAudio(paths) {
 }
 
 /**
- * Preload fonts and treat them as promises.
+ * Preloads a set of fonts and returns a promise that resolves when all fonts are loaded and added to the document.
+ * @param {FontFace[]} fonts - An array of FontFace objects to preload.
+ * @returns {Promise&lt;void[]>} - A promise that resolves when all fonts are loaded and added to the document.
  */
 function preloadFonts(fonts) {
   return Promise.all(
@@ -522,13 +562,13 @@ function preloadFonts(fonts) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li></ul><h3>Global</h3><ul><li><a href="global.html#adjustDisplayBasedOnWidthAndOrientation">adjustDisplayBasedOnWidthAndOrientation</a></li><li><a href="global.html#alsoClickOutside">alsoClickOutside</a></li><li><a href="global.html#apertureGameOver">apertureGameOver</a></li><li><a href="global.html#clearAllIntervals">clearAllIntervals</a></li><li><a href="global.html#createLevel">createLevel</a></li><li><a href="global.html#createObjects">createObjects</a></li><li><a href="global.html#getScreenWidth">getScreenWidth</a></li><li><a href="global.html#handleLandscapeMode">handleLandscapeMode</a></li><li><a href="global.html#handlePortraitMode">handlePortraitMode</a></li><li><a href="global.html#initGame">initGame</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#isLandscapeOrientation">isLandscapeOrientation</a></li><li><a href="global.html#loadPage">loadPage</a></li><li><a href="global.html#menuPopManager">menuPopManager</a></li><li><a href="global.html#pauseAllIntervals">pauseAllIntervals</a></li><li><a href="global.html#pauseAllTimeouts">pauseAllTimeouts</a></li><li><a href="global.html#preloadAssets">preloadAssets</a></li><li><a href="global.html#preloadAudio">preloadAudio</a></li><li><a href="global.html#preloadFonts">preloadFonts</a></li><li><a href="global.html#preloadImages">preloadImages</a></li><li><a href="global.html#prepareTheGamingExperience">prepareTheGamingExperience</a></li><li><a href="global.html#resetGlobals">resetGlobals</a></li><li><a href="global.html#resumeAllIntervals">resumeAllIntervals</a></li><li><a href="global.html#resumeAllTimeouts">resumeAllTimeouts</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setStoppableTimeout">setStoppableTimeout</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AudioManager.html">AudioManager</a></li><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bottle.html">Bottle</a></li><li><a href="Character.html">Character</a></li><li><a href="Chick.html">Chick</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="Coin.html">Coin</a></li><li><a href="CounterStrikeChicken.html">CounterStrikeChicken</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li></ul><h3>Global</h3><ul><li><a href="global.html#adjustDisplayBasedOnWidthAndOrientation">adjustDisplayBasedOnWidthAndOrientation</a></li><li><a href="global.html#alsoClickOutside">alsoClickOutside</a></li><li><a href="global.html#apertureGameOver">apertureGameOver</a></li><li><a href="global.html#apertureGameWin">apertureGameWin</a></li><li><a href="global.html#bottles">bottles</a></li><li><a href="global.html#clearAllIntervals">clearAllIntervals</a></li><li><a href="global.html#closeMenu">closeMenu</a></li><li><a href="global.html#coins">coins</a></li><li><a href="global.html#createLevel">createLevel</a></li><li><a href="global.html#createObjects">createObjects</a></li><li><a href="global.html#enterFullscreen">enterFullscreen</a></li><li><a href="global.html#exitFullscreen">exitFullscreen</a></li><li><a href="global.html#gameOver">gameOver</a></li><li><a href="global.html#gameWin">gameWin</a></li><li><a href="global.html#getScreenWidth">getScreenWidth</a></li><li><a href="global.html#handleLandscapeMode">handleLandscapeMode</a></li><li><a href="global.html#handlePortraitMode">handlePortraitMode</a></li><li><a href="global.html#height">height</a></li><li><a href="global.html#idle">idle</a></li><li><a href="global.html#initGame">initGame</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#isLandscapeOrientation">isLandscapeOrientation</a></li><li><a href="global.html#lastCollidedEnemy">lastCollidedEnemy</a></li><li><a href="global.html#loadPage">loadPage</a></li><li><a href="global.html#loadingSpinnerEnd">loadingSpinnerEnd</a></li><li><a href="global.html#loadingSpinnerStart">loadingSpinnerStart</a></li><li><a href="global.html#maxBottles">maxBottles</a></li><li><a href="global.html#maxCoins">maxCoins</a></li><li><a href="global.html#menuPopManager">menuPopManager</a></li><li><a href="global.html#offset">offset</a></li><li><a href="global.html#openMenu">openMenu</a></li><li><a href="global.html#pauseAllIntervals">pauseAllIntervals</a></li><li><a href="global.html#pauseAllTimeouts">pauseAllTimeouts</a></li><li><a href="global.html#preloadAssets">preloadAssets</a></li><li><a href="global.html#preloadAudio">preloadAudio</a></li><li><a href="global.html#preloadFonts">preloadFonts</a></li><li><a href="global.html#preloadImages">preloadImages</a></li><li><a href="global.html#prepareTheGamingExperience">prepareTheGamingExperience</a></li><li><a href="global.html#resetCanvas">resetCanvas</a></li><li><a href="global.html#resetGlobals">resetGlobals</a></li><li><a href="global.html#resumeAllIntervals">resumeAllIntervals</a></li><li><a href="global.html#resumeAllTimeouts">resumeAllTimeouts</a></li><li><a href="global.html#returnToHome">returnToHome</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setStoppableTimeout">setStoppableTimeout</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#speed">speed</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Sep 04 2024 14:12:19 GMT-0400 (Paraguayische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Sat Sep 07 2024 08:11:32 GMT-0400 (Paraguayische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>

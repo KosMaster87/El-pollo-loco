@@ -21,6 +21,10 @@ class Chick extends MovableObject {
     right: 5,
   };
 
+  /**
+   * Creates an instance of Chick.
+   * Initializes image loading, sets random speed and position, and starts animation.
+   */
   constructor() {
     super().loadImage("./img/3_enemies_chicken/chicken_small/1_walk/1_w.png");
     this.images = {};
@@ -32,7 +36,7 @@ class Chick extends MovableObject {
   }
 
   /**
-   * Starts the movement and animation intervals.
+   * Starts the movement and animation intervals for the Chick.
    */
   animate() {
     this.walkingInterval = setStoppableInterval(
@@ -46,7 +50,8 @@ class Chick extends MovableObject {
   }
 
   /**
-   * Logic for hitting the opponent.
+   * Handles the logic for hitting an opponent.
+   * Sets the energy to 0 and initiates the death sequence.
    */
   hit_anyOpponent() {
     this.energy = 0;
@@ -54,8 +59,8 @@ class Chick extends MovableObject {
   }
 
   /**
-   * Kill logic for the chicken.
-   * Delete from the ememie array.
+   * Handles the death sequence for the Chick.
+   * Plays the death animation, stops intervals, and removes the Chick from the enemies array.
    */
   die_this() {
     this.audioManager.playSound("opponentDeath");

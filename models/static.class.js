@@ -19,6 +19,10 @@ class Static {
     });
   }
 
+  /**
+   * Preloads an array of audio paths into the audio cache.
+   * @param {Array<string>} paths - The paths of the audio files to be preloaded.
+   */
   static preloadAudio(paths) {
     paths.forEach((path) => {
       if (!this.audioCache[path]) {
@@ -43,10 +47,7 @@ class Static {
             return loadedFont;
           })
           .catch((error) => {
-            console.error(
-              `Fehler beim Laden der Schriftart ${font.family}:`,
-              error
-            );
+            console.error(`Error loading font ${font.family}:`, error);
           });
       }
     });
@@ -61,6 +62,11 @@ class Static {
     return this.imageCache[path];
   }
 
+  /**
+   * Retrieves an audio file from the cache.
+   * @param {string} path - The path of the audio file to retrieve.
+   * @returns {HTMLAudioElement} - The cached audio element.
+   */
   static getAudio(path) {
     return this.audioCache[path];
   }

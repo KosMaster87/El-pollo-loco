@@ -12,6 +12,9 @@ class Cloud extends MovableObject {
     "./img/5_background/layers/4_clouds/2.png",
   ];
 
+  /**
+   * Creates an instance of a cloud.
+   */
   constructor() {
     super().loadImage("./img/5_background/layers/4_clouds/1.png");
     this.images = {};
@@ -22,8 +25,8 @@ class Cloud extends MovableObject {
   }
 
   /**
-   * Speed optionts and Running direction.
-   * Also some animations.
+   * Animates the cloud by moving it to the left.
+   * Adjusts the speed and direction of the cloud's movement.
    */
   animate() {
     setStoppableInterval(() => this.moveLeft(), 1000 / 60);

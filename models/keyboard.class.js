@@ -12,7 +12,8 @@ class Keyboard {
   RESTART = false;
 
   /**
-   * Integrate keyboard and touch input.
+   * Initializes keyboard and touch input events.
+   * Sets up event listeners for keyboard and touch events.
    */
   constructor() {
     window.addEventListener("keydown", this.handleKeyDownEvent.bind(this));
@@ -24,6 +25,10 @@ class Keyboard {
     );
   }
 
+  /**
+   * Handles key down events to set corresponding key states to true.
+   * @param {KeyboardEvent} e - The keyboard event object.
+   */
   handleKeyDownEvent(e) {
     switch (e.keyCode) {
       case 37:
@@ -47,6 +52,10 @@ class Keyboard {
     }
   }
 
+  /**
+   * Handles key up events to set corresponding key states to false.
+   * @param {KeyboardEvent} e - The keyboard event object.
+   */
   handleKeyUpEvent(e) {
     switch (e.keyCode) {
       case 37:
@@ -70,6 +79,10 @@ class Keyboard {
     }
   }
 
+  /**
+   * Binds touch events to on-screen buttons for controlling the character.
+   * Updates the corresponding key states based on touch events.
+   */
   bindTouchPressEvents() {
     const leftButton = document.getElementById("leftButton");
     const rightButton = document.getElementById("rightButton");
