@@ -148,12 +148,7 @@ function adjustDisplayBasedOnWidthAndOrientation() {
   const isLandscape = isLandscapeOrientation();
 
   if (isLandscape) {
-    handleLandscapeMode(
-      width,
-      rotateLayerRef,
-      mobileControlHubRef,
-      isLandscape
-    );
+    handleLandscapeMode(width, rotateLayerRef, mobileControlHubRef);
   } else {
     handlePortraitMode(width, rotateLayerRef, mobileControlHubRef);
   }
@@ -162,23 +157,15 @@ function adjustDisplayBasedOnWidthAndOrientation() {
 /**
  * Handles display elements in landscape mode.
  */
-function handleLandscapeMode(
-  width,
-  rotateLayerRef,
-  mobileControlHubRef,
-  isLandscape
-) {
+function handleLandscapeMode(width, rotateLayerRef, mobileControlHubRef) {
   if (width <= 667 || (width >= 668 && width <= 1080)) {
     rotateLayerRef.style.display = "none";
     mobileControlHubRef.style.display = gameStartetOnce ? "flex" : "none";
-  } else if (width <= 1368 && isLandscape) {
+  } else if (width <= 1368) {
     rotateLayerRef.style.display = "none";
     mobileControlHubRef.style.display = "flex";
-  } else if (width <= 1368 && !isLandscape) {
-    rotateLayerRef.style.display = "flex";
-    mobileControlHubRef.style.display = "none";
   } else {
-    rotateLayerRef.style.display = "flex";
+    rotateLayerRef.style.display = "none";
     mobileControlHubRef.style.display = "none";
   }
 }
