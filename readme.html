@@ -1,152 +1,91 @@
-# 🐔 El Pollo Loco – Jump'n'Run Game
+# 🐔 El Pollo Loco - Jump'n'Run Adventure 
 
-Ein browserbasiertes Jump'n'Run-Spiel, inspiriert von Klassikern wie Super Mario, bei dem du in die Rolle eines animierten Charakters schlüpfst, Flaschen wirfst, Gegner besiegst und einen Endboss herausforderst.
+An action-packed 2D platformer featuring charming pixel-art characters, strategic boss battles, and responsive gameplay. Built with vanilla JavaScript following clean code principles.
 
-## 🎮 Features
+---
 
-- 🕹️ **Spielmechanik:** Fließende Bewegungen, Sammelobjekte, Gegner-KI, Bosskämpfe
-- 🔊 **Sound & Musik:** Hintergrundmusik, Treffer-Sounds, Charakter-Snore, Mute-Button mit Local Storage Speicherung
-- 📱 **Responsive Design:** Spielbar auf Desktop und Mobilgeräten (Querformat)
-- 🎨 **Design:** Pixel-Art, angepasste Schriftart, individuelles Favicon
-- 🧱 **Technik:** OOP in JavaScript, saubere Ordnerstruktur, dokumentierter Clean Code
-- 💥 **Animationen:** Idle, Sleep, Hurt, Jump, Dead etc. für Charakter & Gegner
-- 🌍 **Landing Page:** Spielanleitung, Steuerungshilfe, Fullscreen-Option
-- 🐣 **Gegner-Vielfalt:** Mindestens zwei Gegnertypen + Endboss mit variierendem Verhalten
+## 🚀 Live Demo
 
-## 🧠 Technische Umsetzung
+🔗 [Live Demo – el-pollo-loco.dev2k.org](https://el-pollo-loco.dev2k.org/)
 
-- HTML, CSS & Vanilla JavaScript
-- OOP mit eigenen Klassen (z. B. `Character`, `Chicken`, `Endboss`, `World`)
-- JavaScript nach Clean Code Prinzipien (max. 14 Zeilen/Funktion, max. 400 LOC/Datei)
-- Strukturierte Projekt- und Klassen-Ordner
-- Dokumentation mit JSDoc
+---
 
-## 📷 Screenshots
+## 📸 Preview
 
-![Screenshot Spiel](./img/screenshots/spielstart.png)
-![Screenshot Endboss](./img/screenshots/endboss.png)
-
-## 📂 Projektstruktur
-
-
-
-
-
-
-
-
-
-# El Pollo Loco
-
-A browser-based 2D jump-and-run game written in JavaScript. In **El Pollo Loco**, you control a hero character ("Pepe") on his way to defeat the evil chicken boss. Along the way, you collect bottles and salsa, fight enemies, and explore a colorful world inspired by Latin-American flair.
+![Portfolio Screenshot](./img/preview-el-pollo-loco.png)
 
 ---
 
 ## 🎮 Gameplay
+Control **Pepe** through a desert world, collect coins & bottles, defeat chicken mobs, and challenge the final boss!
 
-- Use your keyboard to move, jump, and throw bottles.
-- Collect bottles and salsa to power up.
-- Defeat enemies by jumping on them or throwing bottles.
-- Beware of the **Endboss** and his minions!
-
----
-
-## 🧠 Technologies Used
-
-- HTML5 & CSS3
-- Vanilla JavaScript (ES6+)
-- OOP principles with custom classes
-- Canvas for rendering (optional depending on implementation)
-- Custom audio handling
-- Responsive UI design
+**Key Features:**
+- 🕹️ Dynamic mechanics with jump/throw combos
+- 🎭 5+ character animations (Idle, Jump, Hurt, Dead)
+- 🐓 3 enemy types + unique boss behavior
+- 📊 Interactive status bars for health/coins/ammo
+- 🔊 Immersive SFX & background music
+- 📱 Mobile touch controls & responsive design
+- 💾 Local storage for sound settings
 
 ---
 
+## 🛠️ Technologies
+![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?logo=javascript&logoColor=black)
+![HTML5](https://img.shields.io/badge/-HTML5-E34F26?logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/-CSS3-1572B6?logo=css3&logoColor=white)
+
+- **OOP architecture** with separated concerns
+- **Canvas-based rendering** for smooth animations
+- **Modular audio system** with random sound pools
+- **Device orientation detection**
+- **JSDoc documentation** for core classes
 
 ---
 
-## ▶️ How to Play
-
-1. Clone or download this repository.
-2. Open `index.html` in your browser.
-3. Use the following controls:
-   - `←` / `→` – Move left/right
-   - `Space` – Jump
-   - `D` – Throw bottle
-   - `Enter` – Start / Pause
+## ▶️ Installation
+1. Clone repository:
+   ```bash
+   git clone https://github.com/your-username/el-pollo-loco.git
 
 ---
 
-## 🔊 Audio
+## 📁 Folder Structure
 
-Sound effects are located in the `/audio/` directory and include:
-- Jumping, running, getting hurt
-- Enemy death sounds (randomized)
-- Background music for home and game
-- Boss-specific attack and hurt sounds
-
----
-
-## 🖼️ Graphics
-
-All game graphics are found in `/img/`, structured by:
-- Character animations
-- Enemy sprites
-- Backgrounds and layers
-- UI and menu icons
-
----
-
-## 🔤 Fonts
-
-Fonts are located in `/fonts/` and are loaded via CSS `@font-face`.
-
----
-
-## 🔧 Development
-
-To start development:
-- Open `index.html` with [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) in VS Code.
-- Modify JavaScript logic inside the `js/` folder (e.g. character classes, game engine, world rendering).
-- Add new audio/image assets as needed.
-
----
-
-## 📦 Deployment
-
-This game is fully static and can be deployed on any web server, including:
-- GitHub Pages
-- Netlify
-- Vercel
-- Your own Synology NAS
+```text
+el-pollo-loco/
+├── audio/                 # Audio assets
+│   ├── boss/              # Boss sounds
+│   ├── environment/       # Coins, bottles
+│   └── character/         # Pepe sounds
+│
+├── fonts/                 # Custom webfonts
+│   ├── creepster.woff2    # Title font
+│   └── lexend.woff2       # UI font
+│
+├── img/                   # Visual assets
+│   ├── characters/        # Pepe animations
+│   ├── enemies/           # Chicken sprites
+│   ├── ui/                # Interface elements  
+│   └── backgrounds/       # Parallax layers
+│
+├── js/                    # Core logic
+│   ├── models/            # Class definitions
+│   │   ├── Character.js   # Player logic
+│   │   └── Endboss.js     # Boss AI
+│   │
+│   ├── core/              # Game engine
+│   └── utils/             # Helper functions
+│
+├── out/                   # Generated files
+│   ├── docs/              # JSDoc output
+│   └── tests/             # (Planned) unit tests
+│
+├── style/                 # Styling
+│   ├── components/        # UI components
+│   └── animations.css     # Keyframe animations
+│
+└── index.html             # Entry point
 
 ---
-
-## 🧪 Testing
-
-There is no automated testing yet, but manual testing can be done by:
-- Playing the game regularly
-- Observing the console for warnings/errors
-- Testing edge cases (multiple enemies, no bottles, boss attack)
-
----
-
-## 📜 License
-
-This project is open for educational and personal use. All rights to original artwork and sound assets remain with their creators unless otherwise noted.
-
----
-
-## 💬 Credits
-
-- Created by: **Your Name**
-- Game idea: Inspired by "El Pollo Loco"
-- Sound and image assets: Custom-made or from free-to-use sources
-
----
-
-## 📁 Project Structure
-
-
-
 
