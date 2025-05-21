@@ -1,46 +1,152 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
+# 🐔 El Pollo Loco – Jump'n'Run Game
 
-  <style>
-    body {
-      background-color: rgb(182, 152, 96);
-      flex-direction: column;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      font-size: large;
-    }
+Ein browserbasiertes Jump'n'Run-Spiel, inspiriert von Klassikern wie Super Mario, bei dem du in die Rolle eines animierten Charakters schlüpfst, Flaschen wirfst, Gegner besiegst und einen Endboss herausforderst.
 
-    span {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-  </style>
-  <body>
-    <h2>Grüße.</h2>
+## 🎮 Features
 
-    <span>
-      1. Auto Vollbild korrigiert. <br />
-      2. JSDOCS Aktullisiert.
-    </span>
+- 🕹️ **Spielmechanik:** Fließende Bewegungen, Sammelobjekte, Gegner-KI, Bosskämpfe
+- 🔊 **Sound & Musik:** Hintergrundmusik, Treffer-Sounds, Charakter-Snore, Mute-Button mit Local Storage Speicherung
+- 📱 **Responsive Design:** Spielbar auf Desktop und Mobilgeräten (Querformat)
+- 🎨 **Design:** Pixel-Art, angepasste Schriftart, individuelles Favicon
+- 🧱 **Technik:** OOP in JavaScript, saubere Ordnerstruktur, dokumentierter Clean Code
+- 💥 **Animationen:** Idle, Sleep, Hurt, Jump, Dead etc. für Charakter & Gegner
+- 🌍 **Landing Page:** Spielanleitung, Steuerungshilfe, Fullscreen-Option
+- 🐣 **Gegner-Vielfalt:** Mindestens zwei Gegnertypen + Endboss mit variierendem Verhalten
 
-    <h2>Bitte das nächste Modul freischalten. Danke</h2>
-  </body>
-</html>
+## 🧠 Technische Umsetzung
+
+- HTML, CSS & Vanilla JavaScript
+- OOP mit eigenen Klassen (z. B. `Character`, `Chicken`, `Endboss`, `World`)
+- JavaScript nach Clean Code Prinzipien (max. 14 Zeilen/Funktion, max. 400 LOC/Datei)
+- Strukturierte Projekt- und Klassen-Ordner
+- Dokumentation mit JSDoc
+
+## 📷 Screenshots
+
+![Screenshot Spiel](./img/screenshots/spielstart.png)
+![Screenshot Endboss](./img/screenshots/endboss.png)
+
+## 📂 Projektstruktur
 
 
-<!--Kleine Kühken sind auf deiner Salsa am futtern. Pepe muss durch draufhüpfen sie chick killen. Dann earn bottle.
 
-Die Bottles sind die meisten zu der Linken Seite auf der map. Somit ist der Spieler gezwungen im Rückzug die Flaschen frei zu machen und den Boss zu killen.
 
-Earn Station - Errungenschaften:
-Entdecke eine BUG im Spiel:
-Mach der Vogel Plat und lass dich von im einmal wegstoßen.-->
+
+
+
+
+
+# El Pollo Loco
+
+A browser-based 2D jump-and-run game written in JavaScript. In **El Pollo Loco**, you control a hero character ("Pepe") on his way to defeat the evil chicken boss. Along the way, you collect bottles and salsa, fight enemies, and explore a colorful world inspired by Latin-American flair.
+
+---
+
+## 🎮 Gameplay
+
+- Use your keyboard to move, jump, and throw bottles.
+- Collect bottles and salsa to power up.
+- Defeat enemies by jumping on them or throwing bottles.
+- Beware of the **Endboss** and his minions!
+
+---
+
+## 🧠 Technologies Used
+
+- HTML5 & CSS3
+- Vanilla JavaScript (ES6+)
+- OOP principles with custom classes
+- Canvas for rendering (optional depending on implementation)
+- Custom audio handling
+- Responsive UI design
+
+---
+
+
+---
+
+## ▶️ How to Play
+
+1. Clone or download this repository.
+2. Open `index.html` in your browser.
+3. Use the following controls:
+   - `←` / `→` – Move left/right
+   - `Space` – Jump
+   - `D` – Throw bottle
+   - `Enter` – Start / Pause
+
+---
+
+## 🔊 Audio
+
+Sound effects are located in the `/audio/` directory and include:
+- Jumping, running, getting hurt
+- Enemy death sounds (randomized)
+- Background music for home and game
+- Boss-specific attack and hurt sounds
+
+---
+
+## 🖼️ Graphics
+
+All game graphics are found in `/img/`, structured by:
+- Character animations
+- Enemy sprites
+- Backgrounds and layers
+- UI and menu icons
+
+---
+
+## 🔤 Fonts
+
+Fonts are located in `/fonts/` and are loaded via CSS `@font-face`.
+
+---
+
+## 🔧 Development
+
+To start development:
+- Open `index.html` with [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) in VS Code.
+- Modify JavaScript logic inside the `js/` folder (e.g. character classes, game engine, world rendering).
+- Add new audio/image assets as needed.
+
+---
+
+## 📦 Deployment
+
+This game is fully static and can be deployed on any web server, including:
+- GitHub Pages
+- Netlify
+- Vercel
+- Your own Synology NAS
+
+---
+
+## 🧪 Testing
+
+There is no automated testing yet, but manual testing can be done by:
+- Playing the game regularly
+- Observing the console for warnings/errors
+- Testing edge cases (multiple enemies, no bottles, boss attack)
+
+---
+
+## 📜 License
+
+This project is open for educational and personal use. All rights to original artwork and sound assets remain with their creators unless otherwise noted.
+
+---
+
+## 💬 Credits
+
+- Created by: **Your Name**
+- Game idea: Inspired by "El Pollo Loco"
+- Sound and image assets: Custom-made or from free-to-use sources
+
+---
+
+## 📁 Project Structure
+
+
+
 
