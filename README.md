@@ -31,9 +31,6 @@ Control **Pepe** through a desert world, collect coins & bottles, defeat chicken
 ---
 
 ## 🛠️ Technologies
-![JavaScript](Link image)
-![HTML5](Link image)
-![CSS3](Link image)
 
 - **OOP architecture** with separated concerns
 - **Canvas-based rendering** for smooth animations
