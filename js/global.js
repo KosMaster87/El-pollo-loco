@@ -115,5 +115,6 @@ function clearAllIntervals() {
 function resetGlobals() {
   isGameRunning = false;
   gameStartetOnce = false;
+  gameEnded = false;
   world = null;
 }

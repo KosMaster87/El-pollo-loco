@@ -13,6 +13,7 @@ let audioManager = new AudioManager();
 let staticInstance = new Static();
 let isGameRunning = false;
 let gameStartetOnce = false;
+let gameEnded = false;
 
 /**
  * Initializes the game by setting up the canvas, starting the game,
@@ -45,6 +46,7 @@ function startGame() {
 
   isGameRunning = true;
   gameStartetOnce = true;
+  gameEnded = false;
   document.getElementById("w3_include").style.display = "none";
   document.getElementById("menuPop").style.display = "none";
   document.getElementById("homeLayer").style.display = "none";
@@ -75,6 +77,9 @@ function returnToHome() {
  * @returns {void}
  */
 function gameOver() {
+  if (gameEnded) return;
+  gameEnded = true;
+
   resetGlobals();
   clearAllIntervals();
   apertureGameOver();
@@ -93,6 +98,9 @@ function gameOver() {
  * @returns {void}
  */
 function gameWin() {
+  if (gameEnded) return;
+  gameEnded = true;
+
   resetGlobals();
   clearAllIntervals();
   apertureGameWin();
