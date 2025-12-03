@@ -184,15 +184,15 @@ class Character extends MovableObject {
    * @returns {void}
    */
   resetTimers() {
-    this.reset_idleStartTimer();
-    this.reset_sleepStartTimer();
+    this.resetIdleStartTimer();
+    this.resetSleepStartTimer();
   }
 
   /**
    * Resets the sleep timer.
    * @returns {void}
    */
-  reset_sleepStartTimer() {
+  resetSleepStartTimer() {
     this.sleepStart = Date.now();
   }
 
@@ -200,7 +200,7 @@ class Character extends MovableObject {
    * Resets the idle timer.
    * @returns {void}
    */
-  reset_idleStartTimer() {
+  resetIdleStartTimer() {
     this.idleStart = Date.now();
   }
 
@@ -224,6 +224,7 @@ class Character extends MovableObject {
 
   /**
    * Stops all active intervals for the character's movement and animations.
+   * @returns {void}
    */
   stopIntervals() {
     clearInterval(this.moveInterval);
@@ -232,6 +233,7 @@ class Character extends MovableObject {
 
   /**
    * Handles the character's movement and animation by setting up stoppable intervals for movement and animation updates.
+   * @returns {void}
    */
   animate() {
     this.moveInterval = setStoppableInterval(() => this.pepeMove(), 1000 / 45);
@@ -243,6 +245,7 @@ class Character extends MovableObject {
 
   /**
    * Handles Pepe's movement, including collision checks, axis movement, and jumping.
+   * @returns {void}
    */
   pepeMove() {
     if (this.collisionBlocked) {
@@ -407,7 +410,7 @@ class Character extends MovableObject {
    */
   animateIdle() {
     this.playAnimation(this.IMAGES_IDLE);
-    this.reset_idleStartTimer();
+    this.resetIdleStartTimer();
   }
 
   /**

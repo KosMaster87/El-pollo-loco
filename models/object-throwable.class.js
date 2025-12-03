@@ -76,7 +76,7 @@ class ThrowableObject extends MovableObject {
       this.x += this.xSpeed * this.throwDirectionX;
       this.world.level.enemies.forEach((enemy) => {
         if (this.isColliding(enemy)) {
-          this.handleEnemyCollision_thisBottle(enemy);
+          this.handleEnemyCollision(enemy);
         }
       });
 
@@ -99,8 +99,9 @@ class ThrowableObject extends MovableObject {
   /**
    * Handles collision between the bottle and enemies.
    * @param {DrawableObject} enemy - The enemy object involved in the collision.
+   * @returns {void}
    */
-  handleEnemyCollision_thisBottle(enemy) {
+  handleEnemyCollision(enemy) {
     if (this.isColliding(enemy) && !this.collide) {
       this.collide = true;
       this.xSpeed = 0;
@@ -120,21 +121,23 @@ class ThrowableObject extends MovableObject {
   /**
    * Handles the action when the bottle collides with enemies.
    * @param {DrawableObject} enemy - The enemy object.
+   * @returns {void}
    */
   handleBottleActionEnemies(enemy) {
     this.xSpeed = 0;
     this.startSplash();
     this.audioManager.playSound("opponentDeath");
-    enemy.hit_anyOpponent();
+    enemy.hitOpponent();
   }
 
   /**
    * Handles the action when the bottle collides with the end boss.
    * @param {Endboss} enemy - The end boss object.
+   * @returns {void}
    */
   handleBottleActionEndboss(enemy) {
     this.xSpeed = 2;
-    enemy.hit_Boss();
+    enemy.hitBoss();
     this.startSplash();
     this.audioManager.playSound("opponentDeath");
   }
@@ -142,6 +145,7 @@ class ThrowableObject extends MovableObject {
   /**
    * Starts the splash animation and removes the bottle after a delay.
    * The splash animation is only started once.
+   * @returns {void}
    */
   startSplash() {
     if (this.splashStarted) return;

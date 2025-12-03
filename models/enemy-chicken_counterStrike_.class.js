@@ -158,17 +158,19 @@ class CounterStrikeChicken extends MovableObject {
   /**
    * Handles the logic for hitting an opponent.
    * Sets the energy to 0 and initiates the death sequence.
+   * @returns {void}
    */
-  hit_anyOpponent() {
+  hitOpponent() {
     this.energy = 0;
-    this.die_this();
+    this.die();
   }
 
   /**
    * Handles the death sequence for the strike chicken.
    * Plays the death animation, stops all intervals, and removes the chicken from the enemies array.
+   * @returns {void}
    */
-  die_this() {
+  die() {
     this.world.audioManager.playSound("bossDeath");
     this.stopAllIntervals();
     this.playAnimation(this.IMAGES_DEAD);

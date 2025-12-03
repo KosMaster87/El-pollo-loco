@@ -125,8 +125,9 @@ class Endboss extends MovableObject {
   /**
    * Handles the boss's hit logic.
    * Updates the boss's hit count and triggers counter-strike if not dead.
+   * @returns {void}
    */
-  hit_Boss() {
+  hitBoss() {
     this.hits += 1;
     let newPercentage = Math.max(100 - this.hits * 20, 0);
     this.world.statusBarBoss.setPercentage(newPercentage);
@@ -142,6 +143,7 @@ class Endboss extends MovableObject {
   /**
    * Triggers the counter-strike phase where the boss attacks and spawns strike chickens.
    * The boss remains in attack state for 3 seconds and is injured for 1 second.
+   * @returns {void}
    */
   triggerCounterStrike() {
     this.world.audioManager.playSound("bossAttacking");
@@ -162,6 +164,7 @@ class Endboss extends MovableObject {
   /**
    * Handles the boss's death logic.
    * Removes the boss from the enemies list and triggers the game win sequence.
+   * @returns {void}
    */
   die() {
     this.isBossDead = true;

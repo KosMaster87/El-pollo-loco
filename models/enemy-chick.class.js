@@ -66,9 +66,9 @@ class Chick extends MovableObject {
    * Sets the energy to 0 and initiates the death sequence.
    * @returns {void}
    */
-  hit_anyOpponent() {
+  hitOpponent() {
     this.energy = 0;
-    this.die_this();
+    this.die();
   }
 
   /**
@@ -76,7 +76,7 @@ class Chick extends MovableObject {
    * Plays the death animation, stops intervals, and removes the Chick from the enemies array.
    * @returns {void}
    */
-  die_this() {
+  die() {
     this.audioManager.playSound("opponentDeath");
     clearInterval(this.walkingInterval);
     clearInterval(this.animationInterval);

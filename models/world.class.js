@@ -215,9 +215,9 @@ class World {
     this.character.speedY = 10;
 
     if (enemy instanceof Endboss) {
-      enemy.hit_Boss();
+      enemy.hitBoss();
     } else {
-      enemy.hit_anyOpponent();
+      enemy.hitOpponent();
     }
 
     this.collisionBlocked = true;
@@ -271,7 +271,7 @@ class World {
   checkThrowableObjectCollisions() {
     this.throwableObjects.forEach((throwableObject) => {
       this.level.enemies.forEach((enemy) => {
-        throwableObject.handleEnemyCollision_thisBottle(enemy);
+        throwableObject.handleEnemyCollision(enemy);
       });
     });
   }

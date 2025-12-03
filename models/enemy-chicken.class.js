@@ -66,9 +66,9 @@ class Chicken extends MovableObject {
    * Sets the chicken's energy to 0 and triggers the death sequence.
    * @returns {void}
    */
-  hit_anyOpponent() {
+  hitOpponent() {
     this.energy = 0;
-    this.die_this();
+    this.die();
   }
 
   /**
@@ -76,7 +76,7 @@ class Chicken extends MovableObject {
    * Plays the death sound, stops all intervals, plays the death animation, and removes the chicken from the enemies array.
    * @returns {void}
    */
-  die_this() {
+  die() {
     this.audioManager.playSound("opponentDeath");
     clearInterval(this.walkingInterval);
     clearInterval(this.animationInterval);
