@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Main game UI and menu control script.
+ * @description Handles menu interactions, fullscreen mode, display adjustments, and asset preloading for the game.
+ * @module js/script
+ */
+
 "use strict";
 
 let openMenuBtn, menuPopRef, mobileControlHubRef;
@@ -5,6 +11,7 @@ let openMenuBtn, menuPopRef, mobileControlHubRef;
 /**
  * Event listener to show or hide the menu after the DOM is fully loaded.
  * Initializes the open menu button, menu popup, and mobile control hub references.
+ * @listens DOMContentLoaded
  */
 document.addEventListener("DOMContentLoaded", function () {
   openMenuBtn = document.getElementById("openMenuBtn");
@@ -256,6 +263,8 @@ function loadingSpinnerEnd() {
 
 /**
  * Preloads the necessary assets, including images, audio, and fonts, for the game.
+ * @async
+ * @returns {Promise<void>}
  */
 async function preloadAssets() {
   const imagesToLoad = [
@@ -456,15 +465,9 @@ async function preloadAssets() {
   Static.preloadAudio(audioToLoad);
   Static.preloadFonts(fontsToLoad);
 
-  try {
-    await preloadImages(imagesToLoad);
-    await preloadAudio(audioToLoad);
-    await preloadFonts(fontsToLoad);
-
-    // console.log("Alle Assets wurden erfolgreich vorgeladen.");
-  } catch (error) {
-    // console.error("Fehler beim Vorladen von Assets:", error);
-  }
+  await preloadImages(imagesToLoad);
+  await preloadAudio(audioToLoad);
+  await preloadFonts(fontsToLoad);
 }
 
 /**

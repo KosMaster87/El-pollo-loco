@@ -1,5 +1,15 @@
+/**
+ * @fileoverview Static resource caching utilities.
+ * @description Manages caching and preloading of images, audio, and fonts.
+ * @module models/static-class
+ */
+
 "use strict";
 
+/**
+ * Static class for managing cached resources.
+ * @class
+ */
 class Static {
   static imageCache = {};
   static audioCache = {};
@@ -46,9 +56,7 @@ class Static {
             document.fonts.add(loadedFont);
             return loadedFont;
           })
-          .catch((error) => {
-            console.error(`Error loading font ${font.family}:`, error);
-          });
+          .catch((error) => {});
       }
     });
   }

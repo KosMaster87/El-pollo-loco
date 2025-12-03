@@ -1,5 +1,16 @@
+/**
+ * @fileoverview Movable object class with physics and collision detection.
+ * @description Extends DrawableObject with movement, collision detection, and gravity physics.
+ * @module models/object-movable-class
+ */
+
 "use strict";
 
+/**
+ * Base class for movable objects with physics and collision detection.
+ * @class
+ * @extends {DrawableObject}
+ */
 class MovableObject extends DrawableObject {
   energy = 100;
   lastHit = 0;
@@ -32,6 +43,7 @@ class MovableObject extends DrawableObject {
   /**
    * Applies gravity to the object, affecting its vertical position and speed.
    * Gravity is applied as long as the object is above the ground or falling.
+   * @returns {void}
    */
   applyGravity() {
     setStoppableInterval(() => {
@@ -56,6 +68,7 @@ class MovableObject extends DrawableObject {
 
   /**
    * Moves the object to the right.
+   * @returns {void}
    */
   moveRight() {
     this.x += this.speed;
@@ -64,6 +77,7 @@ class MovableObject extends DrawableObject {
   /**
    * Moves the object to the left.
    * Also moves the clouds and the chickens.
+   * @returns {void}
    */
   moveLeft() {
     this.x -= this.speed;
@@ -72,6 +86,7 @@ class MovableObject extends DrawableObject {
   /**
    * Handles the pushback of the character during a collision with an enemy, considering the enemy's offset.
    * @param {MovableObject} enemy - The enemy object causing the pushback.
+   * @returns {void}
    */
   handleCharacterPushback(enemy) {
     if (enemy.x < this.x) {

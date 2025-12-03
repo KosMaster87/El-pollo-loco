@@ -1,7 +1,14 @@
+/**
+ * @fileoverview Character class for the main player character.
+ * @description Manages the player character animations, movements, and interactions in the game.
+ * @module models/character-class
+ */
+
 "use strict";
 
 /**
  * The `Character` class extends `MovableObject` and represents the main player character with various animations and actions.
+ * @class
  * @extends {MovableObject}
  */
 class Character extends MovableObject {
@@ -115,7 +122,9 @@ class Character extends MovableObject {
   lastCollidedEnemy = null;
 
   /**
+   * Creates a new Character instance.
    * @param {AudioManager} audioManager - Manages sound effects in the game.
+   * @param {Static} staticInstance - The static resources instance.
    */
   constructor(audioManager) {
     super().loadImage("./img/2_character_pepe/2_walk/W-21.png");
@@ -134,6 +143,7 @@ class Character extends MovableObject {
 
   /**
    * Collects a bottle and plays the associated sound.
+   * @returns {void}
    */
   collectBottle() {
     this.bottles.push(new Bottle());
@@ -142,6 +152,7 @@ class Character extends MovableObject {
 
   /**
    * Collects a coin and plays the associated sound if the maximum number of coins has not been reached.
+   * @returns {void}
    */
   collectCoin() {
     if (this.coins.length < this.maxCoins) {
@@ -170,6 +181,7 @@ class Character extends MovableObject {
 
   /**
    * Resets both the idle and sleep timers.
+   * @returns {void}
    */
   resetTimers() {
     this.reset_idleStartTimer();
@@ -178,6 +190,7 @@ class Character extends MovableObject {
 
   /**
    * Resets the sleep timer.
+   * @returns {void}
    */
   reset_sleepStartTimer() {
     this.sleepStart = Date.now();
@@ -185,6 +198,7 @@ class Character extends MovableObject {
 
   /**
    * Resets the idle timer.
+   * @returns {void}
    */
   reset_idleStartTimer() {
     this.idleStart = Date.now();
@@ -192,6 +206,7 @@ class Character extends MovableObject {
 
   /**
    * Plays or stops the snoring sound based on the character's sleep state.
+   * @returns {void}
    */
   handleSnoringSound() {
     if (this.sleep) {

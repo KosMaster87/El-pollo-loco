@@ -1,9 +1,15 @@
+/**
+ * @fileoverview Audio management system.
+ * @description Manages game audio including muting, volume control, and sound playback.
+ * @module models/audio-class
+ */
+
 "use strict";
 
 /**
  * Manages the game's audio, including muting, volume control, and playing sounds.
  * Initializes event listeners for volume and mute button control.
- * @constructor
+ * @class
  */
 class AudioManager {
   constructor() {

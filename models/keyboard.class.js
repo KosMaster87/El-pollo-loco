@@ -1,5 +1,15 @@
+/**
+ * @fileoverview Keyboard and touch input handler.
+ * @description Manages keyboard and touch input events for game controls.
+ * @module models/keyboard-class
+ */
+
 "use strict";
 
+/**
+ * Keyboard class that handles keyboard and touch input events.
+ * @class
+ */
 class Keyboard {
   LEFT = false;
   RIGHT = false;
@@ -28,6 +38,7 @@ class Keyboard {
   /**
    * Handles key down events to set corresponding key states to true.
    * @param {KeyboardEvent} e - The keyboard event object.
+   * @returns {void}
    */
   handleKeyDownEvent(e) {
     switch (e.keyCode) {
@@ -55,6 +66,7 @@ class Keyboard {
   /**
    * Handles key up events to set corresponding key states to false.
    * @param {KeyboardEvent} e - The keyboard event object.
+   * @returns {void}
    */
   handleKeyUpEvent(e) {
     switch (e.keyCode) {
@@ -82,6 +94,7 @@ class Keyboard {
   /**
    * Binds touch events to on-screen buttons for controlling the character.
    * Updates the corresponding key states based on touch events.
+   * @returns {void}
    */
   bindTouchPressEvents() {
     const leftButton = document.getElementById("leftButton");

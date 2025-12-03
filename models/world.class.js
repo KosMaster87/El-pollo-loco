@@ -1,5 +1,15 @@
+/**
+ * @fileoverview World class managing the game environment.
+ * @description Handles game world, character, enemies, collisions, and rendering on canvas.
+ * @module models/world-class
+ */
+
 "use strict";
 
+/**
+ * World class that manages the entire game environment.
+ * @class
+ */
 class World {
   level;
   endBossRef;
@@ -25,6 +35,14 @@ class World {
   bossAttackStartTime = null;
   counterStrikeChickens = [];
 
+  /**
+   * Creates a new World instance.
+   * @param {HTMLCanvasElement} canvas - The canvas element for rendering.
+   * @param {Keyboard} keyboard - The keyboard input handler.
+   * @param {AudioManager} audioManager - The audio manager instance.
+   * @param {Static} staticInstance - The static resources instance.
+   * @param {boolean} isGameRunning - Whether the game is currently running.
+   */
   constructor(canvas, keyboard, audioManager, staticInstance, isGameRunning) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
@@ -42,6 +60,7 @@ class World {
 
   /**
    * Assigns the world reference to the character and sets its properties.
+   * @returns {void}
    */
   assignWorldToCharacter() {
     this.character = new Character(this.audioManager, this.staticInstance);
@@ -51,6 +70,7 @@ class World {
 
   /**
    * Assigns the world reference to each enemy in the level and sets their properties.
+   * @returns {void}
    */
   assignWorldToEnemies() {
     this.level.enemies.forEach((enemy) => {
@@ -72,6 +92,7 @@ class World {
   /**
    * Starts the game loop with intervals for checking collisions, applying damage,
    * throwing objects, and checking alerts.
+   * @returns {void}
    */
   run() {
     setStoppableInterval(() => {
@@ -93,6 +114,7 @@ class World {
 
   /**
    * Checks for collisions between the character and enemies, bottles, and coins.
+   * @returns {void}
    */
   checkCollisions() {
     this.enemieStatusRelationPepe();
@@ -103,6 +125,7 @@ class World {
 
   /**
    * Applies damage to the character if they are colliding with an enemy.
+   * @returns {void}
    */
   applyDamageToCharacter() {
     if (this.activeEnemyInteraction) {
@@ -127,6 +150,7 @@ class World {
 
   /**
    * Checks if the boss should go on alert based on its distance to the character.
+   * @returns {void}
    */
   checkAlerts() {
     this.level.enemies.forEach((enemy) => {
@@ -138,6 +162,7 @@ class World {
 
   /**
    * Handles the status and collisions of enemies with the character.
+   * @returns {void}
    */
   enemieStatusRelationPepe() {
     if (this.activeEnemyInteraction) {
@@ -152,6 +177,7 @@ class World {
   /**
    * Handles the collision between the character and an enemy.
    * @param {Object} enemy - The enemy object involved in the collision.
+   * @returns {void}
    */
   handleCollisionWithEnemy(enemy) {
     if (this.character.isColliding(enemy)) {
@@ -169,6 +195,7 @@ class World {
   /**
    * Saves the last enemy the character collided with.
    * @param {Object} enemy - The enemy object that was collided with.
+   * @returns {void}
    */
   lastEnemyColliding(enemy) {
     this.character.lastCollidedEnemy = {
@@ -181,6 +208,7 @@ class World {
   /**
    * Handles the actions when the character interacts with an enemy and hits the enemy.
    * @param {Object} enemy - The enemy object that was hit.
+   * @returns {void}
    */
   activeEnemyAlsoHit(enemy) {
     this.activeEnemyInteraction = true;
@@ -202,6 +230,7 @@ class World {
 
   /**
    * Checks if the character has collided with a bottle and updates the status bar accordingly.
+   * @returns {void}
    */
   checkBottleStatusToEarn() {
     this.level.bottles.forEach((bottle, index) => {
@@ -219,6 +248,7 @@ class World {
 
   /**
    * Checks if the character has collided with a coin and updates the status bar accordingly.
+   * @returns {void}
    */
   checkCoinStatusToEarn() {
     this.level.coins.forEach((coin, index) => {
@@ -236,6 +266,7 @@ class World {
 
   /**
    * Checks for collisions between thrown bottles and enemies.
+   * @returns {void}
    */
   checkThrowableObjectCollisions() {
     this.throwableObjects.forEach((throwableObject) => {
@@ -247,6 +278,7 @@ class World {
 
   /**
    * Handles the logic for throwing a bottle.
+   * @returns {void}
    */
   throwObject() {
     const now = Date.now();
@@ -281,6 +313,7 @@ class World {
   /**
    * Handles the throwing of a bottle and updates the character's bottle status.
    * @param {ThrowableObject} bottle - The throwable object to be handled.
+   * @returns {void}
    */
   handleThrowableObject(bottle) {
     bottle.world = this;
@@ -292,6 +325,7 @@ class World {
 
   /**
    * Draws the current state of the world including all objects and status bars.
+   * @returns {void}
    */
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -308,6 +342,7 @@ class World {
 
   /**
    * Adds level-specific objects to the map.
+   * @returns {void}
    */
   addLevelObjects() {
     this.addObjectsToMap(this.level.background);
@@ -319,6 +354,7 @@ class World {
 
   /**
    * Adds all status bars to the map.
+   * @returns {void}
    */
   addBars() {
     this.addToMap(this.statusBarPepe);
@@ -330,6 +366,7 @@ class World {
   /**
    * Creates a loop to maintain a frame rate for drawing.
    * This method repeatedly calls `draw` using `requestAnimationFrame` to ensure smooth rendering.
+   * @returns {void}
    */
   setSelfDraw() {
     let self = this;
@@ -343,6 +380,7 @@ class World {
    * Adds a collection of objects to the map.
    * These objects are generally those that move automatically (e.g., enemies, items) and are not directly controlled by the user.
    * @param {Object[]} objects - The array of objects to be added to the map.
+   * @returns {void}
    */
   addObjectsToMap(objects) {
     objects.forEach((o) => {
@@ -354,6 +392,7 @@ class World {
    * Adds a single movable object to the map.
    * Handles the flipping of images for objects facing different directions.
    * @param {MovableObject} mo - The movable object to be added to the map.
+   * @returns {void}
    */
   addToMap(mo) {
     if (mo.otherDirection) {
@@ -372,6 +411,7 @@ class World {
    * Flips the image horizontally for objects facing right-to-left.
    * Updates the object's x-coordinate to reflect the mirrored image.
    * @param {MovableObject} mo - The movable object whose image is to be flipped.
+   * @returns {void}
    */
   flipImage(mo) {
     this.ctx.save();
@@ -384,6 +424,7 @@ class World {
    * Reverses the horizontal flip applied to an object.
    * Restores the canvas state to its original, left-to-right configuration.
    * @param {MovableObject} mo - The movable object whose image flip is to be reversed.
+   * @returns {void}
    */
   flipImageBack(mo) {
     mo.x = mo.x * -1;
@@ -393,6 +434,7 @@ class World {
   /**
    * Schedules the spawning of Counter-Strike chickens after a delay.
    * Calls `spawnChickens` method after 500 milliseconds.
+   * @returns {void}
    */
   scheduleChickenSpawn() {
     setTimeout(() => {
@@ -403,6 +445,7 @@ class World {
   /**
    * Creates and initializes Counter-Strike chickens.
    * Integrates these chickens into the enemy array and starts their attack phase.
+   * @returns {void}
    */
   spawnChickens() {
     this.counterStrikeChickens = this.createObjects(

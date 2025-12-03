@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Core game initialization and lifecycle management.
+ * @description Manages game start, stop, reset, and game over/win scenarios.
+ * @module js/game
+ */
+
 "use strict";
 
 let canvas;
@@ -11,6 +17,7 @@ let gameStartetOnce = false;
 /**
  * Initializes the game by setting up the canvas, starting the game,
  * initializing the level, and creating a new World instance.
+ * @returns {void}
  */
 function initGame() {
   canvas = document.getElementById("canvas");
@@ -29,6 +36,7 @@ function initGame() {
 /**
  * Starts the game by resetting global states if necessary, hides
  * menus, adjusts the display, and plays the in-game music.
+ * @returns {void}
  */
 function startGame() {
   if (isGameRunning) {
@@ -48,6 +56,7 @@ function startGame() {
 /**
  * Returns to the home screen by resetting global states, clearing
  * intervals, resetting the canvas, and showing the home layer.
+ * @returns {void}
  */
 function returnToHome() {
   document.getElementById("w3_include").style.display = "none";
@@ -63,6 +72,7 @@ function returnToHome() {
  * Handles the game over scenario by resetting global states,
  * clearing intervals, showing the game over screen, and playing
  * the appropriate sounds.
+ * @returns {void}
  */
 function gameOver() {
   resetGlobals();
@@ -80,6 +90,7 @@ function gameOver() {
  * Handles the game win scenario by resetting global states,
  * clearing intervals, showing the game win screen, and playing
  * the appropriate sounds.
+ * @returns {void}
  */
 function gameWin() {
   resetGlobals();
@@ -96,6 +107,7 @@ function gameWin() {
 /**
  * Displays the game over aperture animation and hides it after
  * a timeout, then shows the game menu.
+ * @returns {void}
  */
 function apertureGameOver() {
   document.getElementById("apertureGameOver").classList.remove("hidden");
@@ -112,6 +124,7 @@ function apertureGameOver() {
 /**
  * Displays the game win aperture animation and hides it after
  * a timeout, then shows the game menu.
+ * @returns {void}
  */
 function apertureGameWin() {
   document.getElementById("apertureGameWin").classList.remove("hidden");
@@ -127,6 +140,7 @@ function apertureGameWin() {
 
 /**
  * Resets the canvas by clearing its entire content.
+ * @returns {void}
  */
 function resetCanvas() {
   const canvas = document.getElementById("canvas");
