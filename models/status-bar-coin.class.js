@@ -1,5 +1,16 @@
+/**
+ * @fileoverview Coin status bar class.
+ * @description Manages the visual coin inventory status bar.
+ * @module models/status-bar-coin-class
+ */
+
 "use strict";
 
+/**
+ * Coin status bar class to display coin inventory.
+ * @class
+ * @extends {DrawableObject}
+ */
 class CoinStatusBar extends DrawableObject {
   IMAGES = [
     "./img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png",
@@ -26,6 +37,7 @@ class CoinStatusBar extends DrawableObject {
   /**
    * Sets the coin count displayed in the status bar.
    * @param {number} percentage - The current number of coins as a percentage.
+   * @returns {void}
    */
   setPercentage(percentage) {
     this.percentage = Math.max(0, Math.min(100, percentage));

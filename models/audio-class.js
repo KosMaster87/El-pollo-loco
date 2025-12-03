@@ -96,10 +96,10 @@ class AudioManager {
   /**
    * Sets the global volume for all sounds.
    * @param {number} volume - The volume level between 0 and 1.
+   * @returns {void}
    */
   setVolume(volume) {
     if (volume < 0 || volume > 1) {
-      console.error("Volume must be between 0 and 1.");
       return;
     }
     this.volume = volume;
@@ -108,6 +108,7 @@ class AudioManager {
 
   /**
    * Updates the volume of all currently loaded sounds to the current volume setting.
+   * @returns {void}
    */
   updateAllSoundsVolume() {
     for (let soundArray in this.sounds) {

@@ -1,5 +1,16 @@
+/**
+ * @fileoverview Counter-strike chicken enemy class.
+ * @description Manages counter-strike chickens that spawn from the boss.
+ * @module models/enemy-chicken-counterstrike-class
+ */
+
 "use strict";
 
+/**
+ * Counter-strike chicken enemy class.
+ * @class
+ * @extends {MovableObject}
+ */
 class CounterStrikeChicken extends MovableObject {
   IMAGES_WALKING = [
     "./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
@@ -49,6 +60,7 @@ class CounterStrikeChicken extends MovableObject {
   /**
    * Determines the spawn position of the strike chicken based on its index.
    * @param {number} index - The index of the strike chicken.
+   * @returns {void}
    */
   spawnRightPlace(index) {
     const boss = this.endBossRef;
@@ -62,6 +74,7 @@ class CounterStrikeChicken extends MovableObject {
 
   /**
    * Starts the attack phase, increasing speed and playing attack animation.
+   * @returns {void}
    */
   startAttackPhase() {
     this.isAttacking = true;

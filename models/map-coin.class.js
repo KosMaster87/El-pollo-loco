@@ -1,5 +1,16 @@
+/**
+ * @fileoverview Coin class for collectible coins.
+ * @description Manages collectible coin objects on the game map.
+ * @module models/map-coin-class
+ */
+
 "use strict";
 
+/**
+ * Coin class for collectible coins on the map.
+ * @class
+ * @extends {MovableObject}
+ */
 class Coin extends MovableObject {
   offset = {
     top: 35,
@@ -29,6 +40,7 @@ class Coin extends MovableObject {
 
   /**
    * Animates the coin by cycling through its images.
+   * @returns {void}
    */
   animate() {
     setStoppableInterval(() => {

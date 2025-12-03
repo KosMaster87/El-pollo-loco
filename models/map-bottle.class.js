@@ -1,5 +1,16 @@
+/**
+ * @fileoverview Bottle class for collectible bottles.
+ * @description Manages collectible bottle objects on the game map.
+ * @module models/map-bottle-class
+ */
+
 "use strict";
 
+/**
+ * Bottle class for collectible bottles on the map.
+ * @class
+ * @extends {PickableObject}
+ */
 class Bottle extends PickableObject {
   IMAGES_SALSA_GROUND = [
     "./img/6_salsa_bottle/1_salsa_bottle_on_ground.png",
@@ -31,6 +42,7 @@ class Bottle extends PickableObject {
 
   /**
    * Animate the bottle by playing the salsa ground images.
+   * @returns {void}
    */
   animate() {
     setStoppableInterval(() => {

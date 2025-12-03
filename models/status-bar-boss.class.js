@@ -1,5 +1,16 @@
+/**
+ * @fileoverview Boss status bar class.
+ * @description Manages the visual health status bar for the boss enemy.
+ * @module models/status-bar-boss-class
+ */
+
 "use strict";
 
+/**
+ * Boss status bar class to display boss health.
+ * @class
+ * @extends {DrawableObject}
+ */
 class BossStatusBar extends DrawableObject {
   IMAGES = [
     "./img/7_statusbars/2_statusbar_endboss/orange/orange0.png",
@@ -25,6 +36,7 @@ class BossStatusBar extends DrawableObject {
   /**
    * Sets the energy level displayed in the status bar.
    * @param {number} percentage - The current energy level of the boss as a percentage.
+   * @returns {void}
    */
   setPercentage(percentage) {
     this.percentage = percentage;

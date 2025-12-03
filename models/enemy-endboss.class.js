@@ -1,5 +1,16 @@
+/**
+ * @fileoverview Endboss enemy class.
+ * @description Manages the final boss enemy with multiple states and animations.
+ * @module models/enemy-endboss-class
+ */
+
 "use strict";
 
+/**
+ * Endboss enemy class.
+ * @class
+ * @extends {MovableObject}
+ */
 class Endboss extends MovableObject {
   IMAGES_ALERT = [
     "./img/4_enemie_boss_chicken/2_alert/G5.png",

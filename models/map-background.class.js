@@ -1,5 +1,16 @@
+/**
+ * @fileoverview Background object class.
+ * @description Manages static background objects for the game level.
+ * @module models/map-background-class
+ */
+
 "use strict";
 
+/**
+ * Background object class for level backgrounds.
+ * @class
+ * @extends {MovableObject}
+ */
 class BackgroundObject extends MovableObject {
   width = 720;
   height = 480;

@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Level 1 initialization.
+ * @description Creates and configures the first game level with enemies, objects, and backgrounds.
+ * @module levels/level1
+ */
+
 "use strict";
 
 let level1;
@@ -76,6 +82,7 @@ function createLevel() {
 
 /**
  * Initializes the level by creating the level objects and storing them in the `level1` variable.
+ * @returns {void}
  */
 function initLevel() {
   level1 = createLevel();

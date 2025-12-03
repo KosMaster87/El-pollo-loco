@@ -1,5 +1,16 @@
+/**
+ * @fileoverview Small chick enemy class.
+ * @description Manages small chick enemies with walking and death animations.
+ * @module models/enemy-chick-class
+ */
+
 "use strict";
 
+/**
+ * Small chick enemy class.
+ * @class
+ * @extends {MovableObject}
+ */
 class Chick extends MovableObject {
   IMAGES_WALKING = [
     "./img/3_enemies_chicken/chicken_small/1_walk/1_w.png",
@@ -37,6 +48,7 @@ class Chick extends MovableObject {
 
   /**
    * Starts the movement and animation intervals for the Chick.
+   * @returns {void}
    */
   animate() {
     this.walkingInterval = setStoppableInterval(
@@ -52,6 +64,7 @@ class Chick extends MovableObject {
   /**
    * Handles the logic for hitting an opponent.
    * Sets the energy to 0 and initiates the death sequence.
+   * @returns {void}
    */
   hit_anyOpponent() {
     this.energy = 0;
@@ -61,6 +74,7 @@ class Chick extends MovableObject {
   /**
    * Handles the death sequence for the Chick.
    * Plays the death animation, stops intervals, and removes the Chick from the enemies array.
+   * @returns {void}
    */
   die_this() {
     this.audioManager.playSound("opponentDeath");

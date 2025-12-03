@@ -1,5 +1,16 @@
+/**
+ * @fileoverview Cloud class for background clouds.
+ * @description Manages animated cloud objects in the background.
+ * @module models/map-cloud-class
+ */
+
 "use strict";
 
+/**
+ * Cloud class for background clouds.
+ * @class
+ * @extends {MovableObject}
+ */
 class Cloud extends MovableObject {
   y = 20;
   width = 500;
@@ -27,6 +38,7 @@ class Cloud extends MovableObject {
   /**
    * Animates the cloud by moving it to the left.
    * Adjusts the speed and direction of the cloud's movement.
+   * @returns {void}
    */
   animate() {
     setStoppableInterval(() => this.moveLeft(), 1000 / 60);

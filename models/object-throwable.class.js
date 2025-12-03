@@ -1,5 +1,16 @@
+/**
+ * @fileoverview Throwable object class for bottles.
+ * @description Manages throwable bottle objects with physics, rotation, and splash animations.
+ * @module models/object-throwable-class
+ */
+
 "use strict";
 
+/**
+ * Throwable object class for bottles that can be thrown.
+ * @class
+ * @extends {MovableObject}
+ */
 class ThrowableObject extends MovableObject {
   IMAGES_ROTATION = [
     "./img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",

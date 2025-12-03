@@ -1,5 +1,15 @@
+/**
+ * @fileoverview Level class for game level configuration.
+ * @description Manages game level objects including enemies, clouds, backgrounds, bottles, and coins.
+ * @module models/level-class
+ */
+
 "use strict";
 
+/**
+ * Level class that contains all objects for a game level.
+ * @class
+ */
 class Level {
   enemies;
   clouds;
