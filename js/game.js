@@ -81,7 +81,10 @@ function gameOver() {
   clearAllIntervals();
   apertureGameOver();
   resetCanvas();
-  document.getElementById("healPrompt").style.display = "none";
+  const healPromptDesktop = document.getElementById("healPromptDesktop");
+  const throwPromptDesktop = document.getElementById("throwPromptDesktop");
+  if (healPromptDesktop) healPromptDesktop.style.display = "none";
+  if (throwPromptDesktop) throwPromptDesktop.style.display = "none";
   audioManager.stopSound("inGameMusic");
   setTimeout(() => {
     audioManager.playSound("inHomeMusic");
@@ -100,7 +103,10 @@ function gameWin() {
   clearAllIntervals();
   apertureGameWin();
   resetCanvas();
-  document.getElementById("healPrompt").style.display = "none";
+  const healPromptDesktop = document.getElementById("healPromptDesktop");
+  const throwPromptDesktop = document.getElementById("throwPromptDesktop");
+  if (healPromptDesktop) healPromptDesktop.style.display = "none";
+  if (throwPromptDesktop) throwPromptDesktop.style.display = "none";
   audioManager.stopSound("inGameMusic");
   setTimeout(() => {
     audioManager.playSound("inHomeMusic");

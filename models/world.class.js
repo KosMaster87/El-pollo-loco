@@ -118,6 +118,10 @@ class World {
     }, 200);
 
     setStoppableInterval(() => {
+      this.updateThrowPrompt();
+    }, 200);
+
+    setStoppableInterval(() => {
       this.checkAlerts();
     }, 200);
   }
@@ -366,14 +370,37 @@ class World {
    * @returns {void}
    */
   updateHealPrompt() {
-    const healPrompt = document.getElementById("healPrompt");
+    const isMobile =
+      window.innerWidth <= 667 ||
+      (window.innerWidth <= 1080 &&
+        window.matchMedia("(orientation: landscape)").matches);
     const canHeal =
       this.character.coins.length >= 5 && this.character.energy < 100;
 
-    if (canHeal) {
-      healPrompt.style.display = "block";
-    } else {
-      healPrompt.style.display = "none";
+    if (!isMobile) {
+      const healPromptDesktop = document.getElementById("healPromptDesktop");
+      if (healPromptDesktop) {
+        healPromptDesktop.style.display = canHeal ? "block" : "none";
+      }
+    }
+  }
+
+  /**
+   * Shows or hides the throw prompt based on bottle availability.
+   * @returns {void}
+   */
+  updateThrowPrompt() {
+    const isMobile =
+      window.innerWidth <= 667 ||
+      (window.innerWidth <= 1080 &&
+        window.matchMedia("(orientation: landscape)").matches);
+    const hasBottles = this.character.bottles.length > 0;
+
+    if (!isMobile) {
+      const throwPromptDesktop = document.getElementById("throwPromptDesktop");
+      if (throwPromptDesktop) {
+        throwPromptDesktop.style.display = hasBottles ? "block" : "none";
+      }
     }
   }
 

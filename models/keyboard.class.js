@@ -108,6 +108,7 @@ class Keyboard {
     const rightButton = document.getElementById("rightButton");
     const jumpButton = document.getElementById("jumpButton");
     const throwButton = document.getElementById("throwButton");
+    const healButton = document.getElementById("healButton");
 
     if (leftButton) {
       leftButton.addEventListener("touchstart", () => {
@@ -142,6 +143,15 @@ class Keyboard {
       });
       throwButton.addEventListener("touchend", () => {
         this.THROW = false;
+      });
+    }
+
+    if (healButton) {
+      healButton.addEventListener("touchstart", () => {
+        this.HEAL = true;
+      });
+      healButton.addEventListener("touchend", () => {
+        this.HEAL = false;
       });
     }
   }
