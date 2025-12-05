@@ -1,6 +1,6 @@
-# 🐔 El Pollo Loco - Jump'n'Run Adventure 
+# 🐔 El Pollo Loco - Jump'n'Run Adventure
 
-An action-packed 2D platformer featuring charming pixel-art characters, strategic boss battles, and responsive gameplay. Built with vanilla JavaScript following clean code principles.
+An action-packed 2D platformer featuring charming pixel-art characters, strategic boss battles, and responsive gameplay. Built with vanilla JavaScript following clean code principles and modern web standards.
 
 ---
 
@@ -12,21 +12,25 @@ An action-packed 2D platformer featuring charming pixel-art characters, strategi
 
 ## 📸 Preview
 
-![Game Screenshot](./img/preview-el-pollo-loco.png)
+![Game Screenshot](./assets/img/preview-el-pollo-loco.png)
 
 ---
 
 ## 🎮 Gameplay
+
 Control **Pepe** through a desert world, collect coins & bottles, defeat chicken mobs, and challenge the final boss!
 
 **Key Features:**
+
 - 🕹️ Dynamic mechanics with jump/throw combos
 - 🎭 5+ character animations (Idle, Jump, Hurt, Dead)
 - 🐓 3 enemy types + unique boss behavior
 - 📊 Interactive status bars for health/coins/ammo
 - 🔊 Immersive SFX & background music
-- 📱 Mobile touch controls & responsive design
+- 📱 Mobile touch controls with SVG icons
 - 💾 Local storage for sound settings
+- 🌐 PWA support with offline capabilities
+- 🎨 Responsive design with orientation detection
 
 ---
 
@@ -35,63 +39,139 @@ Control **Pepe** through a desert world, collect coins & bottles, defeat chicken
 - **OOP architecture** with separated concerns
 - **Canvas-based rendering** for smooth animations
 - **Modular audio system** with random sound pools
+- **SVG icons** for modern UI elements
 - **Device orientation detection**
+- **Progressive Web App (PWA)** ready
 - **JSDoc documentation** for core classes
 
 ---
 
 ## ▶️ Installation
+
 1. Clone repository:
-   ```text
+
+   ```bash
    git clone https://github.com/KosMaster87/El-pollo-loco
    ```
 
 2. Open in browser:
-   ```text
+   ```bash
    cd El-pollo-loco && open index.html
+   ```
+   Or use a local server:
+   ```bash
+   npx serve
    ```
 
 ---
 
-## 📁 Folder Structure
+## 📁 Project Structure
 
 ```text
 el-pollo-loco/
-├── audio/                 # Audio assets
-│   ├── boss/              # Boss sounds
-│   ├── environment/       # Coins, bottles
-│   └── character/         # Pepe sounds
+├── assets/
+│   ├── audio/                       # Sound effects & music
+│   ├── fonts/
+│   │   └── comic/                   # Custom webfonts (Creepster, Lexend)
+│   ├── img/                         # Game sprites & backgrounds
+│   │   ├── 2_character_pepe/
+│   │   ├── 3_enemies_chicken/
+│   │   ├── 4_enemie_boss_chicken/
+│   │   ├── 5_background/
+│   │   ├── 6_salsa_bottle/
+│   │   ├── 7_statusbars/
+│   │   ├── 8_coin/
+│   │   ├── 9_intro_outro_screens/
+│   │   └── 10_menu/
+│   ├── social/                      # Social media icons (GitHub, LinkedIn, etc.)
+│   ├── vector/
+│   │   └── arrows/                  # SVG control icons
+│   └── web-app/                     # PWA icons & manifest
 │
-├── fonts/                 # Custom webfonts
-│   ├── creepster.woff2    # Title font
-│   └── lexend.woff2       # UI font
+├── js/
+│   ├── game.js                      # Main game loop
+│   ├── global.js                    # Global variables & settings
+│   ├── script.js                    # UI interactions
+│   └── includeHTML.js               # Dynamic template loading
 │
-├── img/                   # Visual assets
-│   ├── characters/        # Pepe animations
-│   ├── enemies/           # Chicken sprites
-│   ├── ui/                # Interface elements  
-│   └── backgrounds/       # Parallax layers
+├── models/                          # Game object classes
+│   ├── character.class.js
+│   ├── enemy-*.class.js
+│   ├── world.class.js
+│   ├── audio-class.js
+│   └── ...
 │
-├── js/                    # Core logic
-│   ├── models/            # Class definitions
-│   │   ├── Character.js   # Player logic
-│   │   └── Endboss.js     # Boss AI
-│   │
-│   ├── core/              # Game engine
-│   └── utils/             # Helper functions
+├── levels/
+│   └── level1.js                    # Level configuration
 │
-├── out/                   # Generated files
-│   ├── docs/              # JSDoc output
-│   └── tests/             # (Planned) unit tests
+├── templates/                       # HTML templates
+│   ├── imprint.html
+│   ├── settings.html
+│   └── story.html
 │
-├── style/                 # Styling
-│   ├── components/        # UI components
-│   └── animations.css     # Keyframe animations
+├── style/                           # Stylesheets
+│   ├── style.css                    # Main styles
+│   ├── imprint.css
+│   ├── settings.css
+│   └── story.css
 │
-└── index.html             # Entry point
+└── index.html                       # Entry point
 ```
 
 ---
 
-## 📁 Next Stuff
+## 🎮 Controls
 
+### Desktop
+
+- **Arrow Keys** / **A/D** - Move left/right
+- **Space** - Jump
+- **D** - Throw bottle
+- **H** - Heal (when health pack available)
+
+### Mobile
+
+- **Touch controls** - On-screen buttons with SVG icons
+- **Auto-rotation prompt** - For optimal landscape gameplay
+
+---
+
+## 🌐 PWA Features
+
+- **Offline support** with service worker
+- **Install prompt** for mobile & desktop
+- **Responsive icons** (32px - 512px)
+- **Manifest configuration** with theme colors
+- **Optimized caching** strategy
+
+---
+
+## 🎨 Assets Attribution
+
+- **Images:** [Pixabay](https://pixabay.com/)
+- **Audio:** [Freesound](https://freesound.org/)
+- **Fonts:** [Google Fonts](https://fonts.google.com/), [Google Webfonts Helper](https://gwfh.mranftl.com/fonts/)
+- **Icons & Vectors:** [SVG Repo](https://www.svgrepo.com/), [FontAwesome](https://fontawesome.com/)
+
+---
+
+## 📝 License
+
+This project is for educational purposes. All assets are attributed to their respective sources.
+
+---
+
+## 👨‍💻 Developer
+
+**Konstantin Aksenov**
+🔗 [GitHub](https://github.com/KosMaster87)
+📧 [Konstantin.Aksenov@dev2k.org](mailto:Konstantin.Aksenov@dev2k.org)
+
+---
+
+## 🔄 Version
+
+**Current Branch:** `remaster`
+**Status:** Active Development
+
+---
