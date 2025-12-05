@@ -329,14 +329,23 @@ class World {
    */
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    // Draw background with parallax (no camera translation needed)
+    this.addBackgroundWithParallax(this.level.background);
+
+    // Translate for game objects
     this.ctx.translate(this.camera_x, 0);
-    this.addLevelObjects();
-    this.ctx.translate(-this.camera_x, 0);
-    this.addBars();
-    this.ctx.translate(this.camera_x, 0);
+    this.addObjectsToMap(this.level.clouds);
+    this.addObjectsToMap(this.level.bottles);
+    this.addObjectsToMap(this.level.coins);
+    this.addObjectsToMap(this.level.enemies);
     this.addToMap(this.character);
     this.addObjectsToMap(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);
+
+    // Draw UI elements (no translation)
+    this.addBars();
+
     this.setSelfDraw();
   }
 
@@ -345,11 +354,27 @@ class World {
    * @returns {void}
    */
   addLevelObjects() {
-    this.addObjectsToMap(this.level.background);
+    this.addBackgroundWithParallax(this.level.background);
     this.addObjectsToMap(this.level.clouds);
     this.addObjectsToMap(this.level.bottles);
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.enemies);
+  }
+
+  /**
+   * Adds background objects with parallax effect.
+   * Applies camera translation with parallax factor - lower parallaxSpeed values move slower (further away).
+   * @param {BackgroundObject[]} backgrounds - Array of background objects.
+   * @returns {void}
+   */
+  addBackgroundWithParallax(backgrounds) {
+    backgrounds.forEach((bg) => {
+      this.ctx.save();
+      const parallaxX = this.camera_x * bg.parallaxSpeed;
+      this.ctx.translate(parallaxX, 0);
+      bg.draw(this.ctx);
+      this.ctx.restore();
+    });
   }
 
   /**

@@ -112,7 +112,7 @@ class Character extends MovableObject {
   maxCoins = 5;
   height = 170;
   width = 95;
-  x = 0;
+  x = 400;
   y = 270;
   speed = 5;
   idleStart;

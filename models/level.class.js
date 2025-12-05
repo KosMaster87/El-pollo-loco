@@ -17,7 +17,7 @@ class Level {
   bottles;
   coins;
 
-  level_begin_x = 0;
+  level_begin_x = 160;
   level_end_x = 4000;
 
   /**

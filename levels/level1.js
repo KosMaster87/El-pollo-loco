@@ -24,6 +24,11 @@ function createObjects(count, createFunc) {
 
 /**
  * Creates and initializes the level by generating enemies, clouds, background objects, bottles, and coins.
+ * Background layers use parallax scrolling for depth effect:
+ * - Air layer: 0.2 (slowest, furthest away)
+ * - Third layer: 0.5 (slow, far)
+ * - Second layer: 0.8 (medium, middle distance)
+ * - First layer: 1.0 (normal speed, foreground)
  * @returns {Level} - A new level instance containing enemies, clouds, background objects, bottles, and coins.
  */
 function createLevel() {
@@ -54,25 +59,36 @@ function createLevel() {
 
   positions.forEach((pos, index) => {
     const layerNumber = (index % 2) + 1;
+
+    // Sky/Air layer - slowest parallax (far away)
     backgroundObjects.push(
-      new BackgroundObject("./img/5_background/layers/air.png", pos)
+      new BackgroundObject("./img/5_background/layers/air.png", pos, 0.2)
     );
+
+    // Third layer - slow parallax (far)
     backgroundObjects.push(
       new BackgroundObject(
         `./img/5_background/layers/3_third_layer/${layerNumber}.png`,
-        pos
+        pos,
+        0.5
       )
     );
+
+    // Second layer - medium parallax (middle distance)
     backgroundObjects.push(
       new BackgroundObject(
         `./img/5_background/layers/2_second_layer/${layerNumber}.png`,
-        pos
+        pos,
+        0.8
       )
     );
+
+    // First layer - normal speed (foreground)
     backgroundObjects.push(
       new BackgroundObject(
         `./img/5_background/layers/1_first_layer/${layerNumber}.png`,
-        pos
+        pos,
+        1
       )
     );
   });
