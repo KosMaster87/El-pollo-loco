@@ -1,6 +1,6 @@
 {
-  "name": "Super-Rando App",
-  "short_name": "Super-Rando",
+  "name": "El Pollo Loco",
+  "short_name": "El Pollo Loco",
   "description": "Webbrowser Jump'n'Run game developed using HTML5, CSS3, and JavaScript.",
   "start_url": "/",
   "scope": "/",
