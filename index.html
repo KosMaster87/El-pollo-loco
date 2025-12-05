@@ -145,22 +145,42 @@
       <div class="mobileControlHub disableTextSelection" id="mobileControlHub">
         <div class="panelWrapper disableTextSelection" id="panelWrapper">
           <button class="mobileBtn disableTextSelection" id="leftButton">
-            ←
+            <img
+              src="./assets/vector/arrows/keyboard-arrow-left.svg"
+              alt="Left"
+              class="btnIcon"
+            />
           </button>
           <button class="mobileBtn disableTextSelection" id="rightButton">
-            →
+            <img
+              src="./assets/vector/arrows/keyboard-arrow-right.svg"
+              alt="Right"
+              class="btnIcon"
+            />
           </button>
         </div>
 
         <div class="panelWrapper disableTextSelection" id="panelWrapper">
           <button class="mobileBtn disableTextSelection" id="jumpButton">
-            ↑
+            <img
+              src="./assets/vector/arrows/keyboard arrow up.svg"
+              alt="Jump"
+              class="btnIcon"
+            />
           </button>
           <button class="mobileBtn disableTextSelection" id="throwButton">
-            ★
+            <img
+              src="./assets/vector/arrows/bolt.svg"
+              alt="Throw"
+              class="btnIcon"
+            />
           </button>
           <button class="mobileBtn disableTextSelection" id="healButton">
-            ❤
+            <img
+              src="./assets/vector/arrows/heart-plus.svg"
+              alt="Heal"
+              class="btnIcon"
+            />
           </button>
         </div>
       </div>
@@ -207,12 +227,47 @@
     </main>
 
     <footer>
-      <p
-        class="disableTextSelection"
-        onclick="loadPage('../templates/imprint.html')"
-      >
-        Imprint
-      </p>
+      <div class="socialLinks">
+        <img
+          src="./assets/social/guard.svg"
+          alt="Imprint"
+          class="socialIcon"
+          onclick="loadPage('../templates/imprint.html')"
+          rel="noopener noreferrer"
+        />
+
+        <img
+          src="./assets/social/email.svg"
+          alt="Email"
+          class="socialIcon"
+          onclick="window.location.href='mailto:konstantin.aksenov@dev2k.org'"
+          rel="noopener noreferrer"
+        />
+
+        <img
+          src="./assets/social/youtube.svg"
+          alt="YouTube"
+          class="socialIcon"
+          onclick="window.open('https://www.youtube.com/@kav87', '_blank')"
+          rel="noopener noreferrer"
+        />
+
+        <img
+          src="./assets/social/linkedin.svg"
+          alt="LinkedIn"
+          class="socialIcon"
+          onclick="window.open('https://www.linkedin.com/in/konstantin-aksenov-802b88190/', '_blank')"
+          rel="noopener noreferrer"
+        />
+
+        <img
+          src="./assets/social/github.svg"
+          alt="GitHub"
+          class="socialIcon"
+          onclick="window.open('https://github.com/KosMaster87/', '_blank')"
+          rel="noopener noreferrer"
+        />
+      </div>
     </footer>
 
     <div class="loadingSpinnerLayer" id="loadingSpinnerLayer">

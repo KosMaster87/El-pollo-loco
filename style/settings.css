@@ -58,6 +58,11 @@
   display: flex;
   flex-direction: column;
   align-items: end;
+  background: #000000ad;
+  border-radius: 0.5rem;
+  padding: 0.8rem !important;
+  color: whitesmoke;
+  font-size: large;
 
   div {
     cursor: default;

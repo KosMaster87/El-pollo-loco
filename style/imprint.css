@@ -65,6 +65,31 @@
   text-decoration: underline;
 }
 
+.sectionTitle {
+  margin-top: 0.5rem;
+}
+
+.assetAttribution {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 0.5rem;
+}
+
+.attributionTitle {
+  margin-bottom: 0.5rem;
+}
+
+.attributionItem {
+  margin-top: 0.5rem;
+}
+
+.imprintGenerator {
+  margin-top: 1rem;
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
 @media screen and (max-width: 1080px) and (orientation: landscape) {
   .imprintPic {
     position: absolute;
