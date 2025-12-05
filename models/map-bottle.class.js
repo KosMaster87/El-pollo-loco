@@ -13,8 +13,8 @@
  */
 class Bottle extends PickableObject {
   IMAGES_SALSA_GROUND = [
-    "./img/6_salsa_bottle/1_salsa_bottle_on_ground.png",
-    "./img/6_salsa_bottle/2_salsa_bottle_on_ground.png",
+    "./assets/img/6_salsa_bottle/1_salsa_bottle_on_ground.png",
+    "./assets/img/6_salsa_bottle/2_salsa_bottle_on_ground.png",
   ];
 
   offset = { top: 10, bottom: 10, left: 10, right: 10 };
@@ -27,7 +27,7 @@ class Bottle extends PickableObject {
    * @param {number} [y=0] - Y-coordinate position
    */
   constructor(x, y) {
-    super().loadImage("./img/6_salsa_bottle/salsa_bottle.png");
+    super().loadImage("./assets/img/6_salsa_bottle/salsa_bottle.png");
     this.images = {};
     this.loadImages(this.IMAGES_SALSA_GROUND);
     this.x = x !== undefined ? x : 0;

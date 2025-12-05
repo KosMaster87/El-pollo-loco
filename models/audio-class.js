@@ -24,7 +24,7 @@ class AudioManager {
       this.initMuteButton();
 
       document.getElementById("muteButton").src =
-        "./img/10_menu/volume_off.svg";
+        "./assets/img/10_menu/volume_off.svg";
 
       volumeSlider.addEventListener("input", (event) => {
         const volume = event.target.value / 100;
@@ -36,60 +36,64 @@ class AudioManager {
 
     this.sounds = {
       inHomeMusic: [
-        new Audio("./audio/homeMenuSound01.mp3"),
-        new Audio("./audio/homeMenuSound02.mp3"),
+        new Audio("./assets/audio/homeMenuSound01.mp3"),
+        new Audio("./assets/audio/homeMenuSound02.mp3"),
       ],
-      inGameMusic: [new Audio("./audio/inGameSound01.mp3")],
-      gameLose: [new Audio("./audio/loose.mp3")],
-      gameWin: [new Audio("./audio/win.mp3")],
+      inGameMusic: [new Audio("./assets/audio/inGameSound01.mp3")],
+      gameLose: [new Audio("./assets/audio/loose.mp3")],
+      gameWin: [new Audio("./assets/audio/win.mp3")],
       walking: [
-        new Audio("./audio/steps01.mp3"),
-        new Audio("./audio/steps02.mp3"),
+        new Audio("./assets/audio/steps01.mp3"),
+        new Audio("./assets/audio/steps02.mp3"),
       ],
       jumping: [
-        new Audio("./audio/jump01.mp3"),
-        new Audio("./audio/jump02.mp3"),
-        new Audio("./audio/jump03.mp3"),
-        new Audio("./audio/jump04.mp3"),
+        new Audio("./assets/audio/jump01.mp3"),
+        new Audio("./assets/audio/jump02.mp3"),
+        new Audio("./assets/audio/jump03.mp3"),
+        new Audio("./assets/audio/jump04.mp3"),
       ],
       snoring: [
-        new Audio("./audio/snore01.mp3"),
-        new Audio("./audio/snore02.mp3"),
-        new Audio("./audio/snore03.mp3"),
-        new Audio("./audio/snore04.mp3"),
+        new Audio("./assets/audio/snore01.mp3"),
+        new Audio("./assets/audio/snore02.mp3"),
+        new Audio("./assets/audio/snore03.mp3"),
+        new Audio("./assets/audio/snore04.mp3"),
       ],
       hurting: [
-        new Audio("./audio/hurt01.mp3"),
-        new Audio("./audio/hurt02.mp3"),
-        new Audio("./audio/hurt03.mp3"),
-        new Audio("./audio/hurt04.mp3"),
-        new Audio("./audio/hurt05.mp3"),
+        new Audio("./assets/audio/hurt01.mp3"),
+        new Audio("./assets/audio/hurt02.mp3"),
+        new Audio("./assets/audio/hurt03.mp3"),
+        new Audio("./assets/audio/hurt04.mp3"),
+        new Audio("./assets/audio/hurt05.mp3"),
       ],
-      death: [new Audio("./audio/deathPepe01.mp3")],
+      death: [new Audio("./assets/audio/deathPepe01.mp3")],
       coinEarn: [
-        new Audio("./audio/coin01.mp3"),
-        new Audio("./audio/coin02.mp3"),
-        new Audio("./audio/coin03.mp3"),
-        new Audio("./audio/coin04.mp3"),
+        new Audio("./assets/audio/coin01.mp3"),
+        new Audio("./assets/audio/coin02.mp3"),
+        new Audio("./assets/audio/coin03.mp3"),
+        new Audio("./assets/audio/coin04.mp3"),
+      ],
+      heal: [
+        new Audio("./assets/audio/drinkSalsa01.mp3"),
+        new Audio("./assets/audio/drinkSalsa02.mp3"),
       ],
       bottleEarn: [
-        new Audio("./audio/pickSalsa01.mp3"),
-        new Audio("./audio/pickSalsa02.mp3"),
+        new Audio("./assets/audio/pickSalsa01.mp3"),
+        new Audio("./assets/audio/pickSalsa02.mp3"),
       ],
       bottleThrow: [
-        new Audio("./audio/throw01.mp3"),
-        new Audio("./audio/throw02.mp3"),
+        new Audio("./assets/audio/throw01.mp3"),
+        new Audio("./assets/audio/throw02.mp3"),
       ],
       bottleSplash: [
-        new Audio("./audio/splash01.mp3"),
-        new Audio("./audio/splash02.mp3"),
-        new Audio("./audio/splash03.mp3"),
-        new Audio("./audio/splash04.mp3"),
+        new Audio("./assets/audio/splash01.mp3"),
+        new Audio("./assets/audio/splash02.mp3"),
+        new Audio("./assets/audio/splash03.mp3"),
+        new Audio("./assets/audio/splash04.mp3"),
       ],
-      opponentDeath: [new Audio("./audio/chickenDeath01.mp3")],
-      bossAttacking: [new Audio("./audio/bossAttacking01.mp3")],
-      bossHurting: [new Audio("./audio/bossHurting01.mp3")],
-      bossDeath: [new Audio("./audio/chickenDeath01.mp3")],
+      opponentDeath: [new Audio("./assets/audio/chickenDeath01.mp3")],
+      bossAttacking: [new Audio("./assets/audio/bossAttacking01.mp3")],
+      bossHurting: [new Audio("./assets/audio/bossHurting01.mp3")],
+      bossDeath: [new Audio("./assets/audio/chickenDeath01.mp3")],
     };
   }
 

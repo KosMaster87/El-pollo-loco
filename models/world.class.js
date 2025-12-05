@@ -29,6 +29,8 @@ class World {
   throwableObjects = [];
   lastThrowTime = 0;
   throwCooldown = 500;
+  lastHealTime = 0;
+  healCooldown = 500;
 
   activeEnemyInteraction = false;
   collisionBlocked = false;
@@ -106,6 +108,14 @@ class World {
     setStoppableInterval(() => {
       this.throwObject();
     }, 100);
+
+    setStoppableInterval(() => {
+      this.checkHealAction();
+    }, 100);
+
+    setStoppableInterval(() => {
+      this.updateHealPrompt();
+    }, 200);
 
     setStoppableInterval(() => {
       this.checkAlerts();
@@ -321,6 +331,50 @@ class World {
     this.character.bottles.pop();
     this.statusBarBottle.setPercentage(this.character.bottles.length * 20);
     this.lastThrowTime = Date.now();
+  }
+
+  /**
+   * Checks if the heal key is pressed and triggers healing.
+   * @returns {void}
+   */
+  checkHealAction() {
+    const now = Date.now();
+
+    if (
+      this.keyboard.HEAL &&
+      this.character.coins.length >= 5 &&
+      this.character.energy < 100 &&
+      now - this.lastHealTime >= this.healCooldown
+    ) {
+      this.character.heal();
+      this.updateStatusBarsAfterHeal();
+      this.lastHealTime = now;
+    }
+  }
+
+  /**
+   * Updates status bars after healing.
+   * @returns {void}
+   */
+  updateStatusBarsAfterHeal() {
+    this.statusBarPepe.setPercentage(this.character.energy);
+    this.statusBarCoin.setPercentage(0);
+  }
+
+  /**
+   * Shows or hides the heal prompt based on conditions.
+   * @returns {void}
+   */
+  updateHealPrompt() {
+    const healPrompt = document.getElementById("healPrompt");
+    const canHeal =
+      this.character.coins.length >= 5 && this.character.energy < 100;
+
+    if (canHeal) {
+      healPrompt.style.display = "block";
+    } else {
+      healPrompt.style.display = "none";
+    }
   }
 
   /**

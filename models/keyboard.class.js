@@ -16,7 +16,8 @@ class Keyboard {
   UP = false;
   DOWN = false;
   SPACE = false;
-  THROW = false; // Taste D
+  THROW = false; // KEY D
+  HEAL = false; // KEY H
   COMMAND = false;
   AUDIO = false;
   RESTART = false;
@@ -60,6 +61,9 @@ class Keyboard {
       case 68:
         this.THROW = true;
         break;
+      case 72:
+        this.HEAL = true;
+        break;
     }
   }
 
@@ -87,6 +91,9 @@ class Keyboard {
         break;
       case 68:
         this.THROW = false;
+        break;
+      case 72:
+        this.HEAL = false;
         break;
     }
   }

@@ -1,6 +1,7 @@
 @import url("./imprint.css");
 @import url("./story.css");
 @import url("./settings.css");
+@import url("./../assets/styles/comic.css");
 
 .disableTextSelection {
   user-select: none; /* Für Webkit-Browser wie Chrome, Safari */
@@ -16,7 +17,7 @@
 }
 
 body {
-  font-family: "Sancreek";
+  font-family: "Comic Neue", sans-serif;
   height: 100dvh;
   display: grid;
   grid-template-columns: 1fr 90% 1fr;
@@ -25,7 +26,7 @@ body {
     " . header . "
     " . main . "
     " footer footer footer ";
-  background-image: url(./../img/desertBackground.jpg);
+  background-image: url(./../assets/img/desertBackground.jpg);
   background-color: rgb(58, 10, 10);
   background-position: center;
   background-repeat: no-repeat;
@@ -113,7 +114,7 @@ header {
   height: 100%;
   border: 1px solid black;
   aspect-ratio: 16 / 9;
-  background-image: url("./../img/9_intro_outro_screens/start/startscreen_1.png");
+  background-image: url("./../assets/img/9_intro_outro_screens/start/startscreen_1.png");
   background-size: cover;
   background-position: center;
   background-color: rgb(92 13 21);
@@ -151,6 +152,7 @@ header {
   min-width: 80px;
   height: 40px;
   font-size: large;
+  padding: 0.2rem 0.4rem;
 }
 
 .mobileControlHub {
@@ -201,7 +203,7 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  background-image: url(./../img/desert.png);
+  background-image: url(./../assets/img/desert.png);
   background-size: cover;
   background-position: center;
   background-color: rgb(92 13 21);
@@ -305,7 +307,7 @@ footer {
 }
 
 footer p {
-  -webkit-text-stroke: 0.2px rgb(0, 0, 0);
+  /* -webkit-text-stroke: 0.2px rgb(0, 0, 0); */
   color: rgba(255, 195, 0);
   border-color: brown;
   font-weight: 100;

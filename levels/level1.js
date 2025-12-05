@@ -66,8 +66,8 @@ const isPositionValid = (x, y, width, height, existingObjects, minDistance) => {
  */
 const generateRandomY = (objectType) => {
   if (objectType === "coin") {
-    const minY = 150;
-    const maxY = 380;
+    const minY = 220;
+    const maxY = 345;
     return minY + Math.random() * (maxY - minY);
   }
   return 370 + Math.random() * 10;
@@ -225,19 +225,19 @@ const createBackgroundLayer = (path, position, parallaxSpeed) =>
  * @returns {Array} Array of 4 background layers
  */
 const createBackgroundSet = (pos, layerNumber) => [
-  createBackgroundLayer("./img/5_background/layers/air.png", pos, 0.2),
+  createBackgroundLayer("./assets/img/5_background/layers/air.png", pos, 0.2),
   createBackgroundLayer(
-    `./img/5_background/layers/3_third_layer/${layerNumber}.png`,
+    `./assets/img/5_background/layers/3_third_layer/${layerNumber}.png`,
     pos,
     0.5
   ),
   createBackgroundLayer(
-    `./img/5_background/layers/2_second_layer/${layerNumber}.png`,
+    `./assets/img/5_background/layers/2_second_layer/${layerNumber}.png`,
     pos,
     0.8
   ),
   createBackgroundLayer(
-    `./img/5_background/layers/1_first_layer/${layerNumber}.png`,
+    `./assets/img/5_background/layers/1_first_layer/${layerNumber}.png`,
     pos,
     1
   ),
@@ -281,7 +281,7 @@ const createLevel = () => {
     "bottle",
     100
   );
-  const coins = createCoins(bottles, 5, 100);
+  const coins = createCoins(bottles, 10, 100);
   const enemies = [
     ...createObjects(20, () => new Chicken()),
     ...createObjects(30, () => new Chick()),

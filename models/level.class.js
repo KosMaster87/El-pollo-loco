@@ -18,7 +18,7 @@ class Level {
   coins;
 
   level_begin_x = 160;
-  level_end_x = 4000;
+  level_end_x = 4500;
 
   /**
    * Initializes a new level with specified game objects.

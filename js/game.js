@@ -81,6 +81,7 @@ function gameOver() {
   clearAllIntervals();
   apertureGameOver();
   resetCanvas();
+  document.getElementById("healPrompt").style.display = "none";
   audioManager.stopSound("inGameMusic");
   setTimeout(() => {
     audioManager.playSound("inHomeMusic");
@@ -99,6 +100,7 @@ function gameWin() {
   clearAllIntervals();
   apertureGameWin();
   resetCanvas();
+  document.getElementById("healPrompt").style.display = "none";
   audioManager.stopSound("inGameMusic");
   setTimeout(() => {
     audioManager.playSound("inHomeMusic");
