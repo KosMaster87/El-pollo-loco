@@ -1,4 +1,3 @@
-@import url("./about.css");
 @import url("./imprint.css");
 @import url("./story.css");
 @import url("./settings.css");
@@ -17,7 +16,6 @@
 }
 
 body {
-  /* user-select: none; */
   font-family: "Sancreek";
   height: 100dvh;
   display: grid;
@@ -348,5 +346,3 @@ footer p {
     display: none;
   }
 }
-
-
