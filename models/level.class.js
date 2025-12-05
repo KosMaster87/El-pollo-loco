@@ -22,23 +22,18 @@ class Level {
 
   /**
    * Initializes a new level with specified game objects.
-   * @param {Array<Enemy>} enemiesArray - Array of enemy objects to be included in the level.
-   * @param {Array<Cloud>} cloudsArray - Array of cloud objects to be included in the level.
-   * @param {Array<Background>} backgroundArray - Array of background objects to be included in the level.
-   * @param {Array<Bottle>} bottlesArray - Array of bottle objects to be included in the level.
-   * @param {Array<Coin>} coinsArray - Array of coin objects to be included in the level.
+   * @param {Object} config - Configuration object for the level.
+   * @param {Array<Enemy>} config.enemies - Array of enemy objects.
+   * @param {Array<Cloud>} config.clouds - Array of cloud objects.
+   * @param {Array<Background>} config.background - Array of background objects.
+   * @param {Array<Bottle>} config.bottles - Array of bottle objects.
+   * @param {Array<Coin>} config.coins - Array of coin objects.
    */
-  constructor(
-    enemiesArray,
-    cloudsArray,
-    backgroundArray,
-    bottlesArray,
-    coinsArray
-  ) {
-    this.enemies = enemiesArray;
-    this.clouds = cloudsArray;
-    this.background = backgroundArray;
-    this.bottles = bottlesArray;
-    this.coins = coinsArray;
+  constructor(config) {
+    this.enemies = config.enemies || [];
+    this.clouds = config.clouds || [];
+    this.background = config.background || [];
+    this.bottles = config.bottles || [];
+    this.coins = config.coins || [];
   }
 }
