@@ -1,0 +1,72 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Dependencies
+node_modules/
+package-lock.json
+
+# IDE/Editor
+# Keep .vscode/ for team settings (settings.json, extensions.json)
+# Only ignore personal debug configs
+.vscode/launch.json
+.idea/
+.project
+.classpath
+*.sublime-workspace
+.history/*
+
+# CI/CD
+.github/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+/.directory
+
+# Temporary files
+*.tmp
+*.temp
+/tmp
+/out-tsc
+
+# Build output
+/dist
+/bazel-out
+
+# Coverage reports
+# /coverage
+
+# Firebase
+.firebase
+*-debug.log
+.runtimeconfig.json
+
+# SSL certificates
+csr.pem
+privateKey.pem
+certificate.pem
+
+# Apache
+# .htaccess
+
+# PHP files with sensitive data
+public/api/contact/contact.php
+public/api/contact/rate_limit.json
+public/api/contact/contact_logs.txt
+
+# Cache
+/.angular/cache
+.sass-cache/
+
+# Runtime
+/connect.lock
+/libpeerconnection.log
+testem.log
+/typings
+
+# Documentation
+docs/

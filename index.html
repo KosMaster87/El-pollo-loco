@@ -4,12 +4,37 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <meta
+      name="description"
+      content="Webbrowser Jump'n'Run game developed using HTML5, CSS3, and JavaScript."
+    />
+    <meta
+      name="keywords"
+      content="Webbrowser Game, Jump'n'Run, HTML5, CSS3, JavaScript, Game Development"
+    />
+    <meta name="author" content="K. Aksenov - Software Developer" />
+
+    <!-- Favicon -->
     <link
       rel="icon"
-      type="image/x-icon"
-      href="./../img/6_salsa_bottle/1_salsa_bottle_on_ground.png"
+      type="image/png"
+      sizes="32x32"
+      href="./assets/web-app/icon-32.png"
     />
-    <link rel="stylesheet" href="./style/fonts.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./assets/web-app/icon-32.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./assets/web-app/icon-192.png"
+    />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="assets/web-app/manifest.json" />
     <link rel="stylesheet" href="./style/style.css" />
 
     <script src="./js/global.js"></script>
@@ -60,7 +85,7 @@
       <img
         class="homeLayer"
         id="homeLayer"
-        src="./../img/9_intro_outro_screens/start/startscreen_1.png"
+        src="./assets/img/9_intro_outro_screens/start/startscreen_1.png"
         alt="Home layer."
       />
 
@@ -87,7 +112,7 @@
           <img
             class="muteButton"
             id="muteButton"
-            src="./../img/10_menu/volume_up.svg"
+            src="./assets/img/10_menu/volume_up.svg"
             alt="Mute Button."
             style="display: none"
           />
@@ -130,16 +155,9 @@
           >
             RETURN TO HOME
           </button>
-          <!-- <button class="closeMenuBtn" id="closeMenuBtn">CLOSE THE MENU</button> -->
         </div>
 
         <div class="menuFooter" id="menuFooter">
-          <p
-            class="disableTextSelection"
-            onclick="loadPage('../templates/about.html')"
-          >
-            About developer
-          </p>
           <p
             class="disableTextSelection"
             onclick="loadPage('../templates/imprint.html')"
@@ -152,28 +170,68 @@
       <div class="mobileControlHub disableTextSelection" id="mobileControlHub">
         <div class="panelWrapper disableTextSelection" id="panelWrapper">
           <button class="mobileBtn disableTextSelection" id="leftButton">
-            ←
+            <img
+              src="./assets/vector/arrows/keyboard-arrow-left.svg"
+              alt="Left"
+              class="btnIcon"
+            />
           </button>
           <button class="mobileBtn disableTextSelection" id="rightButton">
-            →
+            <img
+              src="./assets/vector/arrows/keyboard-arrow-right.svg"
+              alt="Right"
+              class="btnIcon"
+            />
           </button>
         </div>
 
         <div class="panelWrapper disableTextSelection" id="panelWrapper">
           <button class="mobileBtn disableTextSelection" id="jumpButton">
-            ↑
+            <img
+              src="./assets/vector/arrows/keyboard arrow up.svg"
+              alt="Jump"
+              class="btnIcon"
+            />
           </button>
           <button class="mobileBtn disableTextSelection" id="throwButton">
-            ★
+            <img
+              src="./assets/vector/arrows/bolt.svg"
+              alt="Throw"
+              class="btnIcon"
+            />
+          </button>
+          <button class="mobileBtn disableTextSelection" id="healButton">
+            <img
+              src="./assets/vector/arrows/heart-plus.svg"
+              alt="Heal"
+              class="btnIcon"
+            />
           </button>
         </div>
+      </div>
+
+      <div class="desktopPrompts" id="desktopPrompts">
+        <button
+          class="openMenuBtn disableTextSelection"
+          id="healPromptDesktop"
+          style="display: none"
+        >
+          Drücke <strong>H</strong> zum Heilen
+        </button>
+        <button
+          class="openMenuBtn disableTextSelection"
+          id="throwPromptDesktop"
+          style="display: none"
+        >
+          Drücke <strong>D</strong> zum Werfen
+        </button>
       </div>
 
       <div class="rotateLayer" id="rotateLayer">
         <img
           class="ratationImage"
           id="ratationImage"
-          src="./../img/10_menu/screen_rotation.svg"
+          src="./assets/img/10_menu/screen_rotation.svg"
           alt="Rotate layer image."
         />
         <p class="disableTextSelection">Turn your Phone</p>
@@ -182,37 +240,66 @@
       <img
         class="apertureGameOver"
         id="apertureGameOver"
-        src="./../img/9_intro_outro_screens/game_over/youLose.png"
+        src="./assets/img/9_intro_outro_screens/game_over/youLose.png"
         alt="Game Over screen."
       />
       <img
         class="apertureGameWin"
         id="apertureGameWin"
-        src="./../img/9_intro_outro_screens/game_over/youWin.png"
+        src="./assets/img/9_intro_outro_screens/game_over/youWin.png"
         alt="Game Winner screen."
       />
     </main>
 
     <footer>
-      <p
-        class="disableTextSelection"
-        onclick="loadPage('../templates/about.html')"
-      >
-        About developer
-      </p>
-      <p
-        class="disableTextSelection"
-        onclick="loadPage('../templates/imprint.html')"
-      >
-        Imprint
-      </p>
+      <div class="socialLinks">
+        <img
+          src="./assets/social/guard.svg"
+          alt="Imprint"
+          class="socialIcon"
+          onclick="loadPage('../templates/imprint.html')"
+          rel="noopener noreferrer"
+        />
+
+        <img
+          src="./assets/social/email.svg"
+          alt="Email"
+          class="socialIcon"
+          onclick="window.location.href='mailto:konstantin.aksenov@dev2k.org'"
+          rel="noopener noreferrer"
+        />
+
+        <img
+          src="./assets/social/youtube.svg"
+          alt="YouTube"
+          class="socialIcon"
+          onclick="window.open('https://www.youtube.com/@kav87', '_blank')"
+          rel="noopener noreferrer"
+        />
+
+        <img
+          src="./assets/social/linkedin.svg"
+          alt="LinkedIn"
+          class="socialIcon"
+          onclick="window.open('https://www.linkedin.com/in/konstantin-aksenov-802b88190/', '_blank')"
+          rel="noopener noreferrer"
+        />
+
+        <img
+          src="./assets/social/github.svg"
+          alt="GitHub"
+          class="socialIcon"
+          onclick="window.open('https://github.com/KosMaster87/', '_blank')"
+          rel="noopener noreferrer"
+        />
+      </div>
     </footer>
 
     <div class="loadingSpinnerLayer" id="loadingSpinnerLayer">
       <img
         class="loadingSpinnerImg"
         id="loadingSpinnerImg"
-        src="./../img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png"
+        src="./assets/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png"
         alt="You are Welkom - Experience is being prepared."
       />
       <p

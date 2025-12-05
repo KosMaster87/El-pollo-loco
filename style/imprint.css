@@ -4,7 +4,7 @@
   aspect-ratio: 16 / 9;
   width: 100%;
   height: 100%;
-  background-image: url(./../img/desert.png);
+  background-image: url(./../assets/img/desert.png);
   background-size: cover;
   background-position: center;
   border: none;
@@ -63,6 +63,31 @@
   color: #0a3e91;
   outline: none;
   text-decoration: underline;
+}
+
+.sectionTitle {
+  margin-top: 0.5rem;
+}
+
+.assetAttribution {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 0.5rem;
+}
+
+.attributionTitle {
+  margin-bottom: 0.5rem;
+}
+
+.attributionItem {
+  margin-top: 0.5rem;
+}
+
+.imprintGenerator {
+  margin-top: 1rem;
+  font-size: 0.9em;
+  opacity: 0.8;
 }
 
 @media screen and (max-width: 1080px) and (orientation: landscape) {

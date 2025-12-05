@@ -1,7 +1,7 @@
-@import url("./about.css");
 @import url("./imprint.css");
 @import url("./story.css");
 @import url("./settings.css");
+@import url("./../assets/styles/comic.css");
 
 .disableTextSelection {
   user-select: none; /* Für Webkit-Browser wie Chrome, Safari */
@@ -17,8 +17,7 @@
 }
 
 body {
-  /* user-select: none; */
-  font-family: "Sancreek";
+  font-family: "Comic Neue", sans-serif;
   height: 100dvh;
   display: grid;
   grid-template-columns: 1fr 90% 1fr;
@@ -27,7 +26,7 @@ body {
     " . header . "
     " . main . "
     " footer footer footer ";
-  background-image: url(./../img/desertBackground.jpg);
+  background-image: url(./../assets/img/desertBackground.jpg);
   background-color: rgb(58, 10, 10);
   background-position: center;
   background-repeat: no-repeat;
@@ -115,7 +114,7 @@ header {
   height: 100%;
   border: 1px solid black;
   aspect-ratio: 16 / 9;
-  background-image: url("./../img/9_intro_outro_screens/start/startscreen_1.png");
+  background-image: url("./../assets/img/9_intro_outro_screens/start/startscreen_1.png");
   background-size: cover;
   background-position: center;
   background-color: rgb(92 13 21);
@@ -153,6 +152,25 @@ header {
   min-width: 80px;
   height: 40px;
   font-size: large;
+  padding: 0.2rem 0.4rem;
+}
+
+.desktopPrompts {
+  grid-area: main;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5.5rem;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.desktopPrompts button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .mobileControlHub {
@@ -169,7 +187,7 @@ header {
 .panelWrapper {
   display: flex;
   justify-content: space-between;
-  width: 90px;
+  width: 130px;
   height: 50px;
   font-size: 24px;
   border: none;
@@ -182,6 +200,14 @@ header {
   align-items: center;
   width: 40px;
   height: 40px;
+  padding: 0.3rem;
+}
+
+.btnIcon {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  filter: brightness(0) invert(1);
 }
 
 button {
@@ -203,7 +229,7 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  background-image: url(./../img/desert.png);
+  background-image: url(./../assets/img/desert.png);
   background-size: cover;
   background-position: center;
   background-color: rgb(92 13 21);
@@ -303,11 +329,31 @@ footer {
   margin: 0 0.5rem 0.5rem 0.5rem;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
+}
+
+.socialLinks {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.socialIcon {
+  width: clamp(1.5rem, 2vw + 1rem, 3rem);
+  height: clamp(1.5rem, 2vw + 1rem, 3rem);
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  filter: brightness(0.9);
+}
+
+.socialIcon:hover {
+  filter: brightness(1);
 }
 
 footer p {
-  -webkit-text-stroke: 0.2px rgb(0, 0, 0);
+  /* -webkit-text-stroke: 0.2px rgb(0, 0, 0); */
   color: rgba(255, 195, 0);
   border-color: brown;
   font-weight: 100;
@@ -348,5 +394,3 @@ footer p {
     display: none;
   }
 }
-
-

@@ -1,5 +1,16 @@
+/**
+ * @fileoverview Pickable object base class.
+ * @description Base class for objects that can be picked up by the player.
+ * @module models/object-pickable-class
+ */
+
 "use strict";
 
+/**
+ * Base class for pickable objects in the game.
+ * @class
+ * @extends {DrawableObject}
+ */
 class PickableObject extends DrawableObject {
   offset = {
     top: 0,

@@ -1,13 +1,24 @@
+/**
+ * @fileoverview Character status bar class.
+ * @description Manages the visual health status bar for the player character.
+ * @module models/status-bar-character-class
+ */
+
 "use strict";
 
+/**
+ * Character status bar class to display player health.
+ * @class
+ * @extends {DrawableObject}
+ */
 class CharacterStatusBar extends DrawableObject {
   IMAGES = [
-    "./img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png",
-    "./img/7_statusbars/1_statusbar/2_statusbar_health/blue/20.png",
-    "./img/7_statusbars/1_statusbar/2_statusbar_health/blue/40.png",
-    "./img/7_statusbars/1_statusbar/2_statusbar_health/blue/60.png",
-    "./img/7_statusbars/1_statusbar/2_statusbar_health/blue/80.png",
-    "./img/7_statusbars/1_statusbar/2_statusbar_health/blue/100.png",
+    "./assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png",
+    "./assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/20.png",
+    "./assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/40.png",
+    "./assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/60.png",
+    "./assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/80.png",
+    "./assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/100.png",
   ];
 
   percentage = 100;
@@ -25,6 +36,7 @@ class CharacterStatusBar extends DrawableObject {
   /**
    * Sets the energy level displayed in the status bar.
    * @param {number} percentage - The current energy level of the character as a percentage.
+   * @returns {void}
    */
   setPercentage(percentage) {
     this.percentage = percentage;

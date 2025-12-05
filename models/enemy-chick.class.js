@@ -1,13 +1,24 @@
+/**
+ * @fileoverview Small chick enemy class.
+ * @description Manages small chick enemies with walking and death animations.
+ * @module models/enemy-chick-class
+ */
+
 "use strict";
 
+/**
+ * Small chick enemy class.
+ * @class
+ * @extends {MovableObject}
+ */
 class Chick extends MovableObject {
   IMAGES_WALKING = [
-    "./img/3_enemies_chicken/chicken_small/1_walk/1_w.png",
-    "./img/3_enemies_chicken/chicken_small/1_walk/2_w.png",
-    "./img/3_enemies_chicken/chicken_small/1_walk/3_w.png",
+    "./assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png",
+    "./assets/img/3_enemies_chicken/chicken_small/1_walk/2_w.png",
+    "./assets/img/3_enemies_chicken/chicken_small/1_walk/3_w.png",
   ];
 
-  IMAGES_DEAD = ["./img/3_enemies_chicken/chicken_small/2_dead/dead.png"];
+  IMAGES_DEAD = ["./assets/img/3_enemies_chicken/chicken_small/2_dead/dead.png"];
 
   y = 400;
   height = 45;
@@ -26,17 +37,18 @@ class Chick extends MovableObject {
    * Initializes image loading, sets random speed and position, and starts animation.
    */
   constructor() {
-    super().loadImage("./img/3_enemies_chicken/chicken_small/1_walk/1_w.png");
+    super().loadImage("./assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png");
     this.images = {};
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_DEAD);
     this.speed = 0.15 + Math.random() * 0.25;
-    this.x = 200 + Math.random() * 10000;
+    this.x = 1000 + Math.random() * 10000;
     this.animate();
   }
 
   /**
    * Starts the movement and animation intervals for the Chick.
+   * @returns {void}
    */
   animate() {
     this.walkingInterval = setStoppableInterval(
@@ -52,17 +64,19 @@ class Chick extends MovableObject {
   /**
    * Handles the logic for hitting an opponent.
    * Sets the energy to 0 and initiates the death sequence.
+   * @returns {void}
    */
-  hit_anyOpponent() {
+  hitOpponent() {
     this.energy = 0;
-    this.die_this();
+    this.die();
   }
 
   /**
    * Handles the death sequence for the Chick.
    * Plays the death animation, stops intervals, and removes the Chick from the enemies array.
+   * @returns {void}
    */
-  die_this() {
+  die() {
     this.audioManager.playSound("opponentDeath");
     clearInterval(this.walkingInterval);
     clearInterval(this.animationInterval);

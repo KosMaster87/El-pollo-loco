@@ -1,5 +1,15 @@
+/**
+ * @fileoverview Drawable object base class.
+ * @description Base class for all drawable game objects with image loading and rendering capabilities.
+ * @module models/object-drawable-class
+ */
+
 "use strict";
 
+/**
+ * Base class for drawable objects in the game.
+ * @class
+ */
 class DrawableObject {
   offset = {
     top: 0,
@@ -22,6 +32,7 @@ class DrawableObject {
   /**
    * Loads multiple images into the `images` object.
    * @param {string[]} imagePaths - An array of image paths to be loaded.
+   * @returns {void}
    */
   loadImages(imagePaths) {
     imagePaths.forEach((path) => {
@@ -32,6 +43,7 @@ class DrawableObject {
   /**
    * Loads a single image into the `img` property.
    * @param {string} path - The path to the image to be loaded.
+   * @returns {void}
    */
   loadImage(path) {
     this.img = Static.getImage(path);
@@ -40,6 +52,7 @@ class DrawableObject {
   /**
    * Draws the current image onto the canvas at the object's position.
    * @param {CanvasRenderingContext2D} ctx - The canvas rendering context used for drawing.
+   * @returns {void}
    */
   draw(ctx) {
     ctx.save();
@@ -51,6 +64,7 @@ class DrawableObject {
    * Draws a border around the object if it is an instance of specific classes.
    * This method is disabled by default and can be used for debugging.
    * @param {CanvasRenderingContext2D} ctx - The canvas rendering context used for drawing.
+   * @returns {void}
    */
   drawFrame(ctx) {
     if (
@@ -82,6 +96,7 @@ class DrawableObject {
   /**
    * Plays an animation by cycling through the images in the given array.
    * @param {string[]} images - An array of image paths to be used for the animation.
+   * @returns {void}
    */
   playAnimation(images) {
     let i = this.currentImage % images.length;

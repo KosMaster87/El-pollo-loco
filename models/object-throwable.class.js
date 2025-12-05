@@ -1,20 +1,31 @@
+/**
+ * @fileoverview Throwable object class for bottles.
+ * @description Manages throwable bottle objects with physics, rotation, and splash animations.
+ * @module models/object-throwable-class
+ */
+
 "use strict";
 
+/**
+ * Throwable object class for bottles that can be thrown.
+ * @class
+ * @extends {MovableObject}
+ */
 class ThrowableObject extends MovableObject {
   IMAGES_ROTATION = [
-    "./img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
-    "./img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png",
-    "./img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png",
-    "./img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png",
+    "./assets/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
+    "./assets/img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png",
+    "./assets/img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png",
+    "./assets/img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png",
   ];
 
   IMAGES_SPLASH = [
-    "./img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png",
-    "./img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png",
-    "./img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png",
-    "./img/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png",
-    "./img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png",
-    "./img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
+    "./assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png",
+    "./assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png",
+    "./assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png",
+    "./assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png",
+    "./assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png",
+    "./assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
   ];
 
   width = 50;
@@ -42,7 +53,7 @@ class ThrowableObject extends MovableObject {
    * @param {number} [throwDirectionX=1] - The direction in which the object is thrown (1 for right, -1 for left).
    */
   constructor(x, y, world, throwDirectionX = 1) {
-    super().loadImage("./img/6_salsa_bottle/salsa_bottle.png");
+    super().loadImage("./assets/img/6_salsa_bottle/salsa_bottle.png");
     this.loadImages(this.IMAGES_ROTATION);
     this.loadImages(this.IMAGES_SPLASH);
     this.world = world;
@@ -65,7 +76,7 @@ class ThrowableObject extends MovableObject {
       this.x += this.xSpeed * this.throwDirectionX;
       this.world.level.enemies.forEach((enemy) => {
         if (this.isColliding(enemy)) {
-          this.handleEnemyCollision_thisBottle(enemy);
+          this.handleEnemyCollision(enemy);
         }
       });
 
@@ -88,8 +99,9 @@ class ThrowableObject extends MovableObject {
   /**
    * Handles collision between the bottle and enemies.
    * @param {DrawableObject} enemy - The enemy object involved in the collision.
+   * @returns {void}
    */
-  handleEnemyCollision_thisBottle(enemy) {
+  handleEnemyCollision(enemy) {
     if (this.isColliding(enemy) && !this.collide) {
       this.collide = true;
       this.xSpeed = 0;
@@ -109,21 +121,23 @@ class ThrowableObject extends MovableObject {
   /**
    * Handles the action when the bottle collides with enemies.
    * @param {DrawableObject} enemy - The enemy object.
+   * @returns {void}
    */
   handleBottleActionEnemies(enemy) {
     this.xSpeed = 0;
     this.startSplash();
     this.audioManager.playSound("opponentDeath");
-    enemy.hit_anyOpponent();
+    enemy.hitOpponent();
   }
 
   /**
    * Handles the action when the bottle collides with the end boss.
    * @param {Endboss} enemy - The end boss object.
+   * @returns {void}
    */
   handleBottleActionEndboss(enemy) {
     this.xSpeed = 2;
-    enemy.hit_Boss();
+    enemy.hitBoss();
     this.startSplash();
     this.audioManager.playSound("opponentDeath");
   }
@@ -131,6 +145,7 @@ class ThrowableObject extends MovableObject {
   /**
    * Starts the splash animation and removes the bottle after a delay.
    * The splash animation is only started once.
+   * @returns {void}
    */
   startSplash() {
     if (this.splashStarted) return;

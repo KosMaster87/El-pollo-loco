@@ -1,19 +1,30 @@
+/**
+ * @fileoverview Counter-strike chicken enemy class.
+ * @description Manages counter-strike chickens that spawn from the boss.
+ * @module models/enemy-chicken-counterstrike-class
+ */
+
 "use strict";
 
+/**
+ * Counter-strike chicken enemy class.
+ * @class
+ * @extends {MovableObject}
+ */
 class CounterStrikeChicken extends MovableObject {
   IMAGES_WALKING = [
-    "./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
-    "./img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
-    "./img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
+    "./assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
+    "./assets/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
+    "./assets/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
   ];
 
   IMAGES_ATTACK = [
-    "./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
-    "./img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
-    "./img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
+    "./assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
+    "./assets/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
+    "./assets/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
   ];
 
-  IMAGES_DEAD = ["./img/3_enemies_chicken/chicken_normal/2_dead/dead.png"];
+  IMAGES_DEAD = ["./assets/img/3_enemies_chicken/chicken_normal/2_dead/dead.png"];
 
   y = 390;
   height = 55;
@@ -35,7 +46,7 @@ class CounterStrikeChicken extends MovableObject {
    * @param {Object} endBossRef - Reference to the end boss.
    */
   constructor(endBossRef) {
-    super().loadImage("./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
+    super().loadImage("./assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
     this.images = {};
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_ATTACK);
@@ -49,6 +60,7 @@ class CounterStrikeChicken extends MovableObject {
   /**
    * Determines the spawn position of the strike chicken based on its index.
    * @param {number} index - The index of the strike chicken.
+   * @returns {void}
    */
   spawnRightPlace(index) {
     const boss = this.endBossRef;
@@ -62,6 +74,7 @@ class CounterStrikeChicken extends MovableObject {
 
   /**
    * Starts the attack phase, increasing speed and playing attack animation.
+   * @returns {void}
    */
   startAttackPhase() {
     this.isAttacking = true;
@@ -145,17 +158,19 @@ class CounterStrikeChicken extends MovableObject {
   /**
    * Handles the logic for hitting an opponent.
    * Sets the energy to 0 and initiates the death sequence.
+   * @returns {void}
    */
-  hit_anyOpponent() {
+  hitOpponent() {
     this.energy = 0;
-    this.die_this();
+    this.die();
   }
 
   /**
    * Handles the death sequence for the strike chicken.
    * Plays the death animation, stops all intervals, and removes the chicken from the enemies array.
+   * @returns {void}
    */
-  die_this() {
+  die() {
     this.world.audioManager.playSound("bossDeath");
     this.stopAllIntervals();
     this.playAnimation(this.IMAGES_DEAD);
