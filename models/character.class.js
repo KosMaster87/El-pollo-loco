@@ -384,6 +384,9 @@ class Character extends MovableObject {
    * Plays the dead animation and sound effect, and triggers the game over sequence.
    */
   animateDead() {
+    if (gameEnded) return;
+    gameEnded = true;
+
     this.playAnimation(this.IMAGES_DEAD);
     this.world.audioManager.playSound("gameLose");
     gameOver();

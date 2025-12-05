@@ -167,6 +167,9 @@ class Endboss extends MovableObject {
    * @returns {void}
    */
   die() {
+    if (gameEnded) return;
+    gameEnded = true;
+
     this.isBossDead = true;
 
     setTimeout(() => {

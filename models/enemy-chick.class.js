@@ -42,7 +42,7 @@ class Chick extends MovableObject {
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_DEAD);
     this.speed = 0.15 + Math.random() * 0.25;
-    this.x = 200 + Math.random() * 10000;
+    this.x = 1000 + Math.random() * 10000;
     this.animate();
   }
 

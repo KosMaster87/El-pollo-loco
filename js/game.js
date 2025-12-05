@@ -77,9 +77,6 @@ function returnToHome() {
  * @returns {void}
  */
 function gameOver() {
-  if (gameEnded) return;
-  gameEnded = true;
-
   resetGlobals();
   clearAllIntervals();
   apertureGameOver();
@@ -98,9 +95,6 @@ function gameOver() {
  * @returns {void}
  */
 function gameWin() {
-  if (gameEnded) return;
-  gameEnded = true;
-
   resetGlobals();
   clearAllIntervals();
   apertureGameWin();
