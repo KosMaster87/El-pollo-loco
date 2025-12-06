@@ -146,9 +146,6 @@ const createCollectibleWithValidPosition = (
   );
 
   if (!positionFound) {
-    console.warn(
-      `Could not find valid position after ${maxAttempts} attempts for ${objectType}`
-    );
     return null;
   }
 

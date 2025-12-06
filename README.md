@@ -36,13 +36,40 @@ Control **Pepe** through a desert world, collect coins & bottles, defeat chicken
 
 ## 🛠️ Technologies
 
-- **OOP architecture** with separated concerns
-- **Canvas-based rendering** for smooth animations
+- **Clean Code Architecture** with handler pattern for separation of concerns
+- **Max 14 lines per function** following single responsibility principle
+- **Arrow functions** with consistent coding conventions
+- **Modular handler system** (Collision, Render, Throw, Heal, Alert)
+- **OOP architecture** with class-based inheritance
+- **Canvas-based rendering** with parallax scrolling
 - **Modular audio system** with random sound pools
 - **SVG icons** for modern UI elements
-- **Device orientation detection**
+- **Device orientation detection** for mobile optimization
 - **Progressive Web App (PWA)** ready
-- **JSDoc documentation** for core classes
+- **JSDoc documentation** for all classes and methods
+
+---
+
+## 🏗️ Architecture
+
+### Handler Pattern
+
+The game uses a **modular handler architecture** to separate concerns and improve maintainability:
+
+- **CollisionHandler** - Manages all collision detection and physics interactions
+- **RenderHandler** - Handles canvas rendering, parallax effects, and object drawing
+- **ThrowHandler** - Controls bottle throwing mechanics and UI prompts
+- **HealHandler** - Manages healing system and coin-to-health conversion
+- **AlertHandler** - Controls enemy alert states and boss behavior
+
+### Clean Code Principles
+
+- ✅ **Single Responsibility** - Each class/handler has one clear purpose
+- ✅ **Max 14 Lines** - All functions kept concise and readable
+- ✅ **No Nested Functions** - Flat structure with extracted helpers
+- ✅ **Arrow Functions** - Consistent ES6+ syntax (except constructors/event handlers)
+- ✅ **DRY Principle** - Reusable helper methods extracted
+- ✅ **Proper JSDoc** - Complete documentation for all public methods
 
 ---
 
@@ -89,20 +116,50 @@ el-pollo-loco/
 │   └── web-app/                     # PWA icons & manifest
 │
 ├── js/
-│   ├── game.js                      # Main game loop
+│   ├── game.js                      # Main game initialization
 │   ├── global.js                    # Global variables & settings
-│   ├── script.js                    # UI interactions
+│   ├── script.js                    # UI interactions & menu controls
+│   ├── fullscreen.js                # Fullscreen API management
+│   ├── display-handler.js           # Display & device detection
 │   └── includeHTML.js               # Dynamic template loading
 │
 ├── models/                          # Game object classes
-│   ├── character.class.js
-│   ├── enemy-*.class.js
-│   ├── world.class.js
-│   ├── audio-class.js
-│   └── ...
+│   ├── world.class.js               # Game world orchestration
+│   ├── character.class.js           # Player character
+│   │
+│   ├── collision-handler.class.js   # Collision detection system
+│   ├── render-handler.class.js      # Canvas rendering & drawing
+│   ├── throw-handler.class.js       # Bottle throwing mechanics
+│   ├── heal-handler.class.js        # Healing system
+│   ├── alert-handler.class.js       # Enemy alert management
+│   │
+│   ├── enemy-endboss.class.js       # Final boss enemy
+│   ├── enemy-chicken.class.js       # Normal chicken enemy
+│   ├── enemy-chick.class.js         # Small chick enemy
+│   ├── enemy-chicken_counterStrike_.class.js  # Boss spawned chickens
+│   │
+│   ├── object-drawable.class.js     # Base drawable object
+│   ├── object-movable.class.js      # Base movable object with physics
+│   ├── object-throwable.class.js    # Throwable bottle objects
+│   ├── object-pickable.class.js     # Collectible items base
+│   │
+│   ├── map-background.class.js      # Background with parallax
+│   ├── map-cloud.class.js           # Animated clouds
+│   ├── map-bottle.class.js          # Collectible bottles
+│   ├── map-coin.class.js            # Collectible coins
+│   │
+│   ├── status-bar-character.class.js
+│   ├── status-bar-boss.class.js
+│   ├── status-bar-coin.class.js
+│   ├── status-bar-bottle.class.js
+│   │
+│   ├── audio-class.js               # Audio manager
+│   ├── keyboard.class.js            # Input handling
+│   ├── level.class.js               # Level structure
+│   └── static.class.js              # Static assets manager
 │
 ├── levels/
-│   └── level1.js                    # Level configuration
+│   └── level1.js                    # Level configuration & enemies
 │
 ├── templates/                       # HTML templates
 │   ├── imprint.html
@@ -110,7 +167,7 @@ el-pollo-loco/
 │   └── story.html
 │
 ├── style/                           # Stylesheets
-│   ├── style.css                    # Main styles
+│   ├── style.css                    # Main styles & responsive design
 │   ├── imprint.css
 │   ├── settings.css
 │   └── story.css
@@ -166,12 +223,3 @@ This project is for educational purposes. All assets are attributed to their res
 **Konstantin Aksenov**
 🔗 [GitHub](https://github.com/KosMaster87)
 📧 [Konstantin.Aksenov@dev2k.org](mailto:Konstantin.Aksenov@dev2k.org)
-
----
-
-## 🔄 Version
-
-**Current Branch:** `remaster`
-**Status:** Active Development
-
----

@@ -1,7 +1,7 @@
 /**
  * @fileoverview Endboss enemy class.
  * @description Manages the final boss enemy with multiple states and animations.
- * @module models/enemy-endboss-class
+ * @module models/enemy-endboss
  */
 
 "use strict";
@@ -71,6 +71,7 @@ class Endboss extends MovableObject {
   isBossAttack = false;
   isBossDead = false;
   attackSpeedMultiplier = 8;
+  counterStrikeChickens = [];
 
   /**
    * Creates an instance of Endboss.
@@ -91,122 +92,184 @@ class Endboss extends MovableObject {
 
   /**
    * Handles the animation of the boss based on its current state.
-   * Updates the boss's animation and movement.
    */
-  animate() {
+  animate = () => {
     this.animationInterval = setStoppableInterval(() => {
-      if (this.isBossDead) {
-        this.playAnimation(this.IMAGES_DEAD);
-      } else if (this.isBossHurt) {
-        this.playAnimation(this.IMAGES_HURT);
-      } else if (this.isBossAttack) {
-        this.playAnimation(this.IMAGES_ATTACK);
-        this.moveTowardsCharacter();
-      } else if (this.isBossAlert) {
-        this.playAnimation(this.IMAGES_ALERT);
-      } else {
-        this.playAnimation(this.IMAGES_WALKING);
-        this.moveLeft();
-      }
+      this.updateBossAnimation();
     }, 200);
-  }
+  };
+
+  /**
+   * Updates the boss animation based on current state.
+   */
+  updateBossAnimation = () => {
+    if (this.isBossDead) {
+      this.playAnimation(this.IMAGES_DEAD);
+    } else if (this.isBossHurt) {
+      this.playAnimation(this.IMAGES_HURT);
+    } else if (this.isBossAttack) {
+      this.playAnimation(this.IMAGES_ATTACK);
+      this.moveTowardsCharacter();
+    } else if (this.isBossAlert) {
+      this.playAnimation(this.IMAGES_ALERT);
+    } else {
+      this.playAnimation(this.IMAGES_WALKING);
+      this.moveLeft();
+    }
+  };
 
   /**
    * Moves the boss towards the character during an attack.
-   * The speed of movement is adjusted based on the attack multiplier.
    */
-  moveTowardsCharacter() {
-    let speed = this.isBossAttack
+  moveTowardsCharacter = () => {
+    const speed = this.isBossAttack
       ? this.speed * this.attackSpeedMultiplier
       : this.speed;
     this.x -= speed;
-  }
+  };
 
   /**
    * Handles the boss's hit logic.
-   * Updates the boss's hit count and triggers counter-strike if not dead.
-   * @returns {void}
    */
-  hitBoss() {
+  hitBoss = () => {
     this.hits += 1;
-    let newPercentage = Math.max(100 - this.hits * 20, 0);
+    const newPercentage = Math.max(100 - this.hits * 20, 0);
     this.world.statusBarBoss.setPercentage(newPercentage);
-    audioManager.playSound("bossHurting");
+    this.world.audioManager.playSound("bossHurting");
 
     if (this.hits >= 5) {
       this.die();
     } else {
       this.triggerCounterStrike();
     }
-  }
+  };
 
   /**
    * Triggers the counter-strike phase where the boss attacks and spawns strike chickens.
-   * The boss remains in attack state for 3 seconds and is injured for 1 second.
-   * @returns {void}
    */
-  triggerCounterStrike() {
+  triggerCounterStrike = () => {
     this.world.audioManager.playSound("bossAttacking");
     if (!this.isBossAttack) {
-      this.isBossHurt = true;
-      this.isBossAttack = true;
-      this.world.scheduleChickenSpawn();
-      setTimeout(() => {
-        this.isBossHurt = false;
-        setTimeout(() => {
-          this.world.audioManager.stopSound("bossAttacking");
-          this.isBossAttack = false;
-        }, 3000);
-      }, 1000);
+      this.startCounterStrike();
     }
-  }
+  };
+
+  /**
+   * Starts the counter-strike sequence.
+   */
+  startCounterStrike = () => {
+    this.isBossHurt = true;
+    this.isBossAttack = true;
+    this.scheduleChickenSpawn();
+    setTimeout(() => this.endHurtPhase(), 1000);
+  };
+
+  /**
+   * Ends the hurt phase and schedules end of attack.
+   */
+  endHurtPhase = () => {
+    this.isBossHurt = false;
+    setTimeout(() => this.endAttackPhase(), 3000);
+  };
+
+  /**
+   * Ends the attack phase.
+   */
+  endAttackPhase = () => {
+    this.world.audioManager.stopSound("bossAttacking");
+    this.isBossAttack = false;
+  };
 
   /**
    * Handles the boss's death logic.
-   * Removes the boss from the enemies list and triggers the game win sequence.
-   * @returns {void}
    */
-  die() {
+  die = () => {
     if (gameEnded) return;
     gameEnded = true;
-
     this.isBossDead = true;
+    setTimeout(() => this.removeFromEnemies(), 700);
+    setTimeout(() => this.triggerGameWin(), 1000);
+  };
 
-    setTimeout(() => {
-      this.world.level.enemies = this.world.level.enemies.filter(
-        (enemy) => enemy !== this
-      );
-    }, 700);
+  /**
+   * Removes boss from enemies array.
+   */
+  removeFromEnemies = () => {
+    this.world.level.enemies = this.world.level.enemies.filter(
+      (enemy) => enemy !== this
+    );
+  };
 
-    setTimeout(() => {
-      this.world.audioManager.playSound("gameWin");
-      gameWin();
-    }, 1000);
-  }
+  /**
+   * Triggers the game win sequence.
+   */
+  triggerGameWin = () => {
+    this.world.audioManager.playSound("gameWin");
+    gameWin();
+  };
 
   /**
    * Checks the distance between the boss and the character periodically.
-   * Updates the boss's alert state based on proximity to the character.
    */
-  checkDistanceToCharacter() {
+  checkDistanceToCharacter = () => {
     setStoppableInterval(() => {
       if (this.isCloseTo(this.world.character, 250)) {
-        if (!this.isBossAlert) {
-          this.isBossAlert = true;
-        }
+        if (!this.isBossAlert) this.isBossAlert = true;
       } else {
         this.isBossAlert = false;
       }
     }, 1000 / 10);
-  }
+  };
 
   /**
    * Checks if the boss is within a specified distance from the character.
-   * @param {object} character - The character to check distance to.
-   * @param {number} distance - The distance threshold.
-   * @returns {boolean} - True if within distance, otherwise false.
+   * @param {object} character - The character to check distance to
+   * @param {number} distance - The distance threshold
+   * @returns {boolean} True if within distance
    */
-  isCloseTo(character, distance) {
+  isCloseTo = (character, distance) => {
     return Math.abs(this.x - character.x) < distance;
-  }
+  };
+
+  /**
+   * Schedules the spawning of Counter-Strike chickens after a delay.
+   */
+  scheduleChickenSpawn = () => {
+    setTimeout(() => this.spawnChickens(), 500);
+  };
+
+  /**
+   * Creates and initializes Counter-Strike chickens.
+   */
+  spawnChickens = () => {
+    this.counterStrikeChickens = this.createChickens(5);
+    this.counterStrikeChickens.forEach((chicken, index) => {
+      this.initializeChicken(chicken, index);
+    });
+    this.world.level.enemies.push(...this.counterStrikeChickens);
+  };
+
+  /**
+   * Creates multiple CounterStrike chickens.
+   * @param {number} count - Number of chickens to create
+   * @returns {CounterStrikeChicken[]} Array of created chickens
+   */
+  createChickens = (count) => {
+    const chickens = [];
+    for (let i = 0; i < count; i++) {
+      chickens.push(new CounterStrikeChicken(this));
+    }
+    return chickens;
+  };
+
+  /**
+   * Initializes a chicken with world reference and position.
+   * @param {CounterStrikeChicken} chicken - The chicken to initialize
+   * @param {number} index - The chicken's index
+   */
+  initializeChicken = (chicken, index) => {
+    chicken.world = this.world;
+    chicken.spawnRightPlace(index);
+    chicken.startAttackPhase();
+  };
 }
