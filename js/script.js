@@ -22,128 +22,100 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /**
- * Opens the in-game menu and pauses the game, stopping all intervals and timeouts.
- * Switches music from in-game to home screen.
+ * Pauses game and stops music.
+ * @returns {void}
  */
-function openMenu() {
-  if (isGameRunning) {
-    pauseAllIntervals();
-    pauseAllTimeouts();
-    audioManager.stopSound("inGameMusic");
-    isGameRunning = false;
-  }
+const pauseGameState = () => {
+  pauseAllIntervals();
+  pauseAllTimeouts();
+  audioManager.stopSound("inGameMusic");
+  isGameRunning = false;
+};
+
+/**
+ * Opens in-game menu and pauses gameplay.
+ * @returns {void}
+ */
+const openMenu = () => {
+  if (isGameRunning) pauseGameState();
 
   menuPopRef.style.display = "flex";
   mobileControlHubRef.style.display = "none";
   audioManager.playSound("inHomeMusic");
-}
+
+  if (document.activeElement) document.activeElement.blur();
+};
 
 /**
- * Closes the in-game menu and resumes the game if it was running previously.
- * Switches music from home screen to in-game.
+ * Resumes game state and switches music.
+ * @returns {void}
  */
-function closeMenu() {
+const resumeGameState = () => {
+  resumeAllIntervals();
+  resumeAllTimeouts();
+  audioManager.stopSound("inHomeMusic");
+  audioManager.playSound("inGameMusic");
+  isGameRunning = true;
+};
+
+/**
+ * Closes in-game menu and resumes gameplay.
+ * @returns {void}
+ */
+const closeMenu = () => {
   const w3IncludeRef = document.getElementById("w3_include");
   w3IncludeRef.style.display = "none";
-
   menuPopRef.style.display = "none";
+
   if (!isGameRunning && gameStartetOnce) {
-    resumeAllIntervals();
-    resumeAllTimeouts();
-    audioManager.stopSound("inHomeMusic");
-    audioManager.playSound("inGameMusic");
-    isGameRunning = true;
-  } else if (isGameRunning && w3_includeRef) {
-    w3_includeRef.style.display = "none";
+    resumeGameState();
+  } else if (isGameRunning && w3IncludeRef) {
+    w3IncludeRef.style.display = "none";
   }
   startGame();
-}
+};
 
 /**
- * Adds an event listener to close the menu if a click occurs outside the menu popup.
- *
- * @param {HTMLElement} menuPopRef - Reference to the menu popup element.
- * @param {HTMLElement} openMenuBtn - Reference to the open menu button.
- * @param {function} closeMenu - Function to close the menu.
+ * Checks if click is outside popup area.
+ * @param {Event} event - Click event
+ * @returns {boolean} - True if outside
  */
-function alsoClickOutside(menuPopRef, openMenuBtn, closeMenu) {
-  function userClicksOutsideOfPopup(event) {
-    return !menuPopRef.contains(event.target) && event.target !== openMenuBtn;
-  }
+const isClickOutsidePopup = (event) => {
+  return !menuPopRef.contains(event.target) && event.target !== openMenuBtn;
+};
 
-  document.addEventListener("click", function (event) {
-    if (
-      menuPopRef.style.display === "flex" &&
-      userClicksOutsideOfPopup(event)
-    ) {
+/**
+ * Adds click listener to close menu when clicking outside.
+ * @param {HTMLElement} menuPopRef - Menu popup reference
+ * @param {HTMLElement} openMenuBtn - Open menu button reference
+ * @param {Function} closeMenu - Close menu function
+ * @returns {void}
+ */
+const alsoClickOutside = (menuPopRef, openMenuBtn, closeMenu) => {
+  document.addEventListener("click", (event) => {
+    if (menuPopRef.style.display === "flex" && isClickOutsidePopup(event)) {
       returnToHome();
     }
   });
-}
+};
 
 /**
- * Toggles full screen mode on and off.
- * If the game is over, it resets the game canvas.
- * Closes the menu and resumes game if menu was open.
- *
- * @param {Event} event - The event triggered by the full screen toggle.
+ * Toggles fullscreen mode on/off.
+ * @param {Event} event - Click event
+ * @returns {void}
  */
-function toggleFullscreen(event) {
+const toggleFullscreen = (event) => {
   event.preventDefault();
 
-  if (gameOver) {
-    resetCanvas();
-  }
+  if (gameOver) resetCanvas();
+  if (menuPopRef.style.display === "flex") closeMenu();
 
-  if (menuPopRef.style.display === "flex") {
-    closeMenu();
-  }
-
-  const mainLayer = document.getElementById("mainLayerAsRelative");
-  if (!document.fullscreenElement) {
-    enterFullscreen(mainLayer);
-  } else {
-    exitFullscreen();
-  }
-}
-
-/**
- * Enters full screen mode for the provided element.
- *
- * @param {HTMLElement} element - The element to display in full screen mode.
- */
-function enterFullscreen(element) {
-  if (element.requestFullscreen) {
-    element.requestFullscreen();
-  } else if (element.mozRequestFullScreen) {
-    element.mozRequestFullScreen();
-  } else if (element.webkitRequestFullscreen) {
-    element.webkitRequestFullscreen();
-  } else if (element.msRequestFullscreen) {
-    element.msRequestFullscreen();
-  }
-
+  toggleFullscreenForElement();
   document.getElementById("menuPop").style.display = "none";
   adjustDisplayBasedOnWidthAndOrientation();
-}
 
-/**
- * Exits full screen mode.
- */
-function exitFullscreen() {
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  } else if (document.mozCancelFullScreen) {
-    document.mozCancelFullScreen();
-  } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen();
-  } else if (document.msExitFullscreen) {
-    document.msExitFullscreen();
-  }
-
-  document.getElementById("menuPop").style.display = "none";
-  adjustDisplayBasedOnWidthAndOrientation();
-}
+  if (event.currentTarget) event.currentTarget.blur();
+};
 
 /**
  * Event listener triggered when the full screen mode changes.
@@ -157,88 +129,6 @@ document.addEventListener("fullscreenchange", () => {
   resumeAllIntervals();
   resumeAllTimeouts();
 });
-
-/**
- * Checks if the current device is in landscape orientation.
- *
- * @returns {boolean} - True if the device is in landscape orientation, otherwise false.
- */
-function isLandscapeOrientation() {
-  return window.matchMedia("(orientation: landscape)").matches;
-}
-
-/**
- * Returns the current width of the browser window.
- *
- * @returns {number} - The width of the window in pixels.
- */
-function getScreenWidth() {
-  return window.innerWidth;
-}
-
-/**
- * Adjusts display elements based on the width and orientation of the device.
- */
-function adjustDisplayBasedOnWidthAndOrientation() {
-  const rotateLayerRef = document.getElementById("rotateLayer");
-  const mobileControlHubRef = document.getElementById("mobileControlHub");
-  const width = getScreenWidth();
-  const isLandscape = isLandscapeOrientation();
-
-  if (isLandscape) {
-    handleLandscapeMode(width, rotateLayerRef, mobileControlHubRef);
-  } else {
-    handlePortraitMode(width, rotateLayerRef, mobileControlHubRef);
-  }
-}
-
-/**
- * Handles the display of elements when the device is in landscape mode.
- *
- * @param {number} width - The width of the screen in pixels.
- * @param {HTMLElement} rotateLayerRef - Reference to the rotate layer element.
- * @param {HTMLElement} mobileControlHubRef - Reference to the mobile control hub element.
- */
-function handleLandscapeMode(width, rotateLayerRef, mobileControlHubRef) {
-  if (width <= 667 || (width >= 668 && width <= 1080)) {
-    rotateLayerRef.style.display = "none";
-    mobileControlHubRef.style.display = gameStartetOnce ? "flex" : "none";
-  } else if (width <= 1368) {
-    rotateLayerRef.style.display = "none";
-    mobileControlHubRef.style.display = "flex";
-  } else {
-    rotateLayerRef.style.display = "none";
-    mobileControlHubRef.style.display = "none";
-  }
-}
-
-/**
- * Handles the display of elements when the device is in portrait mode.
- *
- * @param {number} width - The width of the screen in pixels.
- * @param {HTMLElement} rotateLayerRef - Reference to the rotate layer element.
- * @param {HTMLElement} mobileControlHubRef - Reference to the mobile control hub element.
- */
-function handlePortraitMode(width, rotateLayerRef, mobileControlHubRef) {
-  if (width >= 667) {
-    rotateLayerRef.style.display = "none";
-    mobileControlHubRef.style.display = "none";
-  } else {
-    rotateLayerRef.style.display = "flex";
-    mobileControlHubRef.style.display = "none";
-  }
-}
-
-/**
- * Adds event listeners that adjust the display when the window is resized
- * or when the document is loaded.
- */
-window.addEventListener("resize", () =>
-  adjustDisplayBasedOnWidthAndOrientation()
-);
-document.addEventListener("DOMContentLoaded", () =>
-  adjustDisplayBasedOnWidthAndOrientation()
-);
 
 /**
  * Prepares the gaming experience by starting a loading spinner and preloading assets.

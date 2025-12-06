@@ -29,6 +29,7 @@ class AudioManager {
       volumeSlider.addEventListener("input", (event) => {
         const volume = event.target.value / 100;
         this.setVolume(volume);
+        event.target.blur();
       });
 
       this.setVolume(volumeSlider.value / 100);
@@ -129,7 +130,10 @@ class AudioManager {
    */
   initMuteButton() {
     const muteButton = document.getElementById("muteButton");
-    muteButton.addEventListener("click", this.toggleMute.bind(this));
+    muteButton.addEventListener("click", (event) => {
+      this.toggleMute();
+      event.currentTarget.blur();
+    });
   }
 
   /**

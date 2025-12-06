@@ -120,6 +120,7 @@ class Character extends MovableObject {
   idle = false;
   sleep = false;
   lastCollidedEnemy = null;
+  pushbackAnimationId = null;
 
   /**
    * Creates a new Character instance.
@@ -276,8 +277,8 @@ class Character extends MovableObject {
    * Blocks Pepe from sliding past enemies.
    */
   preventSlidingPastEnemy() {
-    if (this.activeEnemyInteraction && this.character.lastCollidedEnemy) {
-      const collidedEnemy = this.character.lastCollidedEnemy;
+    if (this.world.activeEnemyInteraction && this.lastCollidedEnemy) {
+      const collidedEnemy = this.lastCollidedEnemy;
       if (this.world.keyboard.RIGHT && this.x < collidedEnemy.x) {
         return;
       }
@@ -331,9 +332,10 @@ class Character extends MovableObject {
    * Handles Pepe's animation updates based on the current state of the character.
    */
   pepeAnimate() {
-    this.hurting();
     if (this.isDead()) {
       this.animateDead();
+    } else if (this.isHurt()) {
+      this.animateHurt();
     } else if (this.isAboveGround()) {
       this.animateJumping();
     } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
@@ -342,18 +344,6 @@ class Character extends MovableObject {
       this.handleIdleState();
     }
     this.handleSnoringSound();
-  }
-
-  /**
-   * Handles the character's hurt animation and sound effect.
-   */
-  hurting() {
-    if (this.isHurt() && !this.isDead()) {
-      this.animateHurt();
-      setTimeout(() => {
-        this.world.audioManager.playSound("hurting");
-      }, 500);
-    }
   }
 
   /**
