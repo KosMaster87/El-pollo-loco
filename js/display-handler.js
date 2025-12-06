@@ -100,7 +100,6 @@ const handleLandscapeMode = (width, rotateLayerRef, mobileControlHubRef) => {
   const deviceCategory = getDeviceCategory(width, true);
   rotateLayerRef.style.display = "none";
 
-  // Show mobile controls for phones and tablets in landscape
   const showControls = [
     "phone-landscape",
     "tablet-landscape",
@@ -122,7 +121,6 @@ const handlePortraitMode = (width, rotateLayerRef, mobileControlHubRef) => {
   const deviceCategory = getDeviceCategory(width, false);
   mobileControlHubRef.style.display = "none";
 
-  // Show rotate prompt only for phones in portrait mode
   const showRotatePrompt = [
     "phone-small",
     "phone-medium",
@@ -140,7 +138,6 @@ const handlePortraitMode = (width, rotateLayerRef, mobileControlHubRef) => {
 const initDisplayHandlers = () => {
   window.addEventListener("resize", adjustDisplayBasedOnWidthAndOrientation);
   window.addEventListener("orientationchange", () => {
-    // Small delay to ensure orientation change is complete
     setTimeout(adjustDisplayBasedOnWidthAndOrientation, 100);
   });
 
@@ -150,5 +147,4 @@ const initDisplayHandlers = () => {
   );
 };
 
-// Initialize display handlers
 initDisplayHandlers();

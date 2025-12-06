@@ -1,7 +1,7 @@
 /**
  * @fileoverview Throwable object class for bottles.
  * @description Manages throwable bottle objects with physics, rotation, and splash animations.
- * @module models/object-throwable-class
+ * @module models/object-throwable
  */
 
 "use strict";
@@ -67,126 +67,158 @@ class ThrowableObject extends MovableObject {
 
   /**
    * Starts the bottle throw and applies gravity to it.
-   * Continuously moves the bottle and checks for collisions with enemies.
    */
-  throw() {
+  throw = () => {
     this.world.audioManager.playSound("bottleThrow");
     this.applyGravity();
+    this.startThrowInterval();
+  };
+
+  /**
+   * Starts the throw interval for movement and collision checks.
+   */
+  startThrowInterval = () => {
     this.throwIntervalId = setStoppableInterval(() => {
       this.x += this.xSpeed * this.throwDirectionX;
-      this.world.level.enemies.forEach((enemy) => {
-        if (this.isColliding(enemy)) {
-          this.handleEnemyCollision(enemy);
-        }
-      });
-
+      this.checkEnemyCollisions();
       this.splashOnGround();
     }, 25);
-  }
+  };
+
+  /**
+   * Checks for collisions with all enemies.
+   */
+  checkEnemyCollisions = () => {
+    this.world.level.enemies.forEach((enemy) => {
+      if (this.isColliding(enemy)) {
+        this.handleEnemyCollision(enemy);
+      }
+    });
+  };
 
   /**
    * Checks if the bottle has hit the ground and starts the splash effect.
    */
-  splashOnGround() {
+  splashOnGround = () => {
     if (this.y > this.groundY) {
       this.y = this.groundY;
       this.collide = true;
       this.xSpeed = 2;
       this.startSplash();
     }
-  }
+  };
 
   /**
    * Handles collision between the bottle and enemies.
-   * @param {DrawableObject} enemy - The enemy object involved in the collision.
-   * @returns {void}
+   * @param {DrawableObject} enemy - The enemy object involved in the collision
    */
-  handleEnemyCollision(enemy) {
+  handleEnemyCollision = (enemy) => {
     if (this.isColliding(enemy) && !this.collide) {
       this.collide = true;
       this.xSpeed = 0;
-
-      if (
-        enemy instanceof Chick ||
-        enemy instanceof Chicken ||
-        enemy instanceof CounterStrikeChicken
-      ) {
-        this.handleBottleActionEnemies(enemy);
-      } else if (enemy instanceof Endboss) {
-        this.handleBottleActionEndboss(enemy);
-      }
+      this.processEnemyHit(enemy);
     }
-  }
+  };
+
+  /**
+   * Processes the hit based on enemy type.
+   * @param {DrawableObject} enemy - The enemy object
+   */
+  processEnemyHit = (enemy) => {
+    if (this.isSmallEnemy(enemy)) {
+      this.handleBottleActionEnemies(enemy);
+    } else if (enemy instanceof Endboss) {
+      this.handleBottleActionEndboss(enemy);
+    }
+  };
+
+  /**
+   * Checks if the enemy is a small enemy type.
+   * @param {DrawableObject} enemy - The enemy object
+   * @returns {boolean} True if small enemy
+   */
+  isSmallEnemy = (enemy) => {
+    return (
+      enemy instanceof Chick ||
+      enemy instanceof Chicken ||
+      enemy instanceof CounterStrikeChicken
+    );
+  };
 
   /**
    * Handles the action when the bottle collides with enemies.
-   * @param {DrawableObject} enemy - The enemy object.
-   * @returns {void}
+   * @param {DrawableObject} enemy - The enemy object
    */
-  handleBottleActionEnemies(enemy) {
+  handleBottleActionEnemies = (enemy) => {
     this.xSpeed = 0;
     this.startSplash();
     this.audioManager.playSound("opponentDeath");
     enemy.hitOpponent();
-  }
+  };
 
   /**
    * Handles the action when the bottle collides with the end boss.
-   * @param {Endboss} enemy - The end boss object.
-   * @returns {void}
+   * @param {Endboss} enemy - The end boss object
    */
-  handleBottleActionEndboss(enemy) {
+  handleBottleActionEndboss = (enemy) => {
     this.xSpeed = 2;
     enemy.hitBoss();
     this.startSplash();
     this.audioManager.playSound("opponentDeath");
-  }
+  };
 
   /**
    * Starts the splash animation and removes the bottle after a delay.
-   * The splash animation is only started once.
-   * @returns {void}
    */
-  startSplash() {
+  startSplash = () => {
     if (this.splashStarted) return;
     this.xSpeed = 2;
+    this.stopRotation();
+    this.playSplashAnimation();
+    this.scheduleRemoval();
+  };
 
-    if (this.rotateIntervalId) {
-      clearInterval(this.rotateIntervalId);
-    }
+  /**
+   * Stops the rotation animation.
+   */
+  stopRotation = () => {
+    if (this.rotateIntervalId) clearInterval(this.rotateIntervalId);
+  };
+
+  /**
+   * Plays the splash animation.
+   */
+  playSplashAnimation = () => {
     this.audioManager.playSound("bottleSplash");
-
     this.splashIntervalId = setStoppableInterval(() => {
       this.playAnimation(this.IMAGES_SPLASH);
     }, 60);
+  };
 
-    this.removeTimeoutId = setTimeout(() => {
-      this.removeBottle();
-    }, 700);
-  }
+  /**
+   * Schedules the bottle removal.
+   */
+  scheduleRemoval = () => {
+    this.removeTimeoutId = setTimeout(() => this.removeBottle(), 700);
+  };
 
   /**
    * Removes the bottle from the world and stops all associated intervals.
    */
-  removeBottle() {
+  removeBottle = () => {
     clearInterval(this.throwIntervalId);
-    if (this.splashIntervalId) {
-      clearInterval(this.splashIntervalId);
-    }
-
+    if (this.splashIntervalId) clearInterval(this.splashIntervalId);
     this.world.throwableObjects = this.world.throwableObjects.filter(
       (obj) => obj !== this
     );
-  }
+  };
 
   /**
    * Animates the throwable object by rotating it.
    */
-  animate() {
+  animate = () => {
     this.rotateIntervalId = setStoppableInterval(() => {
-      if (!this.collide) {
-        this.playAnimation(this.IMAGES_ROTATION);
-      }
+      if (!this.collide) this.playAnimation(this.IMAGES_ROTATION);
     }, 100);
-  }
+  };
 }
