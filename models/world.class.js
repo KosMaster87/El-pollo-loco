@@ -32,8 +32,7 @@ class World {
   lastHealTime = 0;
   healCooldown = 500;
 
-  activeEnemyInteraction = false;
-  collisionBlocked = false;
+  collisionHandler;
   bossAttackStartTime = null;
   counterStrikeChickens = [];
 
@@ -53,6 +52,7 @@ class World {
     this.staticInstance = staticInstance;
     this.isGameRunning = isGameRunning;
     this.level = level1;
+    this.collisionHandler = new CollisionHandler(this);
     this.assignWorldToCharacter();
     this.assignWorldToEnemies();
     this.endBossRef = this.setBossRef();
@@ -98,11 +98,11 @@ class World {
    */
   run() {
     setStoppableInterval(() => {
-      this.checkCollisions();
+      this.collisionHandler.checkAllCollisions();
     }, 50);
 
     setStoppableInterval(() => {
-      this.applyDamageToCharacter();
+      this.collisionHandler.applyEnemyDamage();
     }, 50);
 
     setStoppableInterval(() => {
@@ -127,42 +127,6 @@ class World {
   }
 
   /**
-   * Checks for collisions between the character and enemies, bottles, and coins.
-   * @returns {void}
-   */
-  checkCollisions() {
-    this.enemieStatusRelationPepe();
-    this.checkBottleStatusToEarn();
-    this.checkCoinStatusToEarn();
-    this.checkThrowableObjectCollisions();
-  }
-
-  /**
-   * Applies damage to the character if they are colliding with an enemy.
-   * @returns {void}
-   */
-  applyDamageToCharacter() {
-    if (this.activeEnemyInteraction) {
-      return;
-    }
-
-    this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy)) {
-        if (!enemy.isDead()) {
-          this.activeEnemyInteraction = true;
-          this.character.hitPepe();
-          this.statusBarPepe.setPercentage(this.character.energy);
-          this.character.handleCharacterPushback(enemy);
-
-          setTimeout(() => {
-            this.activeEnemyInteraction = false;
-          }, 200);
-        }
-      }
-    });
-  }
-
-  /**
    * Checks if the boss should go on alert based on its distance to the character.
    * @returns {void}
    */
@@ -171,122 +135,6 @@ class World {
       if (enemy instanceof Endboss) {
         enemy.checkDistanceToCharacter(this.character);
       }
-    });
-  }
-
-  /**
-   * Handles the status and collisions of enemies with the character.
-   * @returns {void}
-   */
-  enemieStatusRelationPepe() {
-    if (this.activeEnemyInteraction) {
-      return;
-    }
-
-    this.level.enemies.forEach((enemy) => {
-      this.handleCollisionWithEnemy(enemy);
-    });
-  }
-
-  /**
-   * Handles the collision between the character and an enemy.
-   * @param {Object} enemy - The enemy object involved in the collision.
-   * @returns {void}
-   */
-  handleCollisionWithEnemy(enemy) {
-    if (this.character.isColliding(enemy)) {
-      this.lastEnemyColliding(enemy);
-
-      if (
-        this.character.y + this.character.height < enemy.y + enemy.height &&
-        this.character.speedY < 0
-      ) {
-        this.activeEnemyAlsoHit(enemy);
-      }
-    }
-  }
-
-  /**
-   * Saves the last enemy the character collided with.
-   * @param {Object} enemy - The enemy object that was collided with.
-   * @returns {void}
-   */
-  lastEnemyColliding(enemy) {
-    this.character.lastCollidedEnemy = {
-      ...enemy,
-      x: enemy.x,
-      y: enemy.y,
-    };
-  }
-
-  /**
-   * Handles the actions when the character interacts with an enemy and hits the enemy.
-   * @param {Object} enemy - The enemy object that was hit.
-   * @returns {void}
-   */
-  activeEnemyAlsoHit(enemy) {
-    this.activeEnemyInteraction = true;
-    this.character.speedY = 10;
-
-    if (enemy instanceof Endboss) {
-      enemy.hitBoss();
-    } else {
-      enemy.hitOpponent();
-    }
-
-    this.collisionBlocked = true;
-
-    setTimeout(() => {
-      this.collisionBlocked = false;
-      this.activeEnemyInteraction = false;
-    }, 100);
-  }
-
-  /**
-   * Checks if the character has collided with a bottle and updates the status bar accordingly.
-   * @returns {void}
-   */
-  checkBottleStatusToEarn() {
-    this.level.bottles.forEach((bottle, index) => {
-      if (
-        this.character.isColliding(bottle) &&
-        this.character.bottles.length < this.character.maxBottles
-      ) {
-        this.character.collectBottle();
-        this.level.bottles.splice(index, 1);
-        let newPercentage = Math.min(this.character.bottles.length * 20, 100);
-        this.statusBarBottle.setPercentage(newPercentage);
-      }
-    });
-  }
-
-  /**
-   * Checks if the character has collided with a coin and updates the status bar accordingly.
-   * @returns {void}
-   */
-  checkCoinStatusToEarn() {
-    this.level.coins.forEach((coin, index) => {
-      if (
-        this.character.isColliding(coin) &&
-        this.character.coins.length < this.character.maxCoins
-      ) {
-        this.character.collectCoin();
-        this.level.coins.splice(index, 1);
-        let newPercentage = Math.min(this.character.coins.length * 20, 100);
-        this.statusBarCoin.setPercentage(newPercentage);
-      }
-    });
-  }
-
-  /**
-   * Checks for collisions between thrown bottles and enemies.
-   * @returns {void}
-   */
-  checkThrowableObjectCollisions() {
-    this.throwableObjects.forEach((throwableObject) => {
-      this.level.enemies.forEach((enemy) => {
-        throwableObject.handleEnemyCollision(enemy);
-      });
     });
   }
 
