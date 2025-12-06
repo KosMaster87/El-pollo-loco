@@ -61,7 +61,10 @@
     <script src="./models/level.class.js"></script>
     <script src="./levels/level1.js"></script>
     <script src="./models/static.class.js"></script>
+    <script src="./js/display-handler.js"></script>
+    <script src="./js/fullscreen.js"></script>
     <script src="./js/game.js"></script>
+    <script src="./js/preloader.js"></script>
     <script src="./js/script.js"></script>
     <script src="./js/includeHTML.js"></script>
 
@@ -74,13 +77,7 @@
     </header>
 
     <main class="mainLayerAsRelative" id="mainLayerAsRelative">
-      <canvas
-        id="canvas"
-        class="canvas"
-        style="display: block"
-        width="720px"
-        height="480px"
-      ></canvas>
+      <canvas id="canvas" class="canvas" style="display: block"></canvas>
 
       <img
         class="homeLayer"
@@ -101,21 +98,36 @@
           step="1"
         />
 
-        <div class="menuSoundBox" id="menuSoundBox">
+        <div class="menuControlsWrapper">
+          <div class="menuSoundBox" id="menuSoundBox">
+            <button
+              class="openMenuBtn disableTextSelection"
+              id="openMenuBtn"
+              tabindex="-1"
+            >
+              Menu
+            </button>
+            <img
+              class="muteButton"
+              id="muteButton"
+              src="./assets/img/10_menu/volume_up.svg"
+              alt="Mute Button."
+              style="display: none"
+            />
+          </div>
+
           <button
-            class="openMenuBtn disableTextSelection"
-            id="openMenuBtn"
+            class="fullscreenBtn disableTextSelection"
+            onclick="toggleFullscreen(event)"
             tabindex="-1"
+            title="Toggle Fullscreen"
           >
-            Menu
+            <img
+              src="./assets/vector/fullscreen-api.svg"
+              alt="Fullscreen"
+              draggable="false"
+            />
           </button>
-          <img
-            class="muteButton"
-            id="muteButton"
-            src="./assets/img/10_menu/volume_up.svg"
-            alt="Mute Button."
-            style="display: none"
-          />
         </div>
       </div>
 
@@ -174,6 +186,7 @@
               src="./assets/vector/arrows/keyboard-arrow-left.svg"
               alt="Left"
               class="btnIcon"
+              draggable="false"
             />
           </button>
           <button class="mobileBtn disableTextSelection" id="rightButton">
@@ -181,6 +194,7 @@
               src="./assets/vector/arrows/keyboard-arrow-right.svg"
               alt="Right"
               class="btnIcon"
+              draggable="false"
             />
           </button>
         </div>
@@ -191,6 +205,7 @@
               src="./assets/vector/arrows/keyboard arrow up.svg"
               alt="Jump"
               class="btnIcon"
+              draggable="false"
             />
           </button>
           <button class="mobileBtn disableTextSelection" id="throwButton">
@@ -198,6 +213,7 @@
               src="./assets/vector/arrows/bolt.svg"
               alt="Throw"
               class="btnIcon"
+              draggable="false"
             />
           </button>
           <button class="mobileBtn disableTextSelection" id="healButton">
@@ -205,6 +221,7 @@
               src="./assets/vector/arrows/heart-plus.svg"
               alt="Heal"
               class="btnIcon"
+              draggable="false"
             />
           </button>
         </div>

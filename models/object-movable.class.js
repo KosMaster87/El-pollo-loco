@@ -129,16 +129,22 @@ class MovableObject extends DrawableObject {
     let step = 2;
 
     const smoothMove = () => {
-      if (this.world.keyboard.LEFT) {
+      if (this.world.keyboard.LEFT || !this.world.activeEnemyInteraction) {
+        this.pushbackAnimationId = null;
         return;
       }
 
       if (this.x > targetPosition) {
         this.x -= step;
-        requestAnimationFrame(smoothMove);
+        this.pushbackAnimationId = requestAnimationFrame(smoothMove);
+      } else {
+        this.pushbackAnimationId = null;
       }
     };
 
+    if (this.pushbackAnimationId) {
+      cancelAnimationFrame(this.pushbackAnimationId);
+    }
     smoothMove();
   }
 
@@ -150,16 +156,22 @@ class MovableObject extends DrawableObject {
     let step = 3;
 
     const smoothMove = () => {
-      if (this.world.keyboard.RIGHT) {
+      if (this.world.keyboard.RIGHT || !this.world.activeEnemyInteraction) {
+        this.pushbackAnimationId = null;
         return;
       }
 
       if (this.x < targetPosition) {
         this.x += step;
-        requestAnimationFrame(smoothMove);
+        this.pushbackAnimationId = requestAnimationFrame(smoothMove);
+      } else {
+        this.pushbackAnimationId = null;
       }
     };
 
+    if (this.pushbackAnimationId) {
+      cancelAnimationFrame(this.pushbackAnimationId);
+    }
     smoothMove();
   }
 

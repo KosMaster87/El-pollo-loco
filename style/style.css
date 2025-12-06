@@ -109,9 +109,38 @@ header {
   max-width: 1280px;
 }
 
+/* Fullscreen mode: maintain 16:9 aspect ratio */
+.mainLayerAsRelative:fullscreen,
+.mainLayerAsRelative:-webkit-full-screen,
+.mainLayerAsRelative:-moz-full-screen,
+.mainLayerAsRelative:-ms-fullscreen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  max-width: none;
+  width: 100vw;
+  height: 100vh;
+}
+
+.mainLayerAsRelative:fullscreen .canvas,
+.mainLayerAsRelative:-webkit-full-screen .canvas,
+.mainLayerAsRelative:-moz-full-screen .canvas,
+.mainLayerAsRelative:-ms-fullscreen .canvas {
+  width: 100vw;
+  height: 100vh;
+  max-width: calc(100vh * 16 / 9);
+  max-height: calc(100vw * 9 / 16);
+  aspect-ratio: 16 / 9;
+  border: none;
+  border-radius: 0;
+  margin: auto;
+}
+
 .canvas {
   width: 100%;
-  height: 100%;
+  height: auto;
+  max-height: 100vh;
   border: 1px solid black;
   aspect-ratio: 16 / 9;
   background-image: url("./../assets/img/9_intro_outro_screens/start/startscreen_1.png");
@@ -119,6 +148,7 @@ header {
   background-position: center;
   background-color: rgb(92 13 21);
   border-radius: 0.5rem;
+  margin: auto;
 }
 
 .hotMenu {
@@ -133,11 +163,47 @@ header {
   gap: 1rem;
 }
 
+.menuControlsWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
 .menuSoundBox {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
+}
+
+.fullscreenBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  transition: transform 0.2s ease;
+}
+
+.fullscreenBtn:hover {
+  transform: scale(1.1);
+}
+
+.fullscreenBtn:active {
+  transform: scale(0.95);
+}
+
+.fullscreenBtn img {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  filter: brightness(0) saturate(100%) invert(77%) sepia(65%) saturate(463%)
+    hue-rotate(357deg) brightness(103%) contrast(101%);
 }
 
 .muteButton {
@@ -195,6 +261,10 @@ header {
 
 .mobileBtn {
   user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -208,6 +278,9 @@ header {
   height: 100%;
   pointer-events: none;
   filter: brightness(0) invert(1);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
 }
 
 button {

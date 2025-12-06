@@ -22,6 +22,7 @@ let gameEnded = false;
  */
 function initGame() {
   canvas = document.getElementById("canvas");
+  setCanvasSize();
 
   startGame();
   initLevel();
@@ -35,125 +36,167 @@ function initGame() {
 }
 
 /**
- * Starts the game by resetting global states if necessary, hides
- * menus, adjusts the display, and plays the in-game music.
+ * Sets the canvas internal resolution based on its CSS display size.
+ * Uses fixed 16:9 resolution (720x480) for consistent game rendering.
  * @returns {void}
  */
-function startGame() {
-  if (isGameRunning) {
-    resetGlobals();
-  }
+function setCanvasSize() {
+  canvas.width = 720;
+  canvas.height = 480;
+}
+
+/**
+ * Hides UI elements for game start.
+ * @returns {void}
+ */
+const hideUIElements = () => {
+  document.getElementById("w3_include").style.display = "none";
+  document.getElementById("menuPop").style.display = "none";
+  document.getElementById("homeLayer").style.display = "none";
+};
+
+/**
+ * Switches audio from home to game music.
+ * @returns {void}
+ */
+const switchToGameMusic = () => {
+  audioManager.stopSound("inHomeMusic");
+  audioManager.playSound("inGameMusic");
+};
+
+/**
+ * Starts the game by resetting states and initializing gameplay.
+ * @returns {void}
+ */
+const startGame = () => {
+  if (isGameRunning) resetGlobals();
 
   isGameRunning = true;
   gameStartetOnce = true;
   gameEnded = false;
-  document.getElementById("w3_include").style.display = "none";
-  document.getElementById("menuPop").style.display = "none";
-  document.getElementById("homeLayer").style.display = "none";
+  hideUIElements();
   adjustDisplayBasedOnWidthAndOrientation();
-  audioManager.stopSound("inHomeMusic");
-  audioManager.playSound("inGameMusic");
-}
+  switchToGameMusic();
+  requestFullscreenOnGameStart();
+};
 
 /**
- * Returns to the home screen by resetting global states, clearing
- * intervals, resetting the canvas, and showing the home layer.
+ * Shows home screen UI elements.
  * @returns {void}
  */
-function returnToHome() {
+const showHomeScreen = () => {
   document.getElementById("w3_include").style.display = "none";
   document.getElementById("menuPop").style.display = "none";
   document.getElementById("homeLayer").style.display = "block";
+};
 
+/**
+ * Returns to home screen by resetting state and showing UI.
+ * @returns {void}
+ */
+const returnToHome = () => {
+  showHomeScreen();
   resetGlobals();
   clearAllIntervals();
   resetCanvas();
-}
+};
 
 /**
- * Handles the game over scenario by resetting global states,
- * clearing intervals, showing the game over screen, and playing
- * the appropriate sounds.
+ * Hides desktop prompts.
  * @returns {void}
  */
-function gameOver() {
+const hideDesktopPrompts = () => {
+  const healPrompt = document.getElementById("healPromptDesktop");
+  const throwPrompt = document.getElementById("throwPromptDesktop");
+  if (healPrompt) healPrompt.style.display = "none";
+  if (throwPrompt) throwPrompt.style.display = "none";
+};
+
+/**
+ * Switches from game music to home music with delay.
+ * @returns {void}
+ */
+const switchToHomeMusic = () => {
+  audioManager.stopSound("inGameMusic");
+  setTimeout(() => audioManager.playSound("inHomeMusic"), 1500);
+};
+
+/**
+ * Handles game over scenario.
+ * @returns {void}
+ */
+const gameOver = () => {
   resetGlobals();
   clearAllIntervals();
   apertureGameOver();
   resetCanvas();
-  const healPromptDesktop = document.getElementById("healPromptDesktop");
-  const throwPromptDesktop = document.getElementById("throwPromptDesktop");
-  if (healPromptDesktop) healPromptDesktop.style.display = "none";
-  if (throwPromptDesktop) throwPromptDesktop.style.display = "none";
-  audioManager.stopSound("inGameMusic");
-  setTimeout(() => {
-    audioManager.playSound("inHomeMusic");
-  }, 1500);
+  hideDesktopPrompts();
+  switchToHomeMusic();
   adjustDisplayBasedOnWidthAndOrientation();
-}
+};
 
 /**
- * Handles the game win scenario by resetting global states,
- * clearing intervals, showing the game win screen, and playing
- * the appropriate sounds.
+ * Handles game win scenario.
  * @returns {void}
  */
-function gameWin() {
+const gameWin = () => {
   resetGlobals();
   clearAllIntervals();
   apertureGameWin();
   resetCanvas();
-  const healPromptDesktop = document.getElementById("healPromptDesktop");
-  const throwPromptDesktop = document.getElementById("throwPromptDesktop");
-  if (healPromptDesktop) healPromptDesktop.style.display = "none";
-  if (throwPromptDesktop) throwPromptDesktop.style.display = "none";
-  audioManager.stopSound("inGameMusic");
-  setTimeout(() => {
-    audioManager.playSound("inHomeMusic");
-  }, 1500);
+  hideDesktopPrompts();
+  switchToHomeMusic();
   adjustDisplayBasedOnWidthAndOrientation();
-}
+};
 
 /**
- * Displays the game over aperture animation and hides it after
- * a timeout, then shows the game menu.
+ * Shows aperture with fade in/out animation.
+ * @param {string} apertureId - ID of aperture element
  * @returns {void}
  */
-function apertureGameOver() {
-  document.getElementById("apertureGameOver").classList.remove("hidden");
-  document.getElementById("apertureGameOver").classList.add("visible");
+const showAperture = (apertureId) => {
+  const aperture = document.getElementById(apertureId);
+  aperture.classList.remove("hidden");
+  aperture.classList.add("visible");
 
   setTimeout(() => {
-    document.getElementById("apertureGameOver").classList.remove("visible");
-    document.getElementById("apertureGameOver").classList.add("hidden");
+    aperture.classList.remove("visible");
+    aperture.classList.add("hidden");
     document.getElementById("menuPop").style.display = "flex";
   }, 3000);
   document.getElementById("homeLayer").style.display = "block";
-}
+};
 
 /**
- * Displays the game win aperture animation and hides it after
- * a timeout, then shows the game menu.
+ * Displays game over aperture animation.
  * @returns {void}
  */
-function apertureGameWin() {
-  document.getElementById("apertureGameWin").classList.remove("hidden");
-  document.getElementById("apertureGameWin").classList.add("visible");
-
-  setTimeout(() => {
-    document.getElementById("apertureGameWin").classList.remove("visible");
-    document.getElementById("apertureGameWin").classList.add("hidden");
-    document.getElementById("menuPop").style.display = "flex";
-  }, 3000);
-  document.getElementById("homeLayer").style.display = "block";
-}
+const apertureGameOver = () => showAperture("apertureGameOver");
 
 /**
- * Resets the canvas by clearing its entire content.
+ * Displays game win aperture animation.
  * @returns {void}
  */
-function resetCanvas() {
+const apertureGameWin = () => showAperture("apertureGameWin");
+
+/**
+ * Checks if home screen should be shown.
+ * @returns {boolean} - True if should show home
+ */
+const shouldShowHomeScreen = () => !isGameRunning || gameEnded;
+
+/**
+ * Resets canvas by clearing content and showing home screen if needed.
+ * @returns {void}
+ */
+const resetCanvas = () => {
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
+  const homeLayer = document.getElementById("homeLayer");
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
+
+  if (homeLayer && shouldShowHomeScreen()) {
+    homeLayer.style.display = "block";
+  }
+};

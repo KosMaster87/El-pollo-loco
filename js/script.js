@@ -1,6 +1,6 @@
 /**
  * @fileoverview Main game UI and menu control script.
- * @description Handles menu interactions, fullscreen mode, display adjustments, and asset preloading for the game.
+ * @description Handles menu interactions, fullscreen mode, and display adjustments for the game.
  * @module js/script
  */
 
@@ -22,123 +22,100 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /**
- * Opens the in-game menu and pauses the game, stopping all intervals and timeouts.
- * Switches music from in-game to home screen.
+ * Pauses game and stops music.
+ * @returns {void}
  */
-function openMenu() {
-  if (isGameRunning) {
-    pauseAllIntervals();
-    pauseAllTimeouts();
-    audioManager.stopSound("inGameMusic");
-    isGameRunning = false;
-  }
+const pauseGameState = () => {
+  pauseAllIntervals();
+  pauseAllTimeouts();
+  audioManager.stopSound("inGameMusic");
+  isGameRunning = false;
+};
+
+/**
+ * Opens in-game menu and pauses gameplay.
+ * @returns {void}
+ */
+const openMenu = () => {
+  if (isGameRunning) pauseGameState();
 
   menuPopRef.style.display = "flex";
   mobileControlHubRef.style.display = "none";
   audioManager.playSound("inHomeMusic");
-}
+
+  if (document.activeElement) document.activeElement.blur();
+};
 
 /**
- * Closes the in-game menu and resumes the game if it was running previously.
- * Switches music from home screen to in-game.
+ * Resumes game state and switches music.
+ * @returns {void}
  */
-function closeMenu() {
+const resumeGameState = () => {
+  resumeAllIntervals();
+  resumeAllTimeouts();
+  audioManager.stopSound("inHomeMusic");
+  audioManager.playSound("inGameMusic");
+  isGameRunning = true;
+};
+
+/**
+ * Closes in-game menu and resumes gameplay.
+ * @returns {void}
+ */
+const closeMenu = () => {
   const w3IncludeRef = document.getElementById("w3_include");
   w3IncludeRef.style.display = "none";
-
   menuPopRef.style.display = "none";
+
   if (!isGameRunning && gameStartetOnce) {
-    resumeAllIntervals();
-    resumeAllTimeouts();
-    audioManager.stopSound("inHomeMusic");
-    audioManager.playSound("inGameMusic");
-    isGameRunning = true;
-  } else if (isGameRunning && w3_includeRef) {
-    w3_includeRef.style.display = "none";
+    resumeGameState();
+  } else if (isGameRunning && w3IncludeRef) {
+    w3IncludeRef.style.display = "none";
   }
   startGame();
-}
+};
 
 /**
- * Adds an event listener to close the menu if a click occurs outside the menu popup.
- *
- * @param {HTMLElement} menuPopRef - Reference to the menu popup element.
- * @param {HTMLElement} openMenuBtn - Reference to the open menu button.
- * @param {function} closeMenu - Function to close the menu.
+ * Checks if click is outside popup area.
+ * @param {Event} event - Click event
+ * @returns {boolean} - True if outside
  */
-function alsoClickOutside(menuPopRef, openMenuBtn, closeMenu) {
-  function userClicksOutsideOfPopup(event) {
-    return !menuPopRef.contains(event.target) && event.target !== openMenuBtn;
-  }
+const isClickOutsidePopup = (event) => {
+  return !menuPopRef.contains(event.target) && event.target !== openMenuBtn;
+};
 
-  document.addEventListener("click", function (event) {
-    if (
-      menuPopRef.style.display === "flex" &&
-      userClicksOutsideOfPopup(event)
-    ) {
+/**
+ * Adds click listener to close menu when clicking outside.
+ * @param {HTMLElement} menuPopRef - Menu popup reference
+ * @param {HTMLElement} openMenuBtn - Open menu button reference
+ * @param {Function} closeMenu - Close menu function
+ * @returns {void}
+ */
+const alsoClickOutside = (menuPopRef, openMenuBtn, closeMenu) => {
+  document.addEventListener("click", (event) => {
+    if (menuPopRef.style.display === "flex" && isClickOutsidePopup(event)) {
       returnToHome();
     }
   });
-}
+};
 
 /**
- * Toggles full screen mode on and off.
- * If the game is over, it resets the game canvas.
- *
- * @param {Event} event - The event triggered by the full screen toggle.
+ * Toggles fullscreen mode on/off.
+ * @param {Event} event - Click event
+ * @returns {void}
  */
-function toggleFullscreen(event) {
+const toggleFullscreen = (event) => {
   event.preventDefault();
 
-  if (gameOver) {
-    resetCanvas();
-  }
+  if (gameOver) resetCanvas();
+  if (menuPopRef.style.display === "flex") closeMenu();
 
-  const mainLayer = document.getElementById("mainLayerAsRelative");
-  if (!document.fullscreenElement) {
-    enterFullscreen(mainLayer);
-  } else {
-    exitFullscreen();
-  }
-}
-
-/**
- * Enters full screen mode for the provided element.
- *
- * @param {HTMLElement} element - The element to display in full screen mode.
- */
-function enterFullscreen(element) {
-  if (element.requestFullscreen) {
-    element.requestFullscreen();
-  } else if (element.mozRequestFullScreen) {
-    element.mozRequestFullScreen();
-  } else if (element.webkitRequestFullscreen) {
-    element.webkitRequestFullscreen();
-  } else if (element.msRequestFullscreen) {
-    element.msRequestFullscreen();
-  }
-
+  toggleFullscreenForElement();
   document.getElementById("menuPop").style.display = "none";
   adjustDisplayBasedOnWidthAndOrientation();
-}
 
-/**
- * Exits full screen mode.
- */
-function exitFullscreen() {
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  } else if (document.mozCancelFullScreen) {
-    document.mozCancelFullScreen();
-  } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen();
-  } else if (document.msExitFullscreen) {
-    document.msExitFullscreen();
-  }
-
-  document.getElementById("menuPop").style.display = "none";
-  adjustDisplayBasedOnWidthAndOrientation();
-}
+  if (event.currentTarget) event.currentTarget.blur();
+};
 
 /**
  * Event listener triggered when the full screen mode changes.
@@ -152,88 +129,6 @@ document.addEventListener("fullscreenchange", () => {
   resumeAllIntervals();
   resumeAllTimeouts();
 });
-
-/**
- * Checks if the current device is in landscape orientation.
- *
- * @returns {boolean} - True if the device is in landscape orientation, otherwise false.
- */
-function isLandscapeOrientation() {
-  return window.matchMedia("(orientation: landscape)").matches;
-}
-
-/**
- * Returns the current width of the browser window.
- *
- * @returns {number} - The width of the window in pixels.
- */
-function getScreenWidth() {
-  return window.innerWidth;
-}
-
-/**
- * Adjusts display elements based on the width and orientation of the device.
- */
-function adjustDisplayBasedOnWidthAndOrientation() {
-  const rotateLayerRef = document.getElementById("rotateLayer");
-  const mobileControlHubRef = document.getElementById("mobileControlHub");
-  const width = getScreenWidth();
-  const isLandscape = isLandscapeOrientation();
-
-  if (isLandscape) {
-    handleLandscapeMode(width, rotateLayerRef, mobileControlHubRef);
-  } else {
-    handlePortraitMode(width, rotateLayerRef, mobileControlHubRef);
-  }
-}
-
-/**
- * Handles the display of elements when the device is in landscape mode.
- *
- * @param {number} width - The width of the screen in pixels.
- * @param {HTMLElement} rotateLayerRef - Reference to the rotate layer element.
- * @param {HTMLElement} mobileControlHubRef - Reference to the mobile control hub element.
- */
-function handleLandscapeMode(width, rotateLayerRef, mobileControlHubRef) {
-  if (width <= 667 || (width >= 668 && width <= 1080)) {
-    rotateLayerRef.style.display = "none";
-    mobileControlHubRef.style.display = gameStartetOnce ? "flex" : "none";
-  } else if (width <= 1368) {
-    rotateLayerRef.style.display = "none";
-    mobileControlHubRef.style.display = "flex";
-  } else {
-    rotateLayerRef.style.display = "none";
-    mobileControlHubRef.style.display = "none";
-  }
-}
-
-/**
- * Handles the display of elements when the device is in portrait mode.
- *
- * @param {number} width - The width of the screen in pixels.
- * @param {HTMLElement} rotateLayerRef - Reference to the rotate layer element.
- * @param {HTMLElement} mobileControlHubRef - Reference to the mobile control hub element.
- */
-function handlePortraitMode(width, rotateLayerRef, mobileControlHubRef) {
-  if (width >= 667) {
-    rotateLayerRef.style.display = "none";
-    mobileControlHubRef.style.display = "none";
-  } else {
-    rotateLayerRef.style.display = "flex";
-    mobileControlHubRef.style.display = "none";
-  }
-}
-
-/**
- * Adds event listeners that adjust the display when the window is resized
- * or when the document is loaded.
- */
-window.addEventListener("resize", () =>
-  adjustDisplayBasedOnWidthAndOrientation()
-);
-document.addEventListener("DOMContentLoaded", () =>
-  adjustDisplayBasedOnWidthAndOrientation()
-);
 
 /**
  * Prepares the gaming experience by starting a loading spinner and preloading assets.
@@ -259,289 +154,4 @@ async function loadingSpinnerStart() {
 function loadingSpinnerEnd() {
   const loadingSpinnerLayerRef = document.getElementById("loadingSpinnerLayer");
   loadingSpinnerLayerRef.style.display = "none";
-}
-
-/**
- * Preloads the necessary assets, including images, audio, and fonts, for the game.
- * @async
- * @returns {Promise<void>}
- */
-async function preloadAssets() {
-  const imagesToLoad = [
-    "./assets/img/2_character_pepe/1_idle/idle/I-1.png",
-    "./assets/img/2_character_pepe/1_idle/idle/I-2.png",
-    "./assets/img/2_character_pepe/1_idle/idle/I-3.png",
-    "./assets/img/2_character_pepe/1_idle/idle/I-4.png",
-    "./assets/img/2_character_pepe/1_idle/idle/I-5.png",
-    "./assets/img/2_character_pepe/1_idle/idle/I-6.png",
-    "./assets/img/2_character_pepe/1_idle/idle/I-7.png",
-    "./assets/img/2_character_pepe/1_idle/idle/I-8.png",
-    "./assets/img/2_character_pepe/1_idle/idle/I-9.png",
-    "./assets/img/2_character_pepe/1_idle/idle/I-10.png",
-    "./assets/img/2_character_pepe/1_idle/long_idle/I-11.png",
-    "./assets/img/2_character_pepe/1_idle/long_idle/I-12.png",
-    "./assets/img/2_character_pepe/1_idle/long_idle/I-13.png",
-    "./assets/img/2_character_pepe/1_idle/long_idle/I-14.png",
-    "./assets/img/2_character_pepe/1_idle/long_idle/I-15.png",
-    "./assets/img/2_character_pepe/1_idle/long_idle/I-16.png",
-    "./assets/img/2_character_pepe/1_idle/long_idle/I-17.png",
-    "./assets/img/2_character_pepe/1_idle/long_idle/I-18.png",
-    "./assets/img/2_character_pepe/1_idle/long_idle/I-19.png",
-    "./assets/img/2_character_pepe/1_idle/long_idle/I-20.png",
-    "./assets/img/2_character_pepe/2_walk/W-21.png",
-    "./assets/img/2_character_pepe/2_walk/W-22.png",
-    "./assets/img/2_character_pepe/2_walk/W-23.png",
-    "./assets/img/2_character_pepe/2_walk/W-24.png",
-    "./assets/img/2_character_pepe/2_walk/W-25.png",
-    "./assets/img/2_character_pepe/2_walk/W-26.png",
-    "./assets/img/2_character_pepe/3_jump/J-31.png",
-    "./assets/img/2_character_pepe/3_jump/J-32.png",
-    "./assets/img/2_character_pepe/3_jump/J-33.png",
-    "./assets/img/2_character_pepe/3_jump/J-34.png",
-    "./assets/img/2_character_pepe/3_jump/J-35.png",
-    "./assets/img/2_character_pepe/3_jump/J-36.png",
-    "./assets/img/2_character_pepe/3_jump/J-37.png",
-    "./assets/img/2_character_pepe/3_jump/J-38.png",
-    "./assets/img/2_character_pepe/3_jump/J-39.png",
-    "./assets/img/2_character_pepe/4_hurt/H-41.png",
-    "./assets/img/2_character_pepe/4_hurt/H-42.png",
-    "./assets/img/2_character_pepe/4_hurt/H-43.png",
-    "./assets/img/2_character_pepe/5_dead/D-51.png",
-    "./assets/img/2_character_pepe/5_dead/D-52.png",
-    "./assets/img/2_character_pepe/5_dead/D-53.png",
-    "./assets/img/2_character_pepe/5_dead/D-54.png",
-    "./assets/img/2_character_pepe/5_dead/D-55.png",
-    "./assets/img/2_character_pepe/5_dead/D-56.png",
-    "./assets/img/2_character_pepe/5_dead/D-57.png",
-    "./assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
-    "./assets/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
-    "./assets/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
-    "./assets/img/3_enemies_chicken/chicken_normal/2_dead/dead.png",
-    "./assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png",
-    "./assets/img/3_enemies_chicken/chicken_small/1_walk/2_w.png",
-    "./assets/img/3_enemies_chicken/chicken_small/1_walk/3_w.png",
-    "./assets/img/3_enemies_chicken/chicken_small/2_dead/dead.png",
-    "./assets/img/4_enemie_boss_chicken/1_walk/G1.png",
-    "./assets/img/4_enemie_boss_chicken/1_walk/G2.png",
-    "./assets/img/4_enemie_boss_chicken/1_walk/G3.png",
-    "./assets/img/4_enemie_boss_chicken/1_walk/G4.png",
-    "./assets/img/4_enemie_boss_chicken/2_alert/G5.png",
-    "./assets/img/4_enemie_boss_chicken/2_alert/G6.png",
-    "./assets/img/4_enemie_boss_chicken/2_alert/G7.png",
-    "./assets/img/4_enemie_boss_chicken/2_alert/G8.png",
-    "./assets/img/4_enemie_boss_chicken/2_alert/G9.png",
-    "./assets/img/4_enemie_boss_chicken/2_alert/G10.png",
-    "./assets/img/4_enemie_boss_chicken/2_alert/G11.png",
-    "./assets/img/4_enemie_boss_chicken/2_alert/G12.png",
-    "./assets/img/4_enemie_boss_chicken/3_attack/G13.png",
-    "./assets/img/4_enemie_boss_chicken/3_attack/G14.png",
-    "./assets/img/4_enemie_boss_chicken/3_attack/G15.png",
-    "./assets/img/4_enemie_boss_chicken/3_attack/G16.png",
-    "./assets/img/4_enemie_boss_chicken/3_attack/G17.png",
-    "./assets/img/4_enemie_boss_chicken/3_attack/G18.png",
-    "./assets/img/4_enemie_boss_chicken/3_attack/G19.png",
-    "./assets/img/4_enemie_boss_chicken/3_attack/G20.png",
-    "./assets/img/4_enemie_boss_chicken/4_hurt/G21.png",
-    "./assets/img/4_enemie_boss_chicken/4_hurt/G22.png",
-    "./assets/img/4_enemie_boss_chicken/4_hurt/G23.png",
-    "./assets/img/4_enemie_boss_chicken/5_dead/G24.png",
-    "./assets/img/4_enemie_boss_chicken/5_dead/G25.png",
-    "./assets/img/4_enemie_boss_chicken/5_dead/G26.png",
-    "./assets/img/5_background/layers/1_first_layer/1.png",
-    "./assets/img/5_background/layers/1_first_layer/2.png",
-    "./assets/img/5_background/layers/2_second_layer/1.png",
-    "./assets/img/5_background/layers/2_second_layer/2.png",
-    "./assets/img/5_background/layers/3_third_layer/1.png",
-    "./assets/img/5_background/layers/3_third_layer/2.png",
-    "./assets/img/5_background/layers/4_clouds/1.png",
-    "./assets/img/5_background/layers/4_clouds/2.png",
-    "./assets/img/5_background/layers/air.png",
-    "./assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png",
-    "./assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png",
-    "./assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png",
-    "./assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png",
-    "./assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png",
-    "./assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
-    "./assets/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
-    "./assets/img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png",
-    "./assets/img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png",
-    "./assets/img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png",
-    "./assets/img/6_salsa_bottle/1_salsa_bottle_on_ground.png",
-    "./assets/img/6_salsa_bottle/2_salsa_bottle_on_ground.png",
-    "./assets/img/6_salsa_bottle/salsa_bottle.png",
-    "./assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png",
-    "./assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/20.png",
-    "./assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/40.png",
-    "./assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/60.png",
-    "./assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/80.png",
-    "./assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/100.png",
-    "./assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png",
-    "./assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/20.png",
-    "./assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/40.png",
-    "./assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/60.png",
-    "./assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/80.png",
-    "./assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/100.png",
-    "./assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png",
-    "./assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/20.png",
-    "./assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/40.png",
-    "./assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/60.png",
-    "./assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/80.png",
-    "./assets/img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/100.png",
-    "./assets/img/7_statusbars/2_statusbar_endboss/orange/orange0.png",
-    "./assets/img/7_statusbars/2_statusbar_endboss/orange/orange20.png",
-    "./assets/img/7_statusbars/2_statusbar_endboss/orange/orange40.png",
-    "./assets/img/7_statusbars/2_statusbar_endboss/orange/orange60.png",
-    "./assets/img/7_statusbars/2_statusbar_endboss/orange/orange80.png",
-    "./assets/img/7_statusbars/2_statusbar_endboss/orange/orange100.png",
-    "./assets/img/7_statusbars/3_icons/icon_coin.png",
-    "./assets/img/7_statusbars/3_icons/icon_health_endboss.png",
-    "./assets/img/7_statusbars/3_icons/icon_health.png",
-    "./assets/img/7_statusbars/3_icons/icon_salsa_bottle.png",
-    "./assets/img/8_coin/coin_1.png",
-    "./assets/img/8_coin/coin_2.png",
-    "./assets/img/9_intro_outro_screens/game_over/youWin.png",
-    "./assets/img/9_intro_outro_screens/game_over/youLose.png",
-    "./assets/img/9_intro_outro_screens/start/startscreen_1.png",
-    "./assets/img/9_intro_outro_screens/start/startscreen_2.png",
-    "./assets/img/desert.png",
-    "./assets/img/desertBackground.jpg",
-  ];
-
-  const audioToLoad = [
-    "./assets/audio/homeMenuSound01.mp3",
-    "./assets/audio/homeMenuSound02.mp3",
-    "./assets/audio/inGameSound01.mp3",
-    "./assets/audio/chickenDeath01.mp3",
-    "./assets/audio/bossHurting01.mp3",
-    "./assets/audio/bossAttacking01.mp3",
-    "./assets/audio/coin01.mp3",
-    "./assets/audio/coin02.mp3",
-    "./assets/audio/coin03.mp3",
-    "./assets/audio/coin04.mp3",
-    "./assets/audio/deathPepe01.mp3",
-    "./assets/audio/hurt01.mp3",
-    "./assets/audio/hurt02.mp3",
-    "./assets/audio/hurt03.mp3",
-    "./assets/audio/hurt04.mp3",
-    "./assets/audio/hurt05.mp3",
-    "./assets/audio/jump01.mp3",
-    "./assets/audio/jump02.mp3",
-    "./assets/audio/jump03.mp3",
-    "./assets/audio/jump04.mp3",
-    "./assets/audio/snore01.mp3",
-    "./assets/audio/snore02.mp3",
-    "./assets/audio/snore03.mp3",
-    "./assets/audio/snore04.mp3",
-    "./assets/audio/steps01.mp3",
-    "./assets/audio/steps02.mp3",
-    "./assets/audio/pickSalsa01.mp3",
-    "./assets/audio/pickSalsa02.mp3",
-    "./assets/audio/splash01.mp3",
-    "./assets/audio/splash02.mp3",
-    "./assets/audio/splash03.mp3",
-    "./assets/audio/splash04.mp3",
-    "./assets/audio/throw01.mp3",
-    "./assets/audio/throw02.mp3",
-    "./assets/audio/win.mp3",
-    "./assets/audio/loose.mp3",
-  ];
-
-  const fontsToLoad = [
-    new FontFace(
-      "Comic Neue",
-      "url(./assets/fonts/comic/comic-neue-v8-latin-300.woff2)",
-      { weight: "300", style: "normal" }
-    ),
-    new FontFace(
-      "Comic Neue",
-      "url(./assets/fonts/comic/comic-neue-v8-latin-300italic.woff2)",
-      { weight: "300", style: "italic" }
-    ),
-    new FontFace(
-      "Comic Neue",
-      "url(./assets/fonts/comic/comic-neue-v8-latin-regular.woff2)",
-      { weight: "400", style: "normal" }
-    ),
-    new FontFace(
-      "Comic Neue",
-      "url(./assets/fonts/comic/comic-neue-v8-latin-italic.woff2)",
-      { weight: "400", style: "italic" }
-    ),
-    new FontFace(
-      "Comic Neue",
-      "url(./assets/fonts/comic/comic-neue-v8-latin-700.woff2)",
-      { weight: "700", style: "normal" }
-    ),
-    new FontFace(
-      "Comic Neue",
-      "url(./assets/fonts/comic/comic-neue-v8-latin-700italic.woff2)",
-      { weight: "700", style: "italic" }
-    ),
-  ];
-
-  Static.preloadImages(imagesToLoad);
-  Static.preloadAudio(audioToLoad);
-  Static.preloadFonts(fontsToLoad);
-
-  await preloadImages(imagesToLoad);
-  await preloadAudio(audioToLoad);
-  await preloadFonts(fontsToLoad);
-}
-
-/**
- * Preloads a set of images and returns a promise that resolves when all images are loaded.
- * @param {string[]} paths - An array of image file paths to preload.
- * @returns {Promise<HTMLImageElement[]>} - A promise that resolves with an array of loaded images.
- */
-function preloadImages(paths) {
-  return Promise.all(
-    paths.map((path) => {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.src = path;
-        img.onload = () => {
-          Static.imageCache[path] = img;
-          resolve(img);
-        };
-        img.onerror = reject;
-      });
-    })
-  );
-}
-
-/**
- * Preloads a set of audio files and returns a promise that resolves when all audio files are ready to play.
- * @param {string[]} paths - An array of audio file paths to preload.
- * @returns {Promise<HTMLAudioElement[]>} - A promise that resolves with an array of preloaded audio elements.
- */
-function preloadAudio(paths) {
-  return Promise.all(
-    paths.map((path) => {
-      return new Promise((resolve, reject) => {
-        const audio = new Audio();
-        audio.src = path;
-        audio.oncanplaythrough = () => {
-          Static.audioCache[path] = audio;
-          resolve(audio);
-        };
-        audio.onerror = reject;
-      });
-    })
-  );
-}
-
-/**
- * Preloads a set of fonts and returns a promise that resolves when all fonts are loaded and added to the document.
- * @param {FontFace[]} fonts - An array of FontFace objects to preload.
- * @returns {Promise<void[]>} - A promise that resolves when all fonts are loaded and added to the document.
- */
-function preloadFonts(fonts) {
-  return Promise.all(
-    fonts.map((font) => {
-      return font.load().then((loadedFont) => {
-        Static.fontCache[font.family] = loadedFont;
-        document.fonts.add(loadedFont);
-      });
-    })
-  );
 }

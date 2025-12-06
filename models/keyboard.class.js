@@ -111,45 +111,70 @@ class Keyboard {
     const healButton = document.getElementById("healButton");
 
     if (leftButton) {
-      leftButton.addEventListener("touchstart", () => {
-        this.LEFT = true;
-      });
+      leftButton.addEventListener(
+        "touchstart",
+        (e) => {
+          e.preventDefault();
+          this.LEFT = true;
+        },
+        { passive: false }
+      );
       leftButton.addEventListener("touchend", () => {
         this.LEFT = false;
       });
     }
 
     if (rightButton) {
-      rightButton.addEventListener("touchstart", () => {
-        this.RIGHT = true;
-      });
+      rightButton.addEventListener(
+        "touchstart",
+        (e) => {
+          e.preventDefault();
+          this.RIGHT = true;
+        },
+        { passive: false }
+      );
       rightButton.addEventListener("touchend", () => {
         this.RIGHT = false;
       });
     }
 
     if (jumpButton) {
-      jumpButton.addEventListener("touchstart", () => {
-        this.UP = true;
-      });
+      jumpButton.addEventListener(
+        "touchstart",
+        (e) => {
+          e.preventDefault();
+          this.UP = true;
+        },
+        { passive: false }
+      );
       jumpButton.addEventListener("touchend", () => {
         this.UP = false;
       });
     }
 
     if (throwButton) {
-      throwButton.addEventListener("touchstart", () => {
-        this.THROW = true;
-      });
+      throwButton.addEventListener(
+        "touchstart",
+        (e) => {
+          e.preventDefault();
+          this.THROW = true;
+        },
+        { passive: false }
+      );
       throwButton.addEventListener("touchend", () => {
         this.THROW = false;
       });
     }
 
     if (healButton) {
-      healButton.addEventListener("touchstart", () => {
-        this.HEAL = true;
-      });
+      healButton.addEventListener(
+        "touchstart",
+        (e) => {
+          e.preventDefault();
+          this.HEAL = true;
+        },
+        { passive: false }
+      );
       healButton.addEventListener("touchend", () => {
         this.HEAL = false;
       });
