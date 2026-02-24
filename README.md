@@ -82,10 +82,13 @@ The game uses a **modular handler architecture** to separate concerns and improv
    ```
 
 2. Open in browser:
+
    ```bash
-   cd El-pollo-loco && open index.html
+   cd el-pollo-loco && open index.html
    ```
+
    Or use a local server:
+
    ```bash
    npx serve
    ```
@@ -94,25 +97,16 @@ The game uses a **modular handler architecture** to separate concerns and improv
 
 ## 📁 Project Structure
 
+### Game Project
+
 ```text
 el-pollo-loco/
 ├── assets/
 │   ├── audio/                       # Sound effects & music
-│   ├── fonts/
-│   │   └── comic/                   # Custom webfonts (Creepster, Lexend)
+│   ├── fonts/                       # Custom webfonts (Creepster, Lexend)
 │   ├── img/                         # Game sprites & backgrounds
-│   │   ├── 2_character_pepe/
-│   │   ├── 3_enemies_chicken/
-│   │   ├── 4_enemie_boss_chicken/
-│   │   ├── 5_background/
-│   │   ├── 6_salsa_bottle/
-│   │   ├── 7_statusbars/
-│   │   ├── 8_coin/
-│   │   ├── 9_intro_outro_screens/
-│   │   └── 10_menu/
-│   ├── social/                      # Social media icons (GitHub, LinkedIn, etc.)
-│   ├── vector/
-│   │   └── arrows/                  # SVG control icons
+│   ├── social/                      # Social media icons
+│   ├── vector/                      # SVG control icons
 │   └── web-app/                     # PWA icons & manifest
 │
 ├── js/
@@ -126,33 +120,11 @@ el-pollo-loco/
 ├── models/                          # Game object classes
 │   ├── world.class.js               # Game world orchestration
 │   ├── character.class.js           # Player character
-│   │
-│   ├── collision-handler.class.js   # Collision detection system
-│   ├── render-handler.class.js      # Canvas rendering & drawing
-│   ├── throw-handler.class.js       # Bottle throwing mechanics
-│   ├── heal-handler.class.js        # Healing system
-│   ├── alert-handler.class.js       # Enemy alert management
-│   │
-│   ├── enemy-endboss.class.js       # Final boss enemy
-│   ├── enemy-chicken.class.js       # Normal chicken enemy
-│   ├── enemy-chick.class.js         # Small chick enemy
-│   ├── enemy-chicken_counterStrike_.class.js  # Boss spawned chickens
-│   │
-│   ├── object-drawable.class.js     # Base drawable object
-│   ├── object-movable.class.js      # Base movable object with physics
-│   ├── object-throwable.class.js    # Throwable bottle objects
-│   ├── object-pickable.class.js     # Collectible items base
-│   │
-│   ├── map-background.class.js      # Background with parallax
-│   ├── map-cloud.class.js           # Animated clouds
-│   ├── map-bottle.class.js          # Collectible bottles
-│   ├── map-coin.class.js            # Collectible coins
-│   │
-│   ├── status-bar-character.class.js
-│   ├── status-bar-boss.class.js
-│   ├── status-bar-coin.class.js
-│   ├── status-bar-bottle.class.js
-│   │
+│   ├── *-handler.class.js           # collision / render / throw / heal / alert
+│   ├── enemy-*.class.js             # endboss, chicken, chick, counterStrike
+│   ├── object-*.class.js            # drawable, movable, throwable, pickable
+│   ├── map-*.class.js               # background, cloud, bottle, coin
+│   ├── status-bar-*.class.js        # health, boss, coin, bottle bars
 │   ├── audio-class.js               # Audio manager
 │   ├── keyboard.class.js            # Input handling
 │   ├── level.class.js               # Level structure
@@ -161,17 +133,8 @@ el-pollo-loco/
 ├── levels/
 │   └── level1.js                    # Level configuration & enemies
 │
-├── templates/                       # HTML templates
-│   ├── imprint.html
-│   ├── settings.html
-│   └── story.html
-│
-├── style/                           # Stylesheets
-│   ├── style.css                    # Main styles & responsive design
-│   ├── imprint.css
-│   ├── settings.css
-│   └── story.css
-│
+├── templates/                       # HTML templates (imprint, settings, story)
+├── style/                           # Stylesheets (style, imprint, settings, story)
 └── index.html                       # Entry point
 ```
 
