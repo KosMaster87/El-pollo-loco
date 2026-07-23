@@ -32,7 +32,7 @@ class Keyboard {
 
     document.addEventListener(
       "DOMContentLoaded",
-      this.bindTouchPressEvents.bind(this)
+      this.bindTouchPressEvents.bind(this),
     );
   }
 
@@ -117,7 +117,7 @@ class Keyboard {
           e.preventDefault();
           this.LEFT = true;
         },
-        { passive: false }
+        { passive: false },
       );
       leftButton.addEventListener("touchend", () => {
         this.LEFT = false;
@@ -131,7 +131,7 @@ class Keyboard {
           e.preventDefault();
           this.RIGHT = true;
         },
-        { passive: false }
+        { passive: false },
       );
       rightButton.addEventListener("touchend", () => {
         this.RIGHT = false;
@@ -145,7 +145,7 @@ class Keyboard {
           e.preventDefault();
           this.UP = true;
         },
-        { passive: false }
+        { passive: false },
       );
       jumpButton.addEventListener("touchend", () => {
         this.UP = false;
@@ -159,7 +159,7 @@ class Keyboard {
           e.preventDefault();
           this.THROW = true;
         },
-        { passive: false }
+        { passive: false },
       );
       throwButton.addEventListener("touchend", () => {
         this.THROW = false;
@@ -173,7 +173,7 @@ class Keyboard {
           e.preventDefault();
           this.HEAL = true;
         },
-        { passive: false }
+        { passive: false },
       );
       healButton.addEventListener("touchend", () => {
         this.HEAL = false;
