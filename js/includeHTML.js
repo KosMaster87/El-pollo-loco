@@ -19,6 +19,7 @@ async function loadPage(filePath) {
 
   if (resp.ok) {
     w3_includeRef.innerHTML = await resp.text();
+    executeInjectedScripts(w3_includeRef);
 
     menuPopManager();
 
@@ -26,6 +27,25 @@ async function loadPage(filePath) {
   } else {
     w3_includeRef.innerHTML = "Page not found";
   }
+}
+
+/**
+ * Re-runs <script> tags set via innerHTML, which browsers never execute
+ * on their own for security reasons. Replaces each script with a fresh
+ * element (copying its attributes/text) so the browser treats it as newly
+ * inserted and runs it.
+ * @param {HTMLElement} container - Element whose injected scripts should run.
+ * @returns {void}
+ */
+function executeInjectedScripts(container) {
+  container.querySelectorAll("script").forEach((oldScript) => {
+    const newScript = document.createElement("script");
+    for (const { name, value } of oldScript.attributes) {
+      newScript.setAttribute(name, value);
+    }
+    newScript.textContent = oldScript.textContent;
+    oldScript.replaceWith(newScript);
+  });
 }
 
 /**
