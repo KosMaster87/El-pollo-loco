@@ -31,8 +31,7 @@
           <div>
             <p><strong>Contact:</strong></p>
             <p>
-              Email:
-              <a href="mailto:konstantin@dev2ksoftware.com">konstantin@dev2ksoftware.com</a><br />
+              Email: <span id="contactEmail">loading...</span><br />
               Website:
               <a href="https://el-pollo-loco.dev2ksoftware.com/"
                 >https://el-pollo-loco.dev2ksoftware.com/</a
@@ -151,5 +150,22 @@
         </div>
       </div>
     </div>
+
+    <script>
+      // Built at runtime so no literal "mailto:" string ever appears in the
+      // HTML response - Cloudflare's Email Address Obfuscation only rewrites
+      // addresses it finds in the raw server-rendered markup, so a
+      // JS-assembled link is never touched by it (and stays readable even
+      // when a visitor's ad blocker blocks Cloudflare's own decode script).
+      (function () {
+        var user = "konstantin";
+        var domain = "dev2ksoftware.com";
+        var address = user + "@" + domain;
+        var link = document.createElement("a");
+        link.href = "mailto:" + address;
+        link.textContent = address;
+        document.getElementById("contactEmail").replaceWith(link);
+      })();
+    </script>
   </body>
 </html>
