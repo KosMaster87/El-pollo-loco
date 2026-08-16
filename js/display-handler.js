@@ -76,6 +76,8 @@ const isMobileDevice = () => {
 const adjustDisplayBasedOnWidthAndOrientation = () => {
   const rotateLayerRef = document.getElementById("rotateLayer");
   const mobileControlHubRef = document.getElementById("mobileControlHub");
+  if (!rotateLayerRef || !mobileControlHubRef) return;
+
   const width = getScreenWidth();
   const isLandscape = isLandscapeOrientation();
 
