@@ -23,8 +23,7 @@ class AudioManager {
       this.muteAll();
       this.initMuteButton();
 
-      document.getElementById("muteButton").src =
-        "./assets/img/10_menu/volume_off.svg";
+      document.getElementById("muteButton").src = "./assets/img/10_menu/volume_off.svg";
 
       volumeSlider.addEventListener("input", (event) => {
         const volume = event.target.value / 100;
@@ -43,10 +42,7 @@ class AudioManager {
       inGameMusic: [new Audio("./assets/audio/inGameSound01.mp3")],
       gameLose: [new Audio("./assets/audio/loose.mp3")],
       gameWin: [new Audio("./assets/audio/win.mp3")],
-      walking: [
-        new Audio("./assets/audio/steps01.mp3"),
-        new Audio("./assets/audio/steps02.mp3"),
-      ],
+      walking: [new Audio("./assets/audio/steps01.mp3"), new Audio("./assets/audio/steps02.mp3")],
       jumping: [
         new Audio("./assets/audio/jump01.mp3"),
         new Audio("./assets/audio/jump02.mp3"),
@@ -118,9 +114,7 @@ class AudioManager {
   updateAllSoundsVolume() {
     for (let soundArray in this.sounds) {
       if (Array.isArray(this.sounds[soundArray])) {
-        this.sounds[soundArray].forEach(
-          (sound) => (sound.volume = this.volume)
-        );
+        this.sounds[soundArray].forEach((sound) => (sound.volume = this.volume));
       }
     }
   }
@@ -191,8 +185,7 @@ class AudioManager {
 
     if (
       this.sounds[soundKey] &&
-      (!this.soundCooldowns[soundKey] ||
-        now - this.soundCooldowns[soundKey] >= cooldown) &&
+      (!this.soundCooldowns[soundKey] || now - this.soundCooldowns[soundKey] >= cooldown) &&
       !this.isSoundPlaying(soundKey)
     ) {
       if (Array.isArray(this.sounds[soundKey])) {

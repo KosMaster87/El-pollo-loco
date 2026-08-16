@@ -24,9 +24,7 @@ class CounterStrikeChicken extends MovableObject {
     "./assets/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
   ];
 
-  IMAGES_DEAD = [
-    "./assets/img/3_enemies_chicken/chicken_normal/2_dead/dead.png",
-  ];
+  IMAGES_DEAD = ["./assets/img/3_enemies_chicken/chicken_normal/2_dead/dead.png"];
 
   y = 390;
   height = 55;
@@ -48,9 +46,7 @@ class CounterStrikeChicken extends MovableObject {
    * @param {Object} endBossRef - Reference to the end boss.
    */
   constructor(endBossRef) {
-    super().loadImage(
-      "./assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png"
-    );
+    super().loadImage("./assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
     this.images = {};
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_ATTACK);
@@ -142,10 +138,7 @@ class CounterStrikeChicken extends MovableObject {
    * Starts the walking interval.
    */
   startWalkingInterval = () => {
-    this.walkingInterval = setStoppableInterval(
-      () => this.moveLeft(),
-      1800 / 60
-    );
+    this.walkingInterval = setStoppableInterval(() => this.moveLeft(), 1800 / 60);
   };
 
   /**
@@ -162,9 +155,12 @@ class CounterStrikeChicken extends MovableObject {
    * Starts the jump interval.
    */
   startJumpInterval = () => {
-    this.jumpInterval = setStoppableInterval(() => {
-      if (this.canJump()) this.jump();
-    }, 2000 + Math.random() * 3000);
+    this.jumpInterval = setStoppableInterval(
+      () => {
+        if (this.canJump()) this.jump();
+      },
+      2000 + Math.random() * 3000
+    );
   };
 
   /**
@@ -224,9 +220,7 @@ class CounterStrikeChicken extends MovableObject {
    * Removes this chicken from the enemies array.
    */
   removeFromEnemies = () => {
-    this.world.level.enemies = this.world.level.enemies.filter(
-      (enemy) => enemy !== this
-    );
+    this.world.level.enemies = this.world.level.enemies.filter((enemy) => enemy !== this);
   };
 
   /**

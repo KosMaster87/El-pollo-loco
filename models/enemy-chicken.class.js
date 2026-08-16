@@ -82,9 +82,7 @@ class Chicken extends MovableObject {
     clearInterval(this.animationInterval);
     this.playAnimation(this.IMAGES_DEAD);
     setTimeout(() => {
-      this.world.level.enemies = this.world.level.enemies.filter(
-        (enemy) => enemy !== this
-      );
+      this.world.level.enemies = this.world.level.enemies.filter((enemy) => enemy !== this);
     }, 700);
   }
 }

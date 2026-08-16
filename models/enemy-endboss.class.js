@@ -122,9 +122,7 @@ class Endboss extends MovableObject {
    * Moves the boss towards the character during an attack.
    */
   moveTowardsCharacter = () => {
-    const speed = this.isBossAttack
-      ? this.speed * this.attackSpeedMultiplier
-      : this.speed;
+    const speed = this.isBossAttack ? this.speed * this.attackSpeedMultiplier : this.speed;
     this.x -= speed;
   };
 
@@ -195,9 +193,7 @@ class Endboss extends MovableObject {
    * Removes boss from enemies array.
    */
   removeFromEnemies = () => {
-    this.world.level.enemies = this.world.level.enemies.filter(
-      (enemy) => enemy !== this
-    );
+    this.world.level.enemies = this.world.level.enemies.filter((enemy) => enemy !== this);
   };
 
   /**

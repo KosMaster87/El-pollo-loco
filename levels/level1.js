@@ -36,9 +36,7 @@ const calculateDistance = (x1, y1, w1, h1, obj2) => {
   const centerY1 = y1 + h1 / 2;
   const centerX2 = obj2.x + (obj2.width || 50) / 2;
   const centerY2 = obj2.y + (obj2.height || 50) / 2;
-  return Math.sqrt(
-    Math.pow(centerX1 - centerX2, 2) + Math.pow(centerY1 - centerY2, 2)
-  );
+  return Math.sqrt(Math.pow(centerX1 - centerX2, 2) + Math.pow(centerY1 - centerY2, 2));
 };
 
 /**
@@ -92,27 +90,14 @@ const generateRandomPosition = (objectType) => ({
  * @param {number} maxAttempts - Maximum positioning attempts
  * @returns {boolean} True if valid position found, false otherwise
  */
-const tryFindValidPosition = (
-  obj,
-  objectType,
-  existingObjects,
-  minDistance,
-  maxAttempts
-) => {
+const tryFindValidPosition = (obj, objectType, existingObjects, minDistance, maxAttempts) => {
   for (let attempts = 0; attempts < maxAttempts; attempts++) {
     const pos = generateRandomPosition(objectType);
     obj.x = pos.x;
     obj.y = pos.y;
 
     if (
-      isPositionValid(
-        obj.x,
-        obj.y,
-        obj.width || 50,
-        obj.height || 50,
-        existingObjects,
-        minDistance
-      )
+      isPositionValid(obj.x, obj.y, obj.width || 50, obj.height || 50, existingObjects, minDistance)
     ) {
       return true;
     }
@@ -160,21 +145,11 @@ const createCollectibleWithValidPosition = (
  * @param {number} minDistance - Minimum distance between objects
  * @returns {Array} Array of created objects
  */
-const createCollectiblesWithSpacing = (
-  count,
-  createFunc,
-  objectType,
-  minDistance = 200
-) => {
+const createCollectiblesWithSpacing = (count, createFunc, objectType, minDistance = 200) => {
   const objects = [];
 
   for (let i = 0; i < count; i++) {
-    const obj = createCollectibleWithValidPosition(
-      createFunc,
-      objectType,
-      objects,
-      minDistance
-    );
+    const obj = createCollectibleWithValidPosition(createFunc, objectType, objects, minDistance);
     if (obj) objects.push(obj);
   }
 
@@ -245,18 +220,7 @@ const createBackgroundSet = (pos, layerNumber) => [
  * @returns {Array} Array of all background objects
  */
 const createBackgrounds = () => {
-  const positions = [
-    -719,
-    0,
-    719,
-    719 * 2,
-    719 * 3,
-    719 * 4,
-    719 * 5,
-    719 * 6,
-    719 * 7,
-    719 * 8,
-  ];
+  const positions = [-719, 0, 719, 719 * 2, 719 * 3, 719 * 4, 719 * 5, 719 * 6, 719 * 7, 719 * 8];
   const backgrounds = [];
 
   positions.forEach((pos, index) => {
@@ -272,12 +236,7 @@ const createBackgrounds = () => {
  * @returns {Level} Configured level instance with all game objects
  */
 const createLevel = () => {
-  const bottles = createCollectiblesWithSpacing(
-    7,
-    () => new Bottle(),
-    "bottle",
-    100
-  );
+  const bottles = createCollectiblesWithSpacing(7, () => new Bottle(), "bottle", 100);
   const coins = createCoins(bottles, 10, 100);
   const enemies = [
     ...createObjects(20, () => new Chicken()),

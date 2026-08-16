@@ -12,8 +12,7 @@
  */
 const canRequestFullscreen = () => {
   const isLandscape = window.matchMedia("(orientation: landscape)").matches;
-  const isNotFullscreen =
-    !document.fullscreenElement && !document.webkitFullscreenElement;
+  const isNotFullscreen = !document.fullscreenElement && !document.webkitFullscreenElement;
   return isMobileDevice() && isLandscape && isNotFullscreen;
 };
 

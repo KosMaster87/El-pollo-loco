@@ -34,12 +34,7 @@ class RenderHandler {
    * Clears the canvas for the next frame.
    */
   clearCanvas = () => {
-    this.world.ctx.clearRect(
-      0,
-      0,
-      this.world.canvas.width,
-      this.world.canvas.height
-    );
+    this.world.ctx.clearRect(0, 0, this.world.canvas.width, this.world.canvas.height);
   };
 
   /**

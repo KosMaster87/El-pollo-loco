@@ -1,0 +1,5 @@
+node_modules/
+docs/
+out/
+coverage/
+pnpm-lock.yaml

@@ -40,9 +40,6 @@ class Bottle extends PickableObject {
    * @returns {void}
    */
   animate() {
-    setStoppableInterval(
-      () => this.playAnimation(this.IMAGES_SALSA_GROUND),
-      220
-    );
+    setStoppableInterval(() => this.playAnimation(this.IMAGES_SALSA_GROUND), 220);
   }
 }

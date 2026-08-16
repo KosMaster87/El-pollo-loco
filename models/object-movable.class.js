@@ -109,8 +109,7 @@ class MovableObject extends DrawableObject {
    */
   getPushOffset = (enemy) => {
     if (enemy instanceof Endboss) return 150;
-    if (enemy instanceof Chicken || enemy instanceof CounterStrikeChicken)
-      return 70;
+    if (enemy instanceof Chicken || enemy instanceof CounterStrikeChicken) return 70;
     if (enemy instanceof Chick) return 55;
     return 0;
   };
@@ -120,8 +119,7 @@ class MovableObject extends DrawableObject {
    * @param {number} targetPosition - The target position to move the character to
    */
   pushLeftSmooth = (targetPosition) => {
-    if (this.pushbackAnimationId)
-      cancelAnimationFrame(this.pushbackAnimationId);
+    if (this.pushbackAnimationId) cancelAnimationFrame(this.pushbackAnimationId);
     this.animatePushLeft(targetPosition, 2);
   };
 
@@ -151,8 +149,7 @@ class MovableObject extends DrawableObject {
    * @param {number} targetPosition - The target position to move the character to
    */
   pushRightSmooth = (targetPosition) => {
-    if (this.pushbackAnimationId)
-      cancelAnimationFrame(this.pushbackAnimationId);
+    if (this.pushbackAnimationId) cancelAnimationFrame(this.pushbackAnimationId);
     this.animatePushRight(targetPosition, 3);
   };
 

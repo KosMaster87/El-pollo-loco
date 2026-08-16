@@ -51,10 +51,7 @@ class Chick extends MovableObject {
    * @returns {void}
    */
   animate() {
-    this.walkingInterval = setStoppableInterval(
-      () => this.moveLeft(),
-      1000 / 60
-    );
+    this.walkingInterval = setStoppableInterval(() => this.moveLeft(), 1000 / 60);
     this.animationInterval = setStoppableInterval(
       () => this.playAnimation(this.IMAGES_WALKING),
       1000 / 7
@@ -82,9 +79,7 @@ class Chick extends MovableObject {
     clearInterval(this.animationInterval);
     this.playAnimation(this.IMAGES_DEAD);
     setTimeout(() => {
-      this.world.level.enemies = this.world.level.enemies.filter(
-        (enemy) => enemy !== this
-      );
+      this.world.level.enemies = this.world.level.enemies.filter((enemy) => enemy !== this);
     }, 700);
   }
 }

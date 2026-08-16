@@ -26,13 +26,7 @@ function initGame() {
 
   startGame();
   initLevel();
-  world = new World(
-    canvas,
-    keyboard,
-    audioManager,
-    staticInstance,
-    isGameRunning
-  );
+  world = new World(canvas, keyboard, audioManager, staticInstance, isGameRunning);
 }
 
 /**

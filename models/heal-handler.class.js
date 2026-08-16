@@ -75,10 +75,7 @@ class HealHandler {
    * @returns {boolean} True if heal prompt should be shown
    */
   canShowHealPrompt = () => {
-    return (
-      this.world.character.coins.length >= 5 &&
-      this.world.character.energy < 100
-    );
+    return this.world.character.coins.length >= 5 && this.world.character.energy < 100;
   };
 
   /**
@@ -88,8 +85,7 @@ class HealHandler {
   isMobile = () => {
     return (
       window.innerWidth <= 667 ||
-      (window.innerWidth <= 1080 &&
-        window.matchMedia("(orientation: landscape)").matches)
+      (window.innerWidth <= 1080 && window.matchMedia("(orientation: landscape)").matches)
     );
   };
 }

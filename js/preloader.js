@@ -191,36 +191,30 @@ async function preloadAssets() {
   ];
 
   const fontsToLoad = [
-    new FontFace(
-      "Comic Neue",
-      "url(./assets/fonts/comic/comic-neue-v8-latin-300.woff2)",
-      { weight: "300", style: "normal" }
-    ),
-    new FontFace(
-      "Comic Neue",
-      "url(./assets/fonts/comic/comic-neue-v8-latin-300italic.woff2)",
-      { weight: "300", style: "italic" }
-    ),
-    new FontFace(
-      "Comic Neue",
-      "url(./assets/fonts/comic/comic-neue-v8-latin-regular.woff2)",
-      { weight: "400", style: "normal" }
-    ),
-    new FontFace(
-      "Comic Neue",
-      "url(./assets/fonts/comic/comic-neue-v8-latin-italic.woff2)",
-      { weight: "400", style: "italic" }
-    ),
-    new FontFace(
-      "Comic Neue",
-      "url(./assets/fonts/comic/comic-neue-v8-latin-700.woff2)",
-      { weight: "700", style: "normal" }
-    ),
-    new FontFace(
-      "Comic Neue",
-      "url(./assets/fonts/comic/comic-neue-v8-latin-700italic.woff2)",
-      { weight: "700", style: "italic" }
-    ),
+    new FontFace("Comic Neue", "url(./assets/fonts/comic/comic-neue-v8-latin-300.woff2)", {
+      weight: "300",
+      style: "normal",
+    }),
+    new FontFace("Comic Neue", "url(./assets/fonts/comic/comic-neue-v8-latin-300italic.woff2)", {
+      weight: "300",
+      style: "italic",
+    }),
+    new FontFace("Comic Neue", "url(./assets/fonts/comic/comic-neue-v8-latin-regular.woff2)", {
+      weight: "400",
+      style: "normal",
+    }),
+    new FontFace("Comic Neue", "url(./assets/fonts/comic/comic-neue-v8-latin-italic.woff2)", {
+      weight: "400",
+      style: "italic",
+    }),
+    new FontFace("Comic Neue", "url(./assets/fonts/comic/comic-neue-v8-latin-700.woff2)", {
+      weight: "700",
+      style: "normal",
+    }),
+    new FontFace("Comic Neue", "url(./assets/fonts/comic/comic-neue-v8-latin-700italic.woff2)", {
+      weight: "700",
+      style: "italic",
+    }),
   ];
 
   Static.preloadImages(imagesToLoad);
@@ -278,12 +272,8 @@ const loadSingleAudio = (path) => {
     audio.src = path;
     let resolved = false;
 
-    const timeout = setTimeout(
-      () => resolveAudio(audio, path, resolved, resolve, timeout),
-      2000
-    );
-    audio.oncanplaythrough = () =>
-      resolveAudio(audio, path, resolved, resolve, timeout);
+    const timeout = setTimeout(() => resolveAudio(audio, path, resolved, resolve, timeout), 2000);
+    audio.oncanplaythrough = () => resolveAudio(audio, path, resolved, resolve, timeout);
     audio.onerror = () => resolveAudio(audio, path, resolved, resolve, timeout);
   });
 };

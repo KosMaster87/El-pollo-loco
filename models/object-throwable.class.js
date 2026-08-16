@@ -139,9 +139,7 @@ class ThrowableObject extends MovableObject {
    */
   isSmallEnemy = (enemy) => {
     return (
-      enemy instanceof Chick ||
-      enemy instanceof Chicken ||
-      enemy instanceof CounterStrikeChicken
+      enemy instanceof Chick || enemy instanceof Chicken || enemy instanceof CounterStrikeChicken
     );
   };
 
@@ -208,9 +206,7 @@ class ThrowableObject extends MovableObject {
   removeBottle = () => {
     clearInterval(this.throwIntervalId);
     if (this.splashIntervalId) clearInterval(this.splashIntervalId);
-    this.world.throwableObjects = this.world.throwableObjects.filter(
-      (obj) => obj !== this
-    );
+    this.world.throwableObjects = this.world.throwableObjects.filter((obj) => obj !== this);
   };
 
   /**

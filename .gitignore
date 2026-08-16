@@ -15,7 +15,10 @@ package-lock.json
 .history/*
 
 # CI/CD
-.github/
+# Keep .github folder (workflows, docs)
+!.github/
+!.github/workflows/
+!.github/docs/
 
 # Logs
 *.log
@@ -68,5 +71,6 @@ public/api/contact/contact_logs.txt
 testem.log
 /typings
 
-# Documentation
-docs/
+# Generated documentation (JSDoc output, replaces the old committed out/ dir)
+/docs/
+/out/

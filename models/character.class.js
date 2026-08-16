@@ -252,10 +252,7 @@ class Character extends MovableObject {
    */
   animate() {
     this.moveInterval = setStoppableInterval(() => this.pepeMove(), 1000 / 45);
-    this.animateInterval = setStoppableInterval(
-      () => this.pepeAnimate(),
-      1000 / 7
-    );
+    this.animateInterval = setStoppableInterval(() => this.pepeAnimate(), 1000 / 7);
   }
 
   /**
@@ -350,12 +347,7 @@ class Character extends MovableObject {
    * Handles the idle state of the character when appropriate.
    */
   handleIdleState() {
-    if (
-      this.idleTimer() &&
-      !this.isAboveGround() &&
-      !this.isHurt() &&
-      !this.isDead()
-    ) {
+    if (this.idleTimer() && !this.isAboveGround() && !this.isHurt() && !this.isDead()) {
       this.idleAlsoSleep();
     }
   }

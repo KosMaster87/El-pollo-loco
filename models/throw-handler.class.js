@@ -73,9 +73,7 @@ class ThrowHandler {
     bottle.world = this.world;
     this.world.throwableObjects.push(bottle);
     this.world.character.bottles.pop();
-    this.world.statusBarBottle.setPercentage(
-      this.world.character.bottles.length * 20
-    );
+    this.world.statusBarBottle.setPercentage(this.world.character.bottles.length * 20);
     this.lastThrowTime = Date.now();
   };
 
@@ -99,8 +97,7 @@ class ThrowHandler {
   isMobile = () => {
     return (
       window.innerWidth <= 667 ||
-      (window.innerWidth <= 1080 &&
-        window.matchMedia("(orientation: landscape)").matches)
+      (window.innerWidth <= 1080 && window.matchMedia("(orientation: landscape)").matches)
     );
   };
 }

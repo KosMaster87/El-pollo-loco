@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html translate="en">
   <head>
     <meta charset="UTF-8" />
@@ -15,23 +15,9 @@
     <meta name="author" content="K. Aksenov - Software Developer" />
 
     <!-- Favicon -->
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="./assets/web-app/icon-32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="./assets/web-app/icon-32.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="./assets/web-app/icon-192.png"
-    />
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/web-app/icon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/web-app/icon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/web-app/icon-192.png" />
 
     <!-- PWA Manifest -->
     <link rel="manifest" href="assets/web-app/manifest.json" />
@@ -94,22 +80,11 @@
       <div class="w3_include" id="w3_include"></div>
 
       <div class="hotMenu" id="hotMenu">
-        <input
-          type="range"
-          id="volumeSlider"
-          min="0"
-          max="100"
-          value="0"
-          step="1"
-        />
+        <input type="range" id="volumeSlider" min="0" max="100" value="0" step="1" />
 
         <div class="menuControlsWrapper">
           <div class="menuSoundBox" id="menuSoundBox">
-            <button
-              class="openMenuBtn disableTextSelection"
-              id="openMenuBtn"
-              tabindex="-1"
-            >
+            <button class="openMenuBtn disableTextSelection" id="openMenuBtn" tabindex="-1">
               Menu
             </button>
             <img
@@ -127,42 +102,21 @@
             tabindex="-1"
             title="Toggle Fullscreen"
           >
-            <img
-              src="./assets/vector/fullscreen-api.svg"
-              alt="Fullscreen"
-              draggable="false"
-            />
+            <img src="./assets/vector/fullscreen-api.svg" alt="Fullscreen" draggable="false" />
           </button>
         </div>
       </div>
 
-      <div
-        class="menuPop disableTextSelection"
-        id="menuPop"
-        style="display: none"
-      >
+      <div class="menuPop disableTextSelection" id="menuPop" style="display: none">
         <h3 class="menuHeader disableTextSelection" id="menuHeader">PAUSE</h3>
 
         <div class="menuBtnContainer">
-          <button class="disableTextSelection" onclick="initGame()">
-            NEW GAME
-          </button>
-          <button
-            class="disableTextSelection"
-            onclick="toggleFullscreen(event)"
-          >
-            Fullscreen
-          </button>
-          <button
-            class="disableTextSelection"
-            onclick="loadPage('../templates/story.html')"
-          >
+          <button class="disableTextSelection" onclick="initGame()">NEW GAME</button>
+          <button class="disableTextSelection" onclick="toggleFullscreen(event)">Fullscreen</button>
+          <button class="disableTextSelection" onclick="loadPage('../templates/story.html')">
             STORY
           </button>
-          <button
-            class="disableTextSelection"
-            onclick="loadPage('../templates/settings.html')"
-          >
+          <button class="disableTextSelection" onclick="loadPage('../templates/settings.html')">
             SETTINGS
           </button>
           <button
@@ -175,10 +129,7 @@
         </div>
 
         <div class="menuFooter" id="menuFooter">
-          <p
-            class="disableTextSelection"
-            onclick="loadPage('../templates/imprint.html')"
-          >
+          <p class="disableTextSelection" onclick="loadPage('../templates/imprint.html')">
             Imprint
           </p>
         </div>
@@ -287,7 +238,7 @@
           src="./assets/social/email.svg"
           alt="Email"
           class="socialIcon"
-          onclick="window.location.href='mailto:konstantin.aksenov@dev2k.org'"
+          onclick="window.location.href = 'mailto:konstantin.aksenov@dev2k.org'"
           rel="noopener noreferrer"
         />
 
@@ -303,7 +254,9 @@
           src="./assets/social/linkedin.svg"
           alt="LinkedIn"
           class="socialIcon"
-          onclick="window.open('https://www.linkedin.com/in/konstantin-aksenov-802b88190/', '_blank')"
+          onclick="
+            window.open('https://www.linkedin.com/in/konstantin-aksenov-802b88190/', '_blank')
+          "
           rel="noopener noreferrer"
         />
 
@@ -324,10 +277,7 @@
         src="./assets/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png"
         alt="You are Welkom - Experience is being prepared."
       />
-      <p
-        class="loadingSpinnerPara disableTextSelection"
-        id="loadingSpinnerPara"
-      >
+      <p class="loadingSpinnerPara disableTextSelection" id="loadingSpinnerPara">
         Your gaming experience is being prepared. <br />
         There are approximately 20 MB to download.
       </p>

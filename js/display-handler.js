@@ -65,9 +65,7 @@ const getDeviceCategory = (width, isLandscape) => {
  * @returns {boolean} - True if device is mobile, otherwise false.
  */
 const isMobileDevice = () => {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  );
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 };
 
 /**
@@ -100,11 +98,9 @@ const handleLandscapeMode = (width, rotateLayerRef, mobileControlHubRef) => {
   const deviceCategory = getDeviceCategory(width, true);
   rotateLayerRef.style.display = "none";
 
-  const showControls = [
-    "phone-landscape",
-    "tablet-landscape",
-    "laptop-small",
-  ].includes(deviceCategory);
+  const showControls = ["phone-landscape", "tablet-landscape", "laptop-small"].includes(
+    deviceCategory
+  );
 
   mobileControlHubRef.style.display =
     showControls && gameStartetOnce && isGameRunning ? "flex" : "none";
@@ -121,11 +117,7 @@ const handlePortraitMode = (width, rotateLayerRef, mobileControlHubRef) => {
   const deviceCategory = getDeviceCategory(width, false);
   mobileControlHubRef.style.display = "none";
 
-  const showRotatePrompt = [
-    "phone-small",
-    "phone-medium",
-    "phone-large",
-  ].includes(deviceCategory);
+  const showRotatePrompt = ["phone-small", "phone-medium", "phone-large"].includes(deviceCategory);
 
   rotateLayerRef.style.display = showRotatePrompt ? "flex" : "none";
 };
@@ -141,10 +133,7 @@ const initDisplayHandlers = () => {
     setTimeout(adjustDisplayBasedOnWidthAndOrientation, 100);
   });
 
-  document.addEventListener(
-    "DOMContentLoaded",
-    adjustDisplayBasedOnWidthAndOrientation
-  );
+  document.addEventListener("DOMContentLoaded", adjustDisplayBasedOnWidthAndOrientation);
 };
 
 initDisplayHandlers();

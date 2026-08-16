@@ -1,0 +1,57 @@
+{
+  "source": {
+    "include": ["js", "models", "levels"],
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": "(node_modules|\\.test\\.js$|\\.html$)"
+  },
+  "opts": {
+    "destination": "./docs",
+    "recurse": true,
+    "template": "./node_modules/clean-jsdoc-theme"
+  },
+  "plugins": ["plugins/markdown"],
+  "templates": {
+    "clean-jsdoc-theme": {
+      "theme": "dark",
+      "title": "El Pollo Loco Documentation",
+      "description": "Complete documentation for El Pollo Loco - a canvas-based Jump-and-Run game built with vanilla JavaScript",
+      "menu": [
+        {
+          "title": "🏠 Home",
+          "link": "index.html"
+        },
+        {
+          "title": "📚 Global Functions",
+          "link": "global.html"
+        },
+        {
+          "title": "🔗 GitHub Repository",
+          "link": "https://github.com/KosMaster87/El-pollo-loco",
+          "target": "_blank"
+        },
+        {
+          "title": "🚀 Live Demo",
+          "link": "https://el-pollo-loco.dev2ksoftware.com/",
+          "target": "_blank"
+        }
+      ],
+      "search": true,
+      "collapse": false,
+      "sort": true,
+      "sectionOrder": [
+        "Classes",
+        "Modules",
+        "Global",
+        "Namespaces",
+        "Events",
+        "Tutorials",
+        "Interfaces"
+      ],
+      "meta": {
+        "keywords": "JavaScript, Canvas, Game, Jump-and-Run, Documentation, JSDoc, OOP, Class-based"
+      }
+    },
+    "cleverLinks": false,
+    "monospaceLinks": false
+  }
+}
