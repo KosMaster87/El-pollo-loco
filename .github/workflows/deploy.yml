@@ -51,6 +51,11 @@ jobs:
           rsync -avz --delete \
             --exclude='node_modules' --exclude='.git' --exclude='.husky' --exclude='docs' \
             . root@deploy-el-pollo-loco.dev2ksoftware.com:/mnt/nvme/appdata/static-sites/www/el-pollo-loco-staging/
+      - name: Purge Cloudflare cache
+        run: |
+          curl -sf -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE_ID }}/purge_cache" \
+            -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN }}" -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}'
 
   deploy-production:
     needs: quality
@@ -83,3 +88,8 @@ jobs:
           rsync -avz --delete \
             --exclude='node_modules' --exclude='.git' --exclude='.husky' --exclude='docs' \
             . root@deploy-el-pollo-loco.dev2ksoftware.com:/mnt/nvme/appdata/static-sites/www/el-pollo-loco/
+      - name: Purge Cloudflare cache
+        run: |
+          curl -sf -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE_ID }}/purge_cache" \
+            -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN }}" -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}'
