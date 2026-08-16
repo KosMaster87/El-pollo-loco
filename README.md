@@ -6,7 +6,7 @@ An action-packed 2D platformer featuring charming pixel-art characters, strategi
 
 ## 🚀 Live Demo
 
-🔗 [Live Demo – el-pollo-loco.dev2k.org](https://el-pollo-loco.dev2k.org/)
+🔗 [Live Demo - el-pollo-loco.dev2k.org](https://el-pollo-loco.dev2k.org/)
 
 ---
 
