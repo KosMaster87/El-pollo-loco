@@ -179,11 +179,7 @@ class MovableObject extends DrawableObject {
    * @returns {boolean} True if push should be cancelled
    */
   shouldCancelPush = () => {
-    return (
-      this.world.keyboard.LEFT ||
-      this.world.keyboard.RIGHT ||
-      !this.world.collisionHandler.activeEnemyInteraction
-    );
+    return !this.world.collisionHandler.activeEnemyInteraction;
   };
 
   /**
