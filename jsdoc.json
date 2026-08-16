@@ -17,20 +17,20 @@
       "description": "Complete documentation for El Pollo Loco - a canvas-based Jump-and-Run game built with vanilla JavaScript",
       "menu": [
         {
-          "title": "🏠 Home",
+          "title": "Home",
           "link": "index.html"
         },
         {
-          "title": "📚 Global Functions",
+          "title": "Global Functions",
           "link": "global.html"
         },
         {
-          "title": "🔗 GitHub Repository",
+          "title": "GitHub Repository",
           "link": "https://github.com/KosMaster87/El-pollo-loco",
           "target": "_blank"
         },
         {
-          "title": "🚀 Live Demo",
+          "title": "Live Demo",
           "link": "https://el-pollo-loco.dev2ksoftware.com/",
           "target": "_blank"
         }
